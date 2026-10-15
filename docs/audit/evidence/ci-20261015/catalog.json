@@ -1,0 +1,1785 @@
+[
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DOM-001",
+    "kind": "reference",
+    "title": "[AUD-007][DOM-001][reference] une note pending peut être approuvée sans changer son contenu",
+    "suite": "unit",
+    "file": "tests/unit/decisions.test.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DOM-002",
+    "kind": "reference",
+    "title": "[AUD-007][DOM-002][reference] une note pending peut être rejetée",
+    "suite": "unit",
+    "file": "tests/unit/decisions.test.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DOM-003",
+    "kind": "reference",
+    "title": "[AUD-007][DOM-003][reference] une approbation ne peut pas être inversée dans le modèle",
+    "suite": "unit",
+    "file": "tests/unit/decisions.test.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DOM-004",
+    "kind": "reference",
+    "title": "[AUD-007][DOM-004][reference] une décision identique ne peut pas être rejouée dans le modèle",
+    "suite": "unit",
+    "file": "tests/unit/decisions.test.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DOM-005",
+    "kind": "reference",
+    "title": "[AUD-006][DOM-005][reference] un manager gère son collaborateur direct et pas un autre",
+    "suite": "unit",
+    "file": "tests/unit/decisions.test.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DOM-006",
+    "kind": "reference",
+    "title": "[AUD-011][DOM-006][reference] seul un manager sans supérieur est manager racine",
+    "suite": "unit",
+    "file": "tests/unit/decisions.test.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "AUTH-004",
+    "kind": "reference",
+    "title": "[AUD-011][AUTH-004][reference] toutes les routes métier refusent les appels anonymes",
+    "suite": "api",
+    "file": "tests/api/auth.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "AUTH-005",
+    "kind": "reference",
+    "title": "[AUD-011][AUTH-005][reference] méthodes non déclarées refusées",
+    "suite": "api",
+    "file": "tests/api/auth.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "AUTH-001",
+    "kind": "reference",
+    "title": "[AUD-011][AUTH-001][reference] connexion réelle Credentials et session",
+    "suite": "api",
+    "file": "tests/api/auth.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "AUTH-002",
+    "kind": "reference",
+    "title": "[AUD-011][AUTH-002][reference] mot de passe incorrect sans session",
+    "suite": "api",
+    "file": "tests/api/auth.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "AUTH-003",
+    "kind": "reference",
+    "title": "[AUD-011][AUTH-003][reference] lecture propriétaire interdite sans session",
+    "suite": "api",
+    "file": "tests/api/auth.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-003"
+    ],
+    "caseId": "PANNE-001",
+    "kind": "correction",
+    "title": "[AUD-003][PANNE-001][correction] une panne upload ne laisse pas une note pending sans reçu",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-005"
+    ],
+    "caseId": "PANNE-002",
+    "kind": "correction",
+    "title": "[AUD-005][PANNE-002][correction] erreur de stockage sans détail technique public",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-009"
+    ],
+    "caseId": "RLS-001",
+    "kind": "correction",
+    "title": "[AUD-009][RLS-001][correction] le compte applicatif applique réellement RLS",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-009"
+    ],
+    "caseId": "RLS-002",
+    "kind": "correction",
+    "title": "[AUD-009][RLS-002][correction] une politique RH ne donne pas accès à une autre entreprise",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DEC-001",
+    "kind": "reference",
+    "title": "[AUD-007][DEC-001][reference] approbation manager persistée puis répétition refusée",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DEC-002",
+    "kind": "reference",
+    "title": "[AUD-007][DEC-002][reference] rejet RH persisté puis répétition refusée",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DEC-003",
+    "kind": "reference",
+    "title": "[AUD-006][DEC-003][reference] manager ne décide pas une note étrangère ou absente",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DEC-004",
+    "kind": "reference",
+    "title": "[AUD-006][DEC-004][reference] RH ne décide pas une note hors périmètre",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DEC-005",
+    "kind": "correction",
+    "title": "[AUD-007][DEC-005][correction] deux décisions HTTP manager opposées ne s’écrasent pas",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DEC-006",
+    "kind": "correction",
+    "title": "[AUD-007][DEC-006][correction] deux décisions HTTP RH opposées ne s’écrasent pas",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "DEC-007",
+    "kind": "correction",
+    "title": "[AUD-007][DEC-007][correction] deux décisions HTTP identiques ont une seule gagnante",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-005"
+    ],
+    "caseId": "PANNE-003",
+    "kind": "correction",
+    "title": "[AUD-005][PANNE-003][correction] la panne produit un diagnostic interne structuré sans secret",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-009"
+    ],
+    "caseId": "RLS-003",
+    "kind": "reference",
+    "title": "[AUD-009][RLS-003][reference] contexte absent puis connexion réutilisée sans fuite du propriétaire",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-009"
+    ],
+    "caseId": "RLS-004",
+    "kind": "reference",
+    "title": "[AUD-009][RLS-004][reference] propriétaire ne peut ni approuver sa note ni modifier librement son montant",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-009"
+    ],
+    "caseId": "RLS-005",
+    "kind": "correction",
+    "title": "[AUD-009][RLS-005][correction] création et finalisation réussissent sans contourner RLS",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-015"
+    ],
+    "caseId": "DATE-001",
+    "kind": "correction",
+    "title": "[AUD-015][DATE-001][correction] à minuit Paris le serveur accepte aujourd’hui et refuse demain",
+    "suite": "api",
+    "file": "tests/api/coherence.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-003"
+    ],
+    "caseId": "NOTE-001",
+    "kind": "reference",
+    "title": "[AUD-003][NOTE-001][reference] création persistée et visible dans la liste",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-002",
+    "kind": "reference",
+    "title": "[G14][NOTE-002][reference] dépôt légitime image/png",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-003",
+    "kind": "reference",
+    "title": "[G14][NOTE-003][reference] dépôt légitime image/jpeg",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-004",
+    "kind": "reference",
+    "title": "[G14][NOTE-004][reference] dépôt légitime image/webp",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-005",
+    "kind": "reference",
+    "title": "[G14][NOTE-005][reference] dépôt légitime application/pdf",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-006",
+    "kind": "reference",
+    "title": "[AUD-014][NOTE-006][reference] montant zéro refusé sans note",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-007",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-007][correction] montant invalide 12abc refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-008",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-008][correction] montant invalide 1.2.3 refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-009",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-009][correction] montant invalide 1,2,3 refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-010",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-010][correction] montant invalide 1,2.3 refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-011",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-011][correction] montant invalide NaN refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-012",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-012][correction] montant invalide Infinity refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-013",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-013][correction] montant invalide -1 refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-014",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-014][correction] virgule décimale équivalente au point",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-015",
+    "kind": "reference",
+    "title": "[AUD-014][NOTE-015][reference] arrondi PostgreSQL des décimales supplémentaires conservé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-015"
+    ],
+    "caseId": "NOTE-016",
+    "kind": "correction",
+    "title": "[AUD-015][NOTE-016][correction] date invalide ou interdite ''",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-015"
+    ],
+    "caseId": "NOTE-017",
+    "kind": "correction",
+    "title": "[AUD-015][NOTE-017][correction] date invalide ou interdite '2026-02-30'",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-015"
+    ],
+    "caseId": "NOTE-018",
+    "kind": "correction",
+    "title": "[AUD-015][NOTE-018][correction] date invalide ou interdite '2023-02-29'",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-015"
+    ],
+    "caseId": "NOTE-019",
+    "kind": "correction",
+    "title": "[AUD-015][NOTE-019][correction] date invalide ou interdite '2099-01-01'",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-015"
+    ],
+    "caseId": "NOTE-020",
+    "kind": "correction",
+    "title": "[AUD-015][NOTE-020][correction] date invalide ou interdite '01/10/2026'",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-015"
+    ],
+    "caseId": "NOTE-021",
+    "kind": "reference",
+    "title": "[AUD-015][NOTE-021][reference] date bissextile réelle acceptée",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-005"
+    ],
+    "caseId": "NOTE-022",
+    "kind": "correction",
+    "title": "[AUD-005][NOTE-022][correction] erreur de date sans stack publique ni message SQL brut",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-023",
+    "kind": "correction",
+    "title": "[G14][NOTE-023][correction] texte déguisé en PNG refusé avant toute écriture",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-024",
+    "kind": "reference",
+    "title": "[G14][NOTE-024][reference] type de reçu non supporté refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-025",
+    "kind": "reference",
+    "title": "[G14][NOTE-025][reference] borne de taille 10485760 octets",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-026",
+    "kind": "reference",
+    "title": "[G14][NOTE-026][reference] borne de taille 10485761 octets",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "NOTE-027",
+    "kind": "reference",
+    "title": "[AUD-011][NOTE-027][reference] description vide refusée",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-028",
+    "kind": "reference",
+    "title": "[G14][NOTE-028][reference] reçu absent refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-004"
+    ],
+    "caseId": "LIST-001",
+    "kind": "reference",
+    "title": "[AUD-004][LIST-001][reference] liste propriétaire et tri par défaut conservés",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-004"
+    ],
+    "caseId": "LIST-002",
+    "kind": "correction",
+    "title": "[AUD-004][LIST-002][correction] option nommée newest",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-004"
+    ],
+    "caseId": "LIST-003",
+    "kind": "correction",
+    "title": "[AUD-004][LIST-003][correction] option nommée amount_asc",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-004"
+    ],
+    "caseId": "LIST-004",
+    "kind": "correction",
+    "title": "[AUD-004][LIST-004][correction] option nommée AMOUNT_DESC",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-004"
+    ],
+    "caseId": "LIST-005",
+    "kind": "correction",
+    "title": "[AUD-004][LIST-005][correction] tri inconnu rejeté avant exécution SQL",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-004"
+    ],
+    "caseId": "LIST-006",
+    "kind": "correction",
+    "title": "[AUD-004][LIST-006][correction] expression SQL libre refusée",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "RECU-001",
+    "kind": "reference",
+    "title": "[AUD-006][RECU-001][reference] reçu du propriétaire réellement accessible",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "RECU-002",
+    "kind": "reference",
+    "title": "[AUD-006][RECU-002][reference] reçu propriétaire étranger ou absent refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "RECU-003",
+    "kind": "reference",
+    "title": "[AUD-006][RECU-003][reference] reçu propriétaire étranger ou absent refusé",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "LIST-007",
+    "kind": "reference",
+    "title": "[AUD-011][LIST-007][reference] liste vide pour un compte sans note",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-029",
+    "kind": "reference",
+    "title": "[AUD-014][NOTE-029][reference] montant maximal numeric dix chiffres dont deux décimales accepté",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-014"
+    ],
+    "caseId": "NOTE-030",
+    "kind": "correction",
+    "title": "[AUD-014][NOTE-030][correction] dépassement de borne monétaire refusé sans écriture",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-031",
+    "kind": "correction",
+    "title": "[G14][NOTE-031][correction] faux PDF refusé avant écriture et upload",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "G14"
+    ],
+    "caseId": "NOTE-032",
+    "kind": "correction",
+    "title": "[G14][NOTE-032][correction] contenu PNG déclaré PDF refusé avant écriture et upload",
+    "suite": "api",
+    "file": "tests/api/expenses.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "OCR-001",
+    "kind": "reference",
+    "title": "[AUD-008][OCR-001][reference] un reçu lisible est réellement reconnu",
+    "suite": "api",
+    "file": "tests/api/ocr.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "OCR-002",
+    "kind": "reference",
+    "title": "[AUD-008][OCR-002][reference] une analyse réussie sans champ retourne un objet vide",
+    "suite": "api",
+    "file": "tests/api/ocr.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "OCR-003",
+    "kind": "correction",
+    "title": "[AUD-008][OCR-003][correction] une image corrompue est une erreur et pas un succès vide",
+    "suite": "api",
+    "file": "tests/api/ocr.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "OCR-004",
+    "kind": "correction",
+    "title": "[AUD-008][OCR-004][correction] PDF n’est pas ajouté aux formats OCR acceptés",
+    "suite": "api",
+    "file": "tests/api/ocr.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "OCR-005",
+    "kind": "reference",
+    "title": "[AUD-008][OCR-005][reference] reçu absent refusé",
+    "suite": "api",
+    "file": "tests/api/ocr.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "OCR-006",
+    "kind": "reference",
+    "title": "[AUD-008][OCR-006][reference] OCR interdit sans session",
+    "suite": "api",
+    "file": "tests/api/ocr.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-001",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-001][reference] liste manager limitée aux collaborateurs directs pending",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-002",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-002][reference] liste RH limitée aux managers racines de son entreprise",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-003",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-003][reference] annuaire RH de la même entreprise sans les RH",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DROIT-004",
+    "kind": "reference",
+    "title": "[AUD-011][DROIT-004][reference] rôle a_employee refusé sur /api/manager/expense-notes",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DROIT-005",
+    "kind": "reference",
+    "title": "[AUD-011][DROIT-005][reference] rôle a_employee refusé sur /api/hr/expense-notes",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DROIT-006",
+    "kind": "reference",
+    "title": "[AUD-011][DROIT-006][reference] rôle a_root refusé sur /api/hr/users",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DROIT-007",
+    "kind": "reference",
+    "title": "[AUD-011][DROIT-007][reference] rôle a_hr refusé sur /api/manager/expense-notes",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DROIT-008",
+    "kind": "reference",
+    "title": "[AUD-011][DROIT-008][reference] appel anonyme /api/manager/expense-notes refusé",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DROIT-009",
+    "kind": "reference",
+    "title": "[AUD-011][DROIT-009][reference] appel anonyme /api/hr/expense-notes refusé",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "DROIT-010",
+    "kind": "reference",
+    "title": "[AUD-011][DROIT-010][reference] appel anonyme /api/hr/users refusé",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-011",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-011][reference] périmètre du reçu manager : notes.employee",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-012",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-012][reference] périmètre du reçu manager : notes.approved",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-013",
+    "kind": "correction",
+    "title": "[AUD-006][DROIT-013][correction] périmètre du reçu manager : notes.unrelated",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-014",
+    "kind": "correction",
+    "title": "[AUD-006][DROIT-014][correction] périmètre du reçu manager : notes.b_employee",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-015",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-015][reference] périmètre du reçu manager : absent",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-016",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-016][reference] périmètre du reçu RH : notes.root",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-017",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-017][reference] périmètre du reçu RH : notes.b_root",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "DROIT-018",
+    "kind": "reference",
+    "title": "[AUD-006][DROIT-018][reference] périmètre du reçu RH : notes.employee",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "G10"
+    ],
+    "caseId": "DROIT-019",
+    "kind": "correction",
+    "title": "[G10][DROIT-019][correction] rôle manager rétrogradé pris en compte sans reconnexion",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "G10"
+    ],
+    "caseId": "DROIT-020",
+    "kind": "correction",
+    "title": "[G10][DROIT-020][correction] rôle RH rétrogradé pris en compte sans reconnexion",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "G10"
+    ],
+    "caseId": "DROIT-021",
+    "kind": "correction",
+    "title": "[G10][DROIT-021][correction] compte supprimé ne garde pas son accès propriétaire",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-001",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-001][correction] corps invalide sans changement : {",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-002",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-002][correction] corps invalide sans changement : null",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-003",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-003][correction] corps invalide sans changement : []",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-004",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-004][correction] corps invalide sans changement : 42",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-005",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-005][correction] corps invalide sans changement : \"texte\"",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-006",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-006][correction] corps invalide sans changement : {}",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-007",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-007][correction] corps invalide sans changement : {\"managerId\":42}",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-008",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-008][correction] corps invalide sans changement : {\"managerId\":\"invalide\"}",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-009",
+    "kind": "reference",
+    "title": "[AUD-020][AFF-009][reference] null explicite retire le manager",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "AFF-010",
+    "kind": "reference",
+    "title": "[AUD-006][AFF-010][reference] affectation à un manager autorisé",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "AFF-011",
+    "kind": "correction",
+    "title": "[AUD-006][AFF-011][correction] affectation hors périmètre ou manager invalide",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "AFF-012",
+    "kind": "reference",
+    "title": "[AUD-006][AFF-012][reference] affectation hors périmètre ou manager invalide",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "AFF-013",
+    "kind": "reference",
+    "title": "[AUD-006][AFF-013][reference] affectation hors périmètre ou manager invalide",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "AFF-014",
+    "kind": "reference",
+    "title": "[AUD-006][AFF-014][reference] affectation hors périmètre ou manager invalide",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-021"
+    ],
+    "caseId": "AFF-015",
+    "kind": "reference",
+    "title": "[AUD-021][AFF-015][reference] auto-affectation refusée",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-021"
+    ],
+    "caseId": "AFF-016",
+    "kind": "correction",
+    "title": "[AUD-021][AFF-016][correction] boucle à deux managers refusée",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-021"
+    ],
+    "caseId": "AFF-017",
+    "kind": "correction",
+    "title": "[AUD-021][AFF-017][correction] boucle longue refusée",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-021"
+    ],
+    "caseId": "AFF-018",
+    "kind": "correction",
+    "title": "[AUD-021][AFF-018][correction] deux affectations simultanées ne créent pas de boucle",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-020"
+    ],
+    "caseId": "AFF-019",
+    "kind": "correction",
+    "title": "[AUD-020][AFF-019][correction] erreurs JSON, structure, champ absent et identifiant sont différenciées",
+    "suite": "api",
+    "file": "tests/api/permissions.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-018"
+    ],
+    "caseId": "SEED-001",
+    "kind": "reference",
+    "title": "[AUD-018][SEED-001][reference] seed complet relançable sans doublon",
+    "suite": "api",
+    "file": "tests/api/seed.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-018"
+    ],
+    "caseId": "SEED-002",
+    "kind": "correction",
+    "title": "[AUD-018][SEED-002][correction] reprise du seed répare la note après panne du reçu",
+    "suite": "api",
+    "file": "tests/api/seed.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-018"
+    ],
+    "caseId": "SEED-003",
+    "kind": "reference",
+    "title": "[AUD-018][SEED-003][reference] relance du seed conserve une décision existante",
+    "suite": "api",
+    "file": "tests/api/seed.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-001",
+    "kind": "correction",
+    "title": "[AUD-016][NET-001][correction] liste propriétaire : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-002",
+    "kind": "reference",
+    "title": "[AUD-016][NET-002][reference] liste propriétaire : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-003",
+    "kind": "correction",
+    "title": "[AUD-016][NET-003][correction] liste propriétaire : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-004",
+    "kind": "correction",
+    "title": "[AUD-016][NET-004][correction] soumission : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-005",
+    "kind": "reference",
+    "title": "[AUD-016][NET-005][reference] soumission : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-006",
+    "kind": "correction",
+    "title": "[AUD-016][NET-006][correction] OCR : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-007",
+    "kind": "reference",
+    "title": "[AUD-016][NET-007][reference] OCR : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-008",
+    "kind": "correction",
+    "title": "[AUD-016][NET-008][correction] OCR : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-009",
+    "kind": "correction",
+    "title": "[AUD-016][NET-009][correction] reçu propriétaire : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-010",
+    "kind": "reference",
+    "title": "[AUD-016][NET-010][reference] reçu propriétaire : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-011",
+    "kind": "correction",
+    "title": "[AUD-016][NET-011][correction] reçu propriétaire : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-012",
+    "kind": "correction",
+    "title": "[AUD-016][NET-012][correction] liste manager : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-013",
+    "kind": "reference",
+    "title": "[AUD-016][NET-013][reference] liste manager : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-014",
+    "kind": "correction",
+    "title": "[AUD-016][NET-014][correction] liste manager : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-015",
+    "kind": "correction",
+    "title": "[AUD-016][NET-015][correction] décision manager : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-016",
+    "kind": "reference",
+    "title": "[AUD-016][NET-016][reference] décision manager : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-017",
+    "kind": "correction",
+    "title": "[AUD-016][NET-017][correction] reçu manager : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-018",
+    "kind": "reference",
+    "title": "[AUD-016][NET-018][reference] reçu manager : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-019",
+    "kind": "correction",
+    "title": "[AUD-016][NET-019][correction] reçu manager : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-020",
+    "kind": "correction",
+    "title": "[AUD-016][NET-020][correction] annuaire RH : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-021",
+    "kind": "reference",
+    "title": "[AUD-016][NET-021][reference] annuaire RH : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-022",
+    "kind": "correction",
+    "title": "[AUD-016][NET-022][correction] annuaire RH : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-023",
+    "kind": "correction",
+    "title": "[AUD-016][NET-023][correction] liste RH : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-024",
+    "kind": "reference",
+    "title": "[AUD-016][NET-024][reference] liste RH : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-025",
+    "kind": "correction",
+    "title": "[AUD-016][NET-025][correction] liste RH : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-026",
+    "kind": "correction",
+    "title": "[AUD-016][NET-026][correction] affectation RH : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-027",
+    "kind": "reference",
+    "title": "[AUD-016][NET-027][reference] affectation RH : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-028",
+    "kind": "correction",
+    "title": "[AUD-016][NET-028][correction] décision RH : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-029",
+    "kind": "reference",
+    "title": "[AUD-016][NET-029][reference] décision RH : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-030",
+    "kind": "correction",
+    "title": "[AUD-016][NET-030][correction] reçu RH : échec réseau visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-031",
+    "kind": "reference",
+    "title": "[AUD-016][NET-031][reference] reçu RH : échec HTTP visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-016"
+    ],
+    "caseId": "NET-032",
+    "kind": "correction",
+    "title": "[AUD-016][NET-032][correction] reçu RH : échec JSON illisible visible et récupérable",
+    "suite": "e2e",
+    "file": "tests/e2e/network.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "NAV-001",
+    "kind": "reference",
+    "title": "[AUD-011][NAV-001][reference] connexion et déconnexion dans le navigateur",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "NAV-002",
+    "kind": "reference",
+    "title": "[AUD-011][NAV-002][reference] identifiants incorrects affichent un refus",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "NAV-003",
+    "kind": "reference",
+    "title": "[AUD-011][NAV-003][reference] page /expenses protégée sans session",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "NAV-004",
+    "kind": "reference",
+    "title": "[AUD-011][NAV-004][reference] page /manager protégée sans session",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "NAV-005",
+    "kind": "reference",
+    "title": "[AUD-011][NAV-005][reference] page /hr protégée sans session",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "NAV-006",
+    "kind": "reference",
+    "title": "[AUD-006][NAV-006][reference] employé sans accès à la page manager",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "NAV-007",
+    "kind": "reference",
+    "title": "[AUD-006][NAV-007][reference] manager sans accès à la page RH",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-003"
+    ],
+    "caseId": "NAV-008",
+    "kind": "reference",
+    "title": "[AUD-003][NAV-008][reference] création via formulaire visible après rechargement",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-011"
+    ],
+    "caseId": "NAV-009",
+    "kind": "reference",
+    "title": "[AUD-011][NAV-009][reference] historique et total propriétaire affichés",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006"
+    ],
+    "caseId": "NAV-010",
+    "kind": "reference",
+    "title": "[AUD-006][NAV-010][reference] reçu ouvert depuis son historique",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "NAV-011",
+    "kind": "reference",
+    "title": "[AUD-007][NAV-011][reference] a_root décide par le navigateur : Approuver",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "NAV-012",
+    "kind": "reference",
+    "title": "[AUD-007][NAV-012][reference] a_root décide par le navigateur : Rejeter",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "NAV-013",
+    "kind": "reference",
+    "title": "[AUD-007][NAV-013][reference] a_hr décide par le navigateur : Approuver",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-007"
+    ],
+    "caseId": "NAV-014",
+    "kind": "reference",
+    "title": "[AUD-007][NAV-014][reference] a_hr décide par le navigateur : Rejeter",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-006",
+      "AUD-020"
+    ],
+    "caseId": "NAV-015",
+    "kind": "reference",
+    "title": "[AUD-006,AUD-020][NAV-015][reference] RH affecte puis retire explicitement un manager",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "NAV-016",
+    "kind": "reference",
+    "title": "[AUD-008][NAV-016][reference] OCR réel préremplit le montant et la date",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-008"
+    ],
+    "caseId": "NAV-017",
+    "kind": "reference",
+    "title": "[AUD-008][NAV-017][reference] absence de texte OCR permet la saisie manuelle",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-017"
+    ],
+    "caseId": "NAV-018",
+    "kind": "reference",
+    "title": "[AUD-017][NAV-018][reference] date calendaire préservée en Europe/Paris",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-017"
+    ],
+    "caseId": "NAV-019",
+    "kind": "reference",
+    "title": "[AUD-017][NAV-019][reference] date calendaire préservée en UTC",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-017"
+    ],
+    "caseId": "NAV-020",
+    "kind": "correction",
+    "title": "[AUD-017][NAV-020][correction] date calendaire préservée en America/Los_Angeles",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-017"
+    ],
+    "caseId": "NAV-021",
+    "kind": "reference",
+    "title": "[AUD-017][NAV-021][reference] minuit Paris conserve le jour calendaire du reçu",
+    "suite": "e2e",
+    "file": "tests/e2e/reference.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-013",
+      "AUD-019"
+    ],
+    "caseId": "INS-001",
+    "kind": "reference",
+    "title": "[AUD-013,AUD-019][INS-001][reference] nouvelle entreprise avec premier RH et connexion",
+    "suite": "e2e",
+    "file": "tests/e2e/signup.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-013",
+      "AUD-019"
+    ],
+    "caseId": "INS-002",
+    "kind": "reference",
+    "title": "[AUD-013,AUD-019][INS-002][reference] domaine existant rejoint comme employé",
+    "suite": "e2e",
+    "file": "tests/e2e/signup.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-013"
+    ],
+    "caseId": "INS-003",
+    "kind": "reference",
+    "title": "[AUD-013][INS-003][reference] email déjà utilisé refusé sans doublon",
+    "suite": "e2e",
+    "file": "tests/e2e/signup.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-013"
+    ],
+    "caseId": "INS-004",
+    "kind": "reference",
+    "title": "[AUD-013][INS-004][reference] nom vide côté serveur refusé",
+    "suite": "e2e",
+    "file": "tests/e2e/signup.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-013"
+    ],
+    "caseId": "INS-005",
+    "kind": "reference",
+    "title": "[AUD-013][INS-005][reference] mot de passe trop court empêche la création",
+    "suite": "e2e",
+    "file": "tests/e2e/signup.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-013"
+    ],
+    "caseId": "INS-006",
+    "kind": "correction",
+    "title": "[AUD-013][INS-006][correction] panne de création du compte ne laisse pas une entreprise orpheline",
+    "suite": "e2e",
+    "file": "tests/e2e/signup.spec.ts"
+  },
+  {
+    "issues": [
+      "AUD-013"
+    ],
+    "caseId": "INS-007",
+    "kind": "reference",
+    "title": "[AUD-013][INS-007][reference] inscriptions simultanées donnent un seul premier RH",
+    "suite": "e2e",
+    "file": "tests/e2e/signup.spec.ts"
+  }
+]

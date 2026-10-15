@@ -1,5 +1,17 @@
 # ARLA — Journal des décisions
 
+## CI validée et réalisée — 15 octobre 2026
+
+Maia valide le plan CI et exige l'identifiant de l'issue sur chaque test. [Spec CI-001](../specs/CI-001-tests-non-regression.md), [instructions de test](../testing/README.md), [ajout IMPLEMENTATION AUD-011](solutions-to-audit/AUD-011-validation-isolee.md#implementation).
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-011 | CI et données séparées réalisées ; vérifiées localement | Protéger les parcours/API et rendre les défauts audités visibles sans toucher aux services actuels | [Campagne, SHA de base et manifeste du diff](evidence/ci-20261015/README.md) |178 cas :105 réussites/73 échecs/0 absent ; tous les échecs correction ; lint/types/build0 ;22 préfixes protégés |
+| Ensemble des issues testées | Tests liés aux IDs, défauts non corrigés dans ce lot | Un test vert isolé ne vaut pas validation de la solution complète | [Bilan par issue](evidence/ci-20261015/issues.md) | Unit6/6 ; API61/112 ; E2E38/60 ; mécanismes futurs explicitement reportés |
+| AUD-023 | Collecte dépendances informative, qualification maintenue | Ne pas confondre8 alertes avec8 exploits établis | [Rapport npm](evidence/ci-20261015/dependencies.json) |7 high/1 critical ; aucun upgrade automatique |
+
+Le workflow distingue les étapes, publie les résultats après échec et échoue sur assertion/absence/suite vide. Chaque test contient une issue existante et un cas unique ; `test:issue` sélectionne et agrège les suites correspondantes. Les fiches historiques restent intactes et l'entrée AUD-011 est ajoutée en fin. Aucun code applicatif, UI, migration ou commande existante changé. Deux revues distinctes Standards/Spec ont conduit à compléter les frontières, RLS et diagnostics, la provenance et le remplacement des anciens résultats. L'exécution GitHub n'est pas acquise par la preuve locale ; aucune compréhension indépendante n'a été évaluée.
+
 ## Règles des agents avant implémentation — 15 octobre 2026
 
 Maia demande une préparation explicite des specs et une traçabilité en ajout uniquement : chaque réalisation complète sa fiche existante par une section IMPLEMENTATION décrivant ce qui est réalisé, où et le nouveau fonctionnement. Conserver intégralement tout le texte préexistant, y compris les anciennes entrées de réalisation ; les nouveaux résultats ne réécrivent pas l'audit initial. Règle appliquée aussi aux fiches G10/G14 et à chaque issue d'une réalisation multi-issues.
