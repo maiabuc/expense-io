@@ -1,0 +1,55 @@
+{
+  "perimetre": "Contrôle documentaire sur copies temporaires, aucune fiche réelle modifiée",
+  "cas": [
+    {
+      "cas": "Préfixes intacts",
+      "attendu": 0,
+      "codeReel": 0,
+      "conforme": true
+    },
+    {
+      "cas": "Ajout IMPLEMENTATION autorisé",
+      "attendu": 0,
+      "codeReel": 0,
+      "conforme": true
+    },
+    {
+      "cas": "Capture avec ajout antérieur conservé",
+      "attendu": 0,
+      "codeReel": 0,
+      "conforme": true
+    },
+    {
+      "cas": "Réécriture d’une IMPLEMENTATION antérieure refusée",
+      "attendu": 1,
+      "codeReel": 1,
+      "conforme": true
+    },
+    {
+      "cas": "Réécriture historique refusée",
+      "attendu": 1,
+      "codeReel": 1,
+      "conforme": true
+    },
+    {
+      "cas": "Ajout sans IMPLEMENTATION refusé",
+      "attendu": 1,
+      "codeReel": 1,
+      "conforme": true
+    },
+    {
+      "cas": "Suppression de fiche refusée",
+      "attendu": 1,
+      "codeReel": 1,
+      "conforme": true
+    },
+    {
+      "cas": "Snapshot existant non écrasé",
+      "attendu": 2,
+      "codeReel": 2,
+      "conforme": true
+    }
+  ],
+  "total": 8,
+  "conformes": 8
+}

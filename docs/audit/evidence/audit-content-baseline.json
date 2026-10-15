@@ -1,0 +1,117 @@
+{
+  "description": "Préfixes historiques des fiches au moment de la règle ajout uniquement de Maia. Conserver ces empreintes ; les anciennes sections ne sont pas réécrites.",
+  "date": "2026-10-15",
+  "sourceAudit": "265924bc7274047989e708ab635c2854d376230f",
+  "fichiers": [
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-003-receipt-consistency.md",
+      "octets": 5940,
+      "sha256": "62f46dd1b3386b424837946cb9dd61c605752fbb627d2d6262769410382713a2"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-004-sort-input.md",
+      "octets": 4532,
+      "sha256": "3de470098cdfcd3d6c05cedb9903412ce2f66dd34d75582f19b8b8656b183f16"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-005-public-errors.md",
+      "octets": 2842,
+      "sha256": "8547a28f10b6dd62436b1ca28e7de0cd7bd6ca2aadbeabe2028ebe1156c0f61a"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-006-manager-receipt-authorisation.md",
+      "octets": 6841,
+      "sha256": "074cd7aaf3b5d6160a102997d78aec21d1936a6fe94635ab306f383f1b173b53"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-007-decision-concurrency.md",
+      "octets": 4303,
+      "sha256": "089e0f9fe0cf70bf52cf0e6ea701da57b01d8e9e46e15130fea27138dff12512"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-008-ocr-resource-bounds.md",
+      "octets": 6293,
+      "sha256": "b8a583814df523e5ab33f58f9d310eba9793987941a516ec0c5706f6010c8e89"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-009-database-company-isolation.md",
+      "octets": 10515,
+      "sha256": "828cc5ebda6929831cf972aba01a693ec68352ca06e8563ae1231fed26440d72"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-010-authentication-secret.md",
+      "octets": 2189,
+      "sha256": "8d6021ca05b290431b1b77d7aa22f0e579c975209287a2914c3f355b6a61152f"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-011-validation-isolee.md",
+      "octets": 2322,
+      "sha256": "cc7565706b3ac56728604374ec2e090729af6fee125c2a6b827eb772f5436a80"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-013-signup-consistency.md",
+      "octets": 3662,
+      "sha256": "b4441ff96c3e96335895af495435e3ad95f6e473df135707c601fb0c92bf53d1"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-014-validation-montant.md",
+      "octets": 3649,
+      "sha256": "901d311b962f99d1e785f7e8d975d67b004fd6a971adbf637c866f0d254100e7"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-015-validation-date.md",
+      "octets": 2773,
+      "sha256": "d22c3257eaaeffbe2249032c207ed627240d3a2e3c8c04698e2a8699f482b65a"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-016-erreurs-reseau-ui.md",
+      "octets": 3008,
+      "sha256": "ced9c2deb6bc3a256dde3cc2b2fd419e481acc245b2b5388ad3df73d4b298c96"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-017-affichage-date.md",
+      "octets": 2053,
+      "sha256": "74f6d804d75944e15abd6880bf1863fe16bbab70315b4f8614c8c4bef68b48a4"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-018-reprise-seed.md",
+      "octets": 2598,
+      "sha256": "af64ae6d2d13f46ca0ed192da7ec13c62c328a39c1a17fe5a347049e9d039e2d"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-019-inscription-domaine.md",
+      "octets": 1501,
+      "sha256": "a57305a9d49dba15032d83736dff5797b216f40dd6db63a119bde20731ca7d05"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-020-validation-affectation.md",
+      "octets": 3315,
+      "sha256": "fe1247424f3c9e8f95fca55466ebca41e2805bd9aac68dbf4bb35d7999e9ef5f"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-021-boucles-managers.md",
+      "octets": 3300,
+      "sha256": "27d9a47f5ca0d2278d20ea067eef32359afaa038a66b346b4006493932f2342a"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-022-optimisation-simple-listes.md",
+      "octets": 3165,
+      "sha256": "e47baf96c88bc8a47d954b2e8d2c429ff60b99b8de19303098788af94f9c7674"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/AUD-023-dependances.md",
+      "octets": 3229,
+      "sha256": "63179853cea73a598d0be22030d202e85f4fe279fd040e4f1b0fee9dc01fdb65"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/G10-droits-role-actuel.md",
+      "octets": 2846,
+      "sha256": "91ef22eb235ed48c93d1c3d86341d4a2b23844e1f16ee0034f396d1c52c8ed81"
+    },
+    {
+      "chemin": "docs/audit/solutions-to-audit/G14-controle-recus.md",
+      "octets": 3132,
+      "sha256": "cb417fb0cebcfa19d64477cf845cd2cf8804141d3c145eda88cf0766c8e21a66"
+    }
+  ]
+}

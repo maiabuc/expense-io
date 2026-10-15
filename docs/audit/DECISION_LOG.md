@@ -1,5 +1,11 @@
 # ARLA — Journal des décisions
 
+## Règles des agents avant implémentation — 15 octobre 2026
+
+Maia demande une préparation explicite des specs et une traçabilité en ajout uniquement : chaque réalisation complète sa fiche existante par une section IMPLEMENTATION décrivant ce qui est réalisé, où et le nouveau fonctionnement. Conserver intégralement tout le texte préexistant, y compris les anciennes entrées de réalisation ; les nouveaux résultats ne réécrivent pas l'audit initial. Règle appliquée aussi aux fiches G10/G14 et à chaque issue d'une réalisation multi-issues.
+
+[Instructions](../development/INSTRUCTIONS_IMPLEMENTATION.md), [modèle](../development/MODELE_SPEC.md), pointeur obligatoire dans AGENTS.md et [contrôle de préfixes](tools/check-append-only.mjs). Manifeste des 22 fiches historiques plus snapshot avant chaque tâche pour préserver les ajouts antérieurs. Validation du contrôle sur copies temporaires : [8 cas](evidence/append-only-check-results.json), dont ajouts permis, réécritures/suppression refusées et snapshot non écrasé. Aucune fiche d'issue modifiée ni fausse section de réalisation applicative ajoutée pendant cette préparation ; aucun changement applicatif. L'implémentation d'un lot reste distincte de ses instructions et de ses tests prévus.
+
 Début : 11 octobre 2026. Mise à jour : 14 octobre 2026. Source : fork main, `265924bc7274047989e708ab635c2854d376230f`. Branche d'audit : `audit/arla-2026-10`.
 
 Ce journal indexe les décisions ; les explications, alternatives et preuves détaillées restent dans les solutions liées. Une décision acceptée ne signifie ni implémentation ni validation. Les constats de code et leurs conséquences hypothétiques sont distingués dans [le registre](issues.md) et [les constats](findings.md). La [campagne du 14 octobre](mesures-et-preuves.md) ajoute désormais des preuves HTTP/SQL/S3/OCR isolées ; aucune correction applicative implémentée.
