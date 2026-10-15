@@ -1,0 +1,36 @@
+{
+  "source": "265924bc7274047989e708ab635c2854d376230f",
+  "hostNode": "24.6.0",
+  "hostNpm": "11.5.1",
+  "containerNode": "24.21.0",
+  "containerNpm": "11.19.0",
+  "next": "16.3.5",
+  "react": "19.2.8",
+  "containerImageDigest": "sha256:d6aa754f16b3197301076f047b5def2f02ea1dbbc2ca920407d46d7ec7f87b20",
+  "hostLogicalCpus": 8,
+  "hostKernel": "6.18.54.1-microsoft-standard-WSL2",
+  "sourceCodeModified": false,
+  "freshChecks": {
+    "lint": 0,
+    "typecheck": 0,
+    "build": 0
+  },
+  "browserTests": 0,
+  "scenarioAssertions": 47,
+  "scenarioPassed": 26,
+  "scenarioDeviations": 21,
+  "fixtureChecks": 3,
+  "listHttpMeasurements": 20,
+  "ocrCalls": 3,
+  "cleanInstallExit": 0,
+  "npmAuditExit": 1,
+  "auditSignals": {
+    "packages": 8,
+    "high": 7,
+    "critical": 1
+  },
+  "campaignDates": "2026-10-14/2026-10-15",
+  "auditContainersRemoved": true,
+  "existingUserServicesPreserved": true,
+  "labelledAuditVolumesRemaining": 0
+}

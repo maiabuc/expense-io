@@ -1,0 +1,187 @@
+{
+  "sha": "265924bc7274047989e708ab635c2854d376230f",
+  "node": "v24.6.0",
+  "typescript": "5.9.3",
+  "portee": "Fonctions extraites du source, setters/fetch simulés ; pas de React monté, serveur, DB ni stockage",
+  "mesures": [
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "fonction": "handleSubmit",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "submitting",
+      "valeur": false,
+      "message": null
+    },
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "fonction": "handleSubmit",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "submitting",
+      "valeur": true,
+      "message": null
+    },
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "fonction": "handleSuggestFields",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "extracting",
+      "valeur": false,
+      "message": null
+    },
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "fonction": "handleSuggestFields",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "extracting",
+      "valeur": true,
+      "message": null
+    },
+    {
+      "fichier": "src/components/PendingApprovalsPanel.tsx",
+      "fonction": "handleDecide",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "decidingId",
+      "valeur": null,
+      "message": null
+    },
+    {
+      "fichier": "src/components/PendingApprovalsPanel.tsx",
+      "fonction": "handleDecide",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "decidingId",
+      "valeur": "note-test",
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "handleManagerChange",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "savingId",
+      "valeur": null,
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "handleManagerChange",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "savingId",
+      "valeur": "user-test",
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "handleDecide",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "decidingId",
+      "valeur": null,
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "handleDecide",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "decidingId",
+      "valeur": "note-test",
+      "message": null
+    },
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "fonction": "loadNotes",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "loading",
+      "valeur": false,
+      "message": null
+    },
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "fonction": "loadNotes",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "loading",
+      "valeur": true,
+      "message": null
+    },
+    {
+      "fichier": "src/components/PendingApprovalsPanel.tsx",
+      "fonction": "loadPending",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "loading",
+      "valeur": false,
+      "message": null
+    },
+    {
+      "fichier": "src/components/PendingApprovalsPanel.tsx",
+      "fonction": "loadPending",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "loading",
+      "valeur": true,
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "loadUsers",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "usersLoading",
+      "valeur": false,
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "loadUsers",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "usersLoading",
+      "valeur": true,
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "loadNotes",
+      "panne": false,
+      "exceptionNonTraitee": false,
+      "indicateur": "notesLoading",
+      "valeur": false,
+      "message": null
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "fonction": "loadNotes",
+      "panne": true,
+      "exceptionNonTraitee": true,
+      "indicateur": "notesLoading",
+      "valeur": true,
+      "message": null
+    }
+  ],
+  "dates": [
+    {
+      "fuseau": "Europe/Paris",
+      "date": "2026-10-14",
+      "affichage": "14 oct. 2026"
+    },
+    {
+      "fuseau": "UTC",
+      "date": "2026-10-14",
+      "affichage": "14 oct. 2026"
+    },
+    {
+      "fuseau": "America/Los_Angeles",
+      "date": "2026-10-14",
+      "affichage": "13 oct. 2026"
+    }
+  ]
+}

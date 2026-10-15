@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: expense
+      POSTGRES_PASSWORD: expense-audit-only
+      POSTGRES_DB: expense_io_audit
+    ports:
+      - "127.0.0.1:15433:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U expense -d expense_io_audit"]
+      interval: 2s
+      timeout: 3s
+      retries: 20
+  localstack:
+    image: localstack/localstack:3.8.1
+    environment:
+      SERVICES: s3
+    ports:
+      - "127.0.0.1:14567:4566"

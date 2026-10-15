@@ -1,0 +1,78 @@
+{
+  "sha": "265924bc7274047989e708ab635c2854d376230f",
+  "fichiers": 41,
+  "commentaires": [
+    {
+      "fichier": "src/app/api/expense-notes/route.ts",
+      "debut": 39,
+      "fin": 41,
+      "texte": "// Le tri est construit dynamiquement plutôt que via une valeur liée :\n    // ORDER BY n'accepte pas de paramètre positionnel pour un nom de colonne\n    // en SQL standard, donc ce fragment est concaténé directement."
+    },
+    {
+      "fichier": "src/app/api/hr/users/[id]/manager/route.ts",
+      "debut": 35,
+      "fin": 38,
+      "texte": "// Le manager choisi doit avoir le rôle manager — l'appartenance à la\n      // même entreprise que la cible est déjà garantie par l'annuaire\n      // (GET /api/hr/users), qui ne liste que des managers de l'entreprise\n      // de l'appelant."
+    },
+    {
+      "fichier": "src/app/api/manager/expense-notes/[id]/receipt-url/route.ts",
+      "debut": 14,
+      "fin": 16,
+      "texte": "// La note existe forcément dans la liste des notes en attente du\n    // manager avant qu'il n'en consulte le reçu — pas besoin de revérifier\n    // le rattachement ici."
+    },
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "debut": 68,
+      "fin": 70,
+      "texte": "// Le setState effectif n'intervient qu'après l'await dans loadNotes,\n    // la règle react-hooks est ici trop conservatrice.\n    // eslint-disable-next-line react-hooks/set-state-in-effect"
+    },
+    {
+      "fichier": "src/app/expenses/page.tsx",
+      "debut": 125,
+      "fin": 126,
+      "texte": "// Une réponse vide est valide (rien à suggérer) : sans ce message, ça\n    // ne se distinguerait pas visuellement d'un bouton qui n'a rien fait."
+    },
+    {
+      "fichier": "src/components/AdminConsole.tsx",
+      "debut": 64,
+      "fin": 64,
+      "texte": "// eslint-disable-next-line react-hooks/set-state-in-effect"
+    },
+    {
+      "fichier": "src/components/PendingApprovalsPanel.tsx",
+      "debut": 38,
+      "fin": 38,
+      "texte": "// eslint-disable-next-line react-hooks/set-state-in-effect"
+    },
+    {
+      "fichier": "src/lib/auth.ts",
+      "debut": 6,
+      "fin": 7,
+      "texte": "// Généré une fois pour ce projet — pas besoin de le régénérer à chaque\n// déploiement."
+    },
+    {
+      "fichier": "src/lib/db.ts",
+      "debut": 3,
+      "fin": 4,
+      "texte": "// OID 1082 = date. Garde la chaîne \"YYYY-MM-DD\" brute renvoyée par Postgres\n// plutôt qu'un objet Date JS calé sur le fuseau local."
+    },
+    {
+      "fichier": "src/lib/db.ts",
+      "debut": 22,
+      "fin": 27,
+      "texte": "/**\n * Pose le contexte utilisateur pour la durée de la transaction — l'isolation\n * entre utilisateurs et entre entreprises est garantie par PostgreSQL (Row\n * Level Security, voir migrations/), ce helper ne fait qu'exposer l'id\n * courant aux policies.\n */"
+    },
+    {
+      "fichier": "src/lib/ocr.ts",
+      "debut": 106,
+      "fin": 108,
+      "texte": "// Pas de limite de taille de fichier ici (contrairement à la création d'une\n// note de frais) : un gros fichier peut monopoliser le worker un long\n// moment avant de renvoyer une suggestion vide."
+    },
+    {
+      "fichier": "src/lib/storage.ts",
+      "debut": 23,
+      "fin": 24,
+      "texte": "// Nom de fichier lisible, dérivé du compteur de reçu de la note plutôt que\n// d'un identifiant opaque."
+    }
+  ]
+}

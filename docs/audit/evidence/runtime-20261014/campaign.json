@@ -1,0 +1,570 @@
+{
+  "source": "265924bc7274047989e708ab635c2854d376230f",
+  "mode": "campaign",
+  "environment": {
+    "postgresPort": 15433,
+    "s3Port": 14567,
+    "appPort": 13400,
+    "browser": false
+  },
+  "observations": [
+    {
+      "name": "connexion a_employee",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "connexion a_root",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "connexion a_hr",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "connexion b_employee",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "mot de passe incorrect",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "anonyme /api/expense-notes",
+      "expected": 401,
+      "actual": 401,
+      "pass": true
+    },
+    {
+      "name": "anonyme /api/manager/expense-notes",
+      "expected": 401,
+      "actual": 401,
+      "pass": true
+    },
+    {
+      "name": "anonyme /api/hr/expense-notes",
+      "expected": 403,
+      "actual": 403,
+      "pass": true
+    },
+    {
+      "name": "liste propre limitée au propriétaire",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "liste manager conforme aux affectations",
+      "expected": [
+        "8d34a92e-0f57-4e5d-aad7-d39cac524203"
+      ],
+      "actual": [
+        "8d34a92e-0f57-4e5d-aad7-d39cac524203"
+      ],
+      "pass": true
+    },
+    {
+      "name": "liste RH limitée à son entreprise",
+      "expected": [
+        "e5338ebf-b406-476e-a9e4-24c5c1c5d68a"
+      ],
+      "actual": [
+        "e5338ebf-b406-476e-a9e4-24c5c1c5d68a"
+      ],
+      "pass": true
+    },
+    {
+      "name": "reçu propre",
+      "expected": 200,
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "lien signé ouvre objet S3",
+      "expected": 200,
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "reçu autre entreprise propriétaire",
+      "expected": 404,
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "reçu manager autorisé",
+      "expected": 200,
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "reçu manager non rattaché",
+      "expected": 404,
+      "actual": 200,
+      "pass": false
+    },
+    {
+      "name": "reçu manager autre entreprise",
+      "expected": 404,
+      "actual": 200,
+      "pass": false
+    },
+    {
+      "name": "reçu RH autre entreprise",
+      "expected": 404,
+      "actual": 404,
+      "pass": true
+    },
+    {
+      "name": "soumission valide HTTP",
+      "expected": 201,
+      "actual": 201,
+      "pass": true
+    },
+    {
+      "name": "soumission persistance SQL",
+      "expected": {
+        "amount": "15.50",
+        "expense_date": "2026-10-01",
+        "status": "pending"
+      },
+      "actual": {
+        "amount": "15.50",
+        "expense_date": "2026-10-01",
+        "status": "pending"
+      },
+      "pass": true
+    },
+    {
+      "name": "soumission objet S3",
+      "expected": 68,
+      "actual": 68,
+      "pass": true
+    },
+    {
+      "name": "AUD-014 suffixe montant refusé",
+      "expected": 400,
+      "actual": 201,
+      "pass": false
+    },
+    {
+      "name": "AUD-014 virgule vaut 1.2",
+      "expected": 1.2,
+      "actual": 1,
+      "pass": false
+    },
+    {
+      "name": "AUD-015 date future refusée selon règle choisie",
+      "expected": 400,
+      "actual": 201,
+      "pass": false
+    },
+    {
+      "name": "AUD-015 date inexistante erreur contrôlée",
+      "expected": 400,
+      "actual": 500,
+      "pass": false
+    },
+    {
+      "name": "AUD-005 absence stack publique sur date invalide",
+      "expected": false,
+      "actual": true,
+      "pass": false
+    },
+    {
+      "name": "G14 faux PNG refusé",
+      "expected": 400,
+      "actual": 201,
+      "pass": false
+    },
+    {
+      "name": "AUD-004 tri invalide refusé avant SQL",
+      "expected": 400,
+      "actual": 500,
+      "pass": false
+    },
+    {
+      "name": "AUD-005 absence stack publique sur SQL invalide",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "AUD-020 JSON illisible refusé",
+      "expected": 400,
+      "actual": 200,
+      "pass": false
+    },
+    {
+      "name": "AUD-020 affectation conservée",
+      "expected": "ae47fbd5-3b28-4b8c-99d7-6e0685c49e2c",
+      "actual": null,
+      "pass": false
+    },
+    {
+      "name": "AUD-006 affectation autre entreprise refusée",
+      "expected": 409,
+      "actual": 200,
+      "pass": false
+    },
+    {
+      "name": "AUD-021 boucle à deux managers refusée",
+      "expected": 409,
+      "actual": 200,
+      "pass": false
+    },
+    {
+      "name": "retrait explicite valide",
+      "expected": 200,
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "approbation valide",
+      "expected": 200,
+      "actual": 200,
+      "pass": true
+    },
+    {
+      "name": "refus après décision séquentielle",
+      "expected": 409,
+      "actual": 409,
+      "pass": true
+    },
+    {
+      "name": "G10 rôle rétrogradé session inchangée refusé",
+      "expected": 401,
+      "actual": 200,
+      "pass": false
+    },
+    {
+      "name": "AUD-008 panne moteur distinguée du succès vide",
+      "expected": true,
+      "actual": false,
+      "pass": false
+    },
+    {
+      "name": "AUD-009 politique RLS RH exclut entreprise B",
+      "expected": 0,
+      "actual": 1,
+      "pass": false
+    },
+    {
+      "name": "AUD-009 finalisation originale sans contexte sous RLS",
+      "expected": 1,
+      "actual": 0,
+      "pass": false
+    },
+    {
+      "name": "AUD-007 décisions SQL chevauchées première conservée",
+      "expected": "approved",
+      "actual": "rejected",
+      "pass": false
+    }
+  ],
+  "timings": [
+    {
+      "label": "OCR image minuscule",
+      "ms": 763.9779939999994,
+      "status": 200,
+      "returnedFields": []
+    },
+    {
+      "label": "OCR image corrompue",
+      "ms": 367.4475480000001,
+      "status": 200,
+      "returnedFields": []
+    },
+    {
+      "label": "OCR PDF non supporté OCR",
+      "ms": 10.428847000000133,
+      "status": 200,
+      "returnedFields": []
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 200.56637899999987,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 154.97636599999987,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 131.9953399999995,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 164.98016899999948,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 132.30149299999994,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 133.83672300000035,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 136.08367200000066,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 149.80561099999977,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 174.49226999999973,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 avant index",
+      "ms": 128.40696500000013,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 197.84364800000003,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 285.63115500000004,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 274.79673,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 145.18848799999978,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 137.04723399999966,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 174.21577100000104,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 123.05112700000063,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 111.07062899999983,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 118.78112200000032,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    },
+    {
+      "label": "liste 10000 après index expérimental",
+      "ms": 144.97000500000104,
+      "bytes": 2620680,
+      "status": 200,
+      "count": 10007
+    }
+  ],
+  "volume": {
+    "notesAdded": 10000,
+    "repetitions": 10,
+    "indexesBefore": [
+      {
+        "indexname": "expense_notes_pkey",
+        "indexdef": "CREATE UNIQUE INDEX expense_notes_pkey ON public.expense_notes USING btree (id)"
+      }
+    ],
+    "planBefore": [
+      {
+        "Plan": {
+          "Node Type": "Sort",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Startup Cost": 962.05,
+          "Total Cost": 987.07,
+          "Plan Rows": 10007,
+          "Plan Width": 100,
+          "Actual Startup Time": 3.201,
+          "Actual Total Time": 3.666,
+          "Actual Rows": 10007,
+          "Actual Loops": 1,
+          "Sort Key": [
+            "created_at DESC"
+          ],
+          "Sort Method": "quicksort",
+          "Sort Space Used": 1706,
+          "Sort Space Type": "Memory",
+          "Shared Hit Blocks": 172,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0,
+          "Plans": [
+            {
+              "Node Type": "Seq Scan",
+              "Parent Relationship": "Outer",
+              "Parallel Aware": false,
+              "Async Capable": false,
+              "Relation Name": "expense_notes",
+              "Alias": "expense_notes",
+              "Startup Cost": 0,
+              "Total Cost": 297.15,
+              "Plan Rows": 10007,
+              "Plan Width": 100,
+              "Actual Startup Time": 0.015,
+              "Actual Total Time": 1.205,
+              "Actual Rows": 10007,
+              "Actual Loops": 1,
+              "Filter": "(user_id = '9a6ab852-6bdd-4744-be9f-0af6d840d751'::uuid)",
+              "Rows Removed by Filter": 5,
+              "Shared Hit Blocks": 172,
+              "Shared Read Blocks": 0,
+              "Shared Dirtied Blocks": 0,
+              "Shared Written Blocks": 0,
+              "Local Hit Blocks": 0,
+              "Local Read Blocks": 0,
+              "Local Dirtied Blocks": 0,
+              "Local Written Blocks": 0,
+              "Temp Read Blocks": 0,
+              "Temp Written Blocks": 0
+            }
+          ]
+        },
+        "Planning": {
+          "Shared Hit Blocks": 49,
+          "Shared Read Blocks": 0,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 0.498,
+        "Triggers": [],
+        "Execution Time": 4.176
+      }
+    ],
+    "planAfter": [
+      {
+        "Plan": {
+          "Node Type": "Index Scan",
+          "Parallel Aware": false,
+          "Async Capable": false,
+          "Scan Direction": "Forward",
+          "Index Name": "audit_probe_owner_created",
+          "Relation Name": "expense_notes",
+          "Alias": "expense_notes",
+          "Startup Cost": 0.29,
+          "Total Cost": 783.54,
+          "Plan Rows": 10007,
+          "Plan Width": 100,
+          "Actual Startup Time": 0.037,
+          "Actual Total Time": 2.481,
+          "Actual Rows": 10007,
+          "Actual Loops": 1,
+          "Index Cond": "(user_id = '9a6ab852-6bdd-4744-be9f-0af6d840d751'::uuid)",
+          "Rows Removed by Index Recheck": 0,
+          "Shared Hit Blocks": 172,
+          "Shared Read Blocks": 51,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning": {
+          "Shared Hit Blocks": 47,
+          "Shared Read Blocks": 1,
+          "Shared Dirtied Blocks": 0,
+          "Shared Written Blocks": 0,
+          "Local Hit Blocks": 0,
+          "Local Read Blocks": 0,
+          "Local Dirtied Blocks": 0,
+          "Local Written Blocks": 0,
+          "Temp Read Blocks": 0,
+          "Temp Written Blocks": 0
+        },
+        "Planning Time": 0.646,
+        "Triggers": [],
+        "Execution Time": 2.981
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "fichiersTS": 40,
+  "imports": 91,
+  "routes": 14,
+  "routesDb": 12,
+  "routesCoeur": [],
+  "consommateurs": {
+    "@/domain/ExpenseNote": [],
+    "@/domain/User": [],
+    "@/adapters/S3ReceiptAdapter": [],
+    "@/adapters/ConsoleNotificationAdapter": [],
+    "@/ports/ReceiptStoragePort": [
+      "src/adapters/S3ReceiptAdapter.ts"
+    ],
+    "@/ports/NotificationPort": [
+      "src/adapters/ConsoleNotificationAdapter.ts"
+    ]
+  },
+  "domainImports": [],
+  "source_sha": "265924bc7274047989e708ab635c2854d376230f",
+  "date": "2026-10-14",
+  "scope": "Imports statiques des fichiers TS/TSX sous src ; aucun comportement HTTP/DB/S3 exécuté"
+}

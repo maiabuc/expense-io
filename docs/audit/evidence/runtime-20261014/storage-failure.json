@@ -1,0 +1,56 @@
+{
+  "source": "265924bc7274047989e708ab635c2854d376230f",
+  "mode": "storage-failure",
+  "environment": {
+    "postgresPort": 15433,
+    "s3Port": 14567,
+    "appPort": 13400,
+    "browser": false
+  },
+  "observations": [
+    {
+      "name": "AUD-003 erreur upload HTTP",
+      "expected": 500,
+      "actual": 500,
+      "pass": true
+    },
+    {
+      "name": "AUD-003 aucune note pending sans reçu après panne",
+      "expected": false,
+      "actual": true,
+      "pass": false
+    },
+    {
+      "name": "AUD-005 aucune stack sur panne stockage",
+      "expected": false,
+      "actual": true,
+      "pass": false
+    },
+    {
+      "name": "AUD-018 seed panne contrôlée échoue",
+      "expected": 1,
+      "actual": 1,
+      "pass": true
+    },
+    {
+      "name": "AUD-018 commande seed relancée réussit",
+      "expected": 0,
+      "actual": 0,
+      "pass": true
+    },
+    {
+      "name": "AUD-018 reprise répare le reçu manquant",
+      "expected": true,
+      "actual": false,
+      "pass": false
+    }
+  ],
+  "timings": [],
+  "seed": {
+    "firstExit": 1,
+    "retryExit": 0,
+    "employeeNotes": 1,
+    "receiptKeyEmpty": true,
+    "rawOutputStored": false
+  }
+}

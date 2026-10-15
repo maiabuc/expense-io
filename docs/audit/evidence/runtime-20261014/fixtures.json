@@ -1,0 +1,67 @@
+{
+  "companies": {
+    "a": "9203075d-4804-4dc4-9b78-05dea5283fc1",
+    "b": "8241d16a-7f4b-4e68-81f7-b8e1c12a5c39"
+  },
+  "users": {
+    "a_hr": {
+      "id": "ae068193-78e2-4493-8ca1-2919fc7cb93b",
+      "email": "hr@audit-a.invalid",
+      "role": "hr_admin"
+    },
+    "a_root": {
+      "id": "ae47fbd5-3b28-4b8c-99d7-6e0685c49e2c",
+      "email": "root@audit-a.invalid",
+      "role": "manager"
+    },
+    "a_sub": {
+      "id": "6ae7139e-4e0e-4156-9599-f46efbcfc472",
+      "email": "sub@audit-a.invalid",
+      "role": "manager"
+    },
+    "a_employee": {
+      "id": "9a6ab852-6bdd-4744-be9f-0af6d840d751",
+      "email": "employee@audit-a.invalid",
+      "role": "employee"
+    },
+    "a_unrelated": {
+      "id": "8d2af3f1-ccfd-441b-8a2a-86dec8d97a15",
+      "email": "unrelated@audit-a.invalid",
+      "role": "employee"
+    },
+    "b_hr": {
+      "id": "a6f6fb44-cdb7-485f-aea8-818e91b9f1b3",
+      "email": "hr@audit-b.invalid",
+      "role": "hr_admin"
+    },
+    "b_root": {
+      "id": "6c8595f1-8d40-4418-a353-07b25b264287",
+      "email": "root@audit-b.invalid",
+      "role": "manager"
+    },
+    "b_sub": {
+      "id": "38204810-cd84-4a5a-9766-2c89373f2ded",
+      "email": "sub@audit-b.invalid",
+      "role": "manager"
+    },
+    "b_employee": {
+      "id": "6d80b0f7-1ba4-410c-97ff-8768a37a411a",
+      "email": "employee@audit-b.invalid",
+      "role": "employee"
+    },
+    "b_unrelated": {
+      "id": "e8239515-5d9c-4e79-8475-bf6cae02ff60",
+      "email": "unrelated@audit-b.invalid",
+      "role": "employee"
+    }
+  },
+  "notes": {
+    "a_root": "e5338ebf-b406-476e-a9e4-24c5c1c5d68a",
+    "a_employee": "8d34a92e-0f57-4e5d-aad7-d39cac524203",
+    "a_unrelated": "386d4b86-af07-4b0d-8be2-997f6ebda17f",
+    "b_root": "fd2c265e-2167-4df2-ae9d-4a2085afc6bd",
+    "b_employee": "8e279d13-2d26-4f93-8a89-e10bdd297b0d",
+    "b_unrelated": "2cec96f5-f3a9-40bf-b0b2-baaa8cc48bf0"
+  },
+  "receipt": "fixtures/reference.png"
+}
