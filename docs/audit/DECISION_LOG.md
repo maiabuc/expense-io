@@ -1,5 +1,23 @@
 # ARLA — Journal des décisions
 
+## Fusion de la CI et répartition à quatre — 17 octobre 2026
+
+Instruction de Maia : fusionner la CI, répartir les specs entre quatre personnes et préparer le message de réalisation. **OBSERVATION Git :** fusion de feat/ci (`11b1223`) dans main, commit `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, publié sur origin/main. Aucun code applicatif ajouté ou corrigé par cette opération. Diff des sources src/migrations/scripts seed-bucket/Makefile/README depuis la source auditée : vide.
+
+**Vérification de preuves hébergées**, run [38759546819](https://github.com/maiabuc/expense-io/actions/runs/38759546819), source `11b12231e6bc3d82baa83950db02684c1234e165`, exécuté le 15 octobre et consulté le 17 octobre : installation/lint/types/documentation/unitaires/build réussis ; API61/112, E2E38/60, aucun cas absent. Avec les 6 unitaires : 105 réussites/73 échecs sur 178, comme la campagne locale. Le résultat global est rouge ; aucune assertion retirée ni contrôle désactivé pour cette fusion de la base CI explicitement demandée. Aucune correction future déclarée validée par ces preuves.
+
+| Issue / objet | Décision ou état | Pourquoi | Preuves / livrables | Validation |
+| --- | --- | --- | --- | --- |
+| CI-001 / AUD-011 | CI fusionnée dans main sur demande explicite | Base commune de tests et règles de travail | Commit f8c3af7 ; run ci-dessus ; entrée IMPLEMENTATION existante conservée | Préfixes historiques et snapshot de tâche vérifiés ; pas de nouvelle correction AUD-011 |
+| Specs de réalisation | 12 specs préparées ; A:01/02/03/12 ; B:04/05/11 ; C:06/07/08 ; D:09/10 | Un responsable par chantier, dépendances et fichiers partagés explicites | [Index](../specs/README.md), [message à transmettre](../development/MESSAGE_EQUIPE.md) | Préparation documentaire seulement ; aucune implémentation ni nouvelle mesure applicative |
+| Prochains merges | Proposition : PR specs vers feat/integration, puis main seulement avec CI globale verte | Les premiers lots ne corrigent pas les défauts des autres lots ; préserver les tests bloquants | Proposition adressée à Maia, reprise dans le message | Aucune branche d’intégration créée ni dérogation aux tests accordée |
+| AUD-010/019/022/023 | Secret reporté ; convention conservée ; mesures et qualification conditionnelles | Ne pas transformer la répartition en nouveau périmètre métier ou upgrade automatique | Index et SPEC-05/11/12 | Aucun correctif supplémentaire autorisé par la seule rédaction |
+
+Snapshot capturé avant préparation : `/tmp/arla-audit-team-specs-20261017.json`, devenu indisponible après la reprise de session. Référence reconstituée depuis le commit antérieur fixe `11b1223` dans `/tmp/arla-audit-team-specs-20261017-recovery.json` :22 fiches, incluant l’ancienne IMPLEMENTATION AUD-011 ; aucune capture tardive du contenu modifié. Le diff des fiches contre ce commit est vide. Aucune fiche de solution modifiée pendant cette préparation ; aucune fausse entrée IMPLEMENTATION ajoutée pour les futurs lots. La maîtrise individuelle et la compréhension de Maia ne sont pas évaluées par l’attribution A/B/C/D.
+
+
+Contrôles documentaires de cette préparation :12 specs structurées selon le modèle,14 documents et leurs liens vérifiés,22 fiches couvertes par l’index ; garde append-only et comparaison Git de la CI réussies ; diff sans erreur d’espaces. Aucun test applicatif rejoué pour ce changement exclusivement documentaire.
+
 ## CI validée et réalisée — 15 octobre 2026
 
 Maia valide le plan CI et exige l'identifiant de l'issue sur chaque test. [Spec CI-001](../specs/CI-001-tests-non-regression.md), [instructions de test](../testing/README.md), [ajout IMPLEMENTATION AUD-011](solutions-to-audit/AUD-011-validation-isolee.md#implementation).
