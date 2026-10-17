@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: expense
+      POSTGRES_PASSWORD: expense-ci-only
+      POSTGRES_DB: expense_io_ci_${CI_SUITE:-api}
+    ports:
+      - "127.0.0.1:${CI_DB_PORT:-15434}:5432"
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U expense -d expense_io_ci_${CI_SUITE:-api}"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
+    tmpfs:
+      - /var/lib/postgresql/data
+  localstack:
+    image: localstack/localstack:3.8.1
+    environment:
+      SERVICES: s3
+    ports:
+      - "127.0.0.1:${CI_S3_PORT:-14568}:4566"
+    healthcheck:
+      test: [CMD, curl, -sf, "http://localhost:4566/_localstack/health"]
+      interval: 2s
+      timeout: 3s
+      retries: 40

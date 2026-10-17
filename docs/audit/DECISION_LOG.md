@@ -1,5 +1,23 @@
 # ARLA — Journal des décisions
 
+## CI validée et réalisée — 15 octobre 2026
+
+Maia valide le plan CI et exige l'identifiant de l'issue sur chaque test. [Spec CI-001](../specs/CI-001-tests-non-regression.md), [instructions de test](../testing/README.md), [ajout IMPLEMENTATION AUD-011](solutions-to-audit/AUD-011-validation-isolee.md#implementation).
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-011 | CI et données séparées réalisées ; vérifiées localement | Protéger les parcours/API et rendre les défauts audités visibles sans toucher aux services actuels | [Campagne, SHA de base et manifeste du diff](evidence/ci-20261015/README.md) |178 cas :105 réussites/73 échecs/0 absent ; tous les échecs correction ; lint/types/build0 ;22 préfixes protégés |
+| Ensemble des issues testées | Tests liés aux IDs, défauts non corrigés dans ce lot | Un test vert isolé ne vaut pas validation de la solution complète | [Bilan par issue](evidence/ci-20261015/issues.md) | Unit6/6 ; API61/112 ; E2E38/60 ; mécanismes futurs explicitement reportés |
+| AUD-023 | Collecte dépendances informative, qualification maintenue | Ne pas confondre8 alertes avec8 exploits établis | [Rapport npm](evidence/ci-20261015/dependencies.json) |7 high/1 critical ; aucun upgrade automatique |
+
+Le workflow distingue les étapes, publie les résultats après échec et échoue sur assertion/absence/suite vide. Chaque test contient une issue existante et un cas unique ; `test:issue` sélectionne et agrège les suites correspondantes. Les fiches historiques restent intactes et l'entrée AUD-011 est ajoutée en fin. Aucun code applicatif, UI, migration ou commande existante changé. Deux revues distinctes Standards/Spec ont conduit à compléter les frontières, RLS et diagnostics, la provenance et le remplacement des anciens résultats. L'exécution GitHub n'est pas acquise par la preuve locale ; aucune compréhension indépendante n'a été évaluée.
+
+## Règles des agents avant implémentation — 15 octobre 2026
+
+Maia demande une préparation explicite des specs et une traçabilité en ajout uniquement : chaque réalisation complète sa fiche existante par une section IMPLEMENTATION décrivant ce qui est réalisé, où et le nouveau fonctionnement. Conserver intégralement tout le texte préexistant, y compris les anciennes entrées de réalisation ; les nouveaux résultats ne réécrivent pas l'audit initial. Règle appliquée aussi aux fiches G10/G14 et à chaque issue d'une réalisation multi-issues.
+
+[Instructions](../development/INSTRUCTIONS_IMPLEMENTATION.md), [modèle](../development/MODELE_SPEC.md), pointeur obligatoire dans AGENTS.md et [contrôle de préfixes](tools/check-append-only.mjs). Manifeste des 22 fiches historiques plus snapshot avant chaque tâche pour préserver les ajouts antérieurs. Validation du contrôle sur copies temporaires : [8 cas](evidence/append-only-check-results.json), dont ajouts permis, réécritures/suppression refusées et snapshot non écrasé. Aucune fiche d'issue modifiée ni fausse section de réalisation applicative ajoutée pendant cette préparation ; aucun changement applicatif. L'implémentation d'un lot reste distincte de ses instructions et de ses tests prévus.
+
 Début : 11 octobre 2026. Mise à jour : 14 octobre 2026. Source : fork main, `265924bc7274047989e708ab635c2854d376230f`. Branche d'audit : `audit/arla-2026-10`.
 
 Ce journal indexe les décisions ; les explications, alternatives et preuves détaillées restent dans les solutions liées. Une décision acceptée ne signifie ni implémentation ni validation. Les constats de code et leurs conséquences hypothétiques sont distingués dans [le registre](issues.md) et [les constats](findings.md). La [campagne du 14 octobre](mesures-et-preuves.md) ajoute désormais des preuves HTTP/SQL/S3/OCR isolées ; aucune correction applicative implémentée.

@@ -54,6 +54,8 @@ Les réserves n'annulent pas les défauts reproduits ou les décisions ; elles e
 
 ## Définition de terminé par lot
 
+Appliquer les [instructions d'implémentation](../development/INSTRUCTIONS_IMPLEMENTATION.md) : spec ciblée, conservation exacte des fiches AUD, ajout IMPLEMENTATION avec changements/emplacements/nouveau fonctionnement et résultats réels. Les anciennes entrées sont conservées ; le contrôle des préfixes fait partie de la revue.
+
 Un lot est terminé lorsque son contrat est respecté, les contrôles du fichier 4 pertinents sont réellement exécutés et réussis, lint/types/build passent, les parcours légitimes restent compatibles et les preuves sont liées au SHA livré. Relire ensemble le code, les réponses et l'état persistant. Ne pas supprimer ou affaiblir un test pour obtenir un passage. Mettre à jour la fiche d'issue avec le résultat réel ; accepté, implémenté et vérifié sont trois états distincts.
 
 Le dossier vise à permettre une explication du code original et de la correction. Il ne certifie pas la maîtrise individuelle d'un membre de l'équipe ; elle se démontre par explication et application, sans la déduire d'un accord ou d'un document lu.

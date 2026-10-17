@@ -47,6 +47,8 @@ AUD-001/002/012 sont des dossiers de provenance/méthode/outillage, indexés dan
 
 ## Les cinq références de réalisation
 
+Pour écrire une spec, réaliser un lot ou le relire : suivre les [instructions des agents](../development/INSTRUCTIONS_IMPLEMENTATION.md) et le [modèle de spec](../development/MODELE_SPEC.md). Les fiches AUD restent intactes ; les réalisations y sont documentées par ajout sous IMPLEMENTATION.
+
 1. [Contrats de référence](01-contrats-implementation.md).
 2. [Permissions et transitions](02-permissions-et-transitions.md).
 3. [Périmètre et dépendances](03-perimetre-et-dependances.md).

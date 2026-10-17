@@ -1,0 +1,13 @@
+{
+  "aggregate": {
+    "planned": 178,
+    "passed": 105,
+    "failed": 73,
+    "notRun": 0
+  },
+  "missingResults": {
+    "passed": 0,
+    "notRun": 6
+  },
+  "unknownIssueExit": 1
+}

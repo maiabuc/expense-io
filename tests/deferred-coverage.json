@@ -1,0 +1,19 @@
+{
+  "AUD-003": [
+    "Reprise incomplete, clé stable, réponse perdue et concurrence : mécanisme à implémenter",
+    "Module hexagonal : contrats des adaptateurs après extraction"
+  ],
+  "AUD-008": [
+    "Pool réutilisable, saturation et arrêt effectif à 40 s : mécanisme à implémenter",
+    "Charge CPU/RAM : campagne manuelle dédiée"
+  ],
+  "AUD-010": [
+    "Secret : clarification professeur reportée ; les tests de connexion ne valident pas ce choix"
+  ],
+  "AUD-022": [
+    "Optimisation conditionnelle ; mesures de volume hors gate rapide"
+  ],
+  "AUD-023": [
+    "Rapport de dépendances informatif ; applicabilité à qualifier avant correction"
+  ]
+}

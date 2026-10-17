@@ -1,0 +1,215 @@
+name: Tests et qualité Expense.io
+
+on:
+  pull_request:
+  push:
+    branches: [main, feat/ci, feat/implementation]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+  NODE_VERSION: '24.21.0'
+
+jobs:
+  installation:
+    name: Installation reproductible
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+
+  qualite:
+    name: ${{ matrix.name }}
+    needs: installation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Lint
+            key: lint
+            command: lint
+          - name: Types TypeScript
+            key: types
+            command: typecheck
+          - name: Documentation et IDs des tests
+            key: documentation
+            command: ci:docs
+          - name: Tests unitaires
+            key: unit
+            command: test:unit
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - name: Exécuter le contrôle
+        run: npm run "$COMMAND"
+        env:
+          COMMAND: ${{ matrix.command }}
+          AUDIT_BASE_SHA: ${{ github.event.pull_request.base.sha || github.event.before }}
+      - name: Synthèse unitaire par issue
+        if: ${{ always() && matrix.key == 'unit' }}
+        run: node scripts/ci/report.mjs --suite=unit
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tests-${{ matrix.key }}
+          path: reports/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  build:
+    name: Build de production
+    needs: installation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: production-build
+          include-hidden-files: true
+          path: |
+            .next/
+            !.next/cache/
+          if-no-files-found: error
+          retention-days: 3
+
+  parcours:
+    name: Tests ${{ matrix.suite }}
+    needs: [installation, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [api, e2e]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          name: production-build
+          path: .next/
+      - name: Installer Chromium
+        if: matrix.suite == 'e2e'
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Exécuter avec services et fixtures isolés
+        run: npm run "test:$SUITE"
+        env:
+          SUITE: ${{ matrix.suite }}
+      - name: Rapports par issue
+        if: always()
+        run: node scripts/ci/report.mjs "--suite=$SUITE"
+        env:
+          SUITE: ${{ matrix.suite }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tests-${{ matrix.suite }}
+          path: |
+            reports/
+            test-results/
+          if-no-files-found: warn
+          retention-days: 7
+
+  dependances:
+    name: AUD-023 — Dépendances (informatif)
+    needs: installation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - run: node scripts/ci/dependencies.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-report
+          path: reports/dependencies.json
+          if-no-files-found: warn
+          retention-days: 7
+
+  resultat:
+    name: Résultat CI requis
+    if: always()
+    needs: [installation, qualite, build, parcours, dependances]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tests-*
+          path: incoming/
+      - name: Rassembler les résultats
+        if: always()
+        run: |
+          mkdir -p reports
+          for suite in unit api e2e; do
+            find incoming -name "$suite.json" -exec cp {} reports/ \;
+          done
+          find incoming -name unit-environment.json -exec cp {} reports/ \;
+          npm run test:report
+      - name: Publier la synthèse
+        if: always()
+        run: |
+          if [ -f reports/issues.md ]; then cat reports/issues.md >> "$GITHUB_STEP_SUMMARY"; fi
+          node -e 'const jobs=JSON.parse(process.env.JOBS); for (const [name,job] of Object.entries(jobs)) console.log(name,job.result); if (["installation","qualite","build","parcours"].some(name => jobs[name].result !== "success")) process.exit(1)'
+        env:
+          JOBS: ${{ toJSON(needs) }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results-by-issue
+          path: reports/
+          if-no-files-found: warn
+          retention-days: 14
