@@ -1,10 +1,10 @@
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 
 export async function POST(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user || session.user.role !== 'hr_admin') {
       return Response.json({ error: 'Unauthorized' }, { status: 403 })
     }

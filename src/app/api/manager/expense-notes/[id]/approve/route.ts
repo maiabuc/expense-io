@@ -1,10 +1,10 @@
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 
 export async function POST(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user || session.user.role !== 'manager') {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -14,8 +14,8 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
       const existing = await client.query(
         `SELECT en.* FROM expense_notes en
          JOIN users u ON u.id = en.user_id
-         WHERE en.id = $1 AND u.manager_id = $2`,
-        [id, session.user.id]
+         WHERE en.id = $1 AND u.manager_id = $2 AND u.company_id = $3`,
+        [id, session.user.id, session.user.companyId]
       )
       const row = existing.rows[0]
       if (!row) {

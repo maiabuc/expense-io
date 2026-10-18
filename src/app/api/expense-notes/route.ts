@@ -1,6 +1,6 @@
 import path from 'node:path'
 import type { NextRequest } from 'next/server'
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { getPool, withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 import { receiptKeyFor, uploadReceipt } from '@/lib/storage'
@@ -30,7 +30,7 @@ function toExpenseNote(row: Record<string, unknown>) {
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
