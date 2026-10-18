@@ -64,3 +64,40 @@ Affectation : même entreprise acceptée, interentreprises refusée via HTTP et 
 ## Actualisation des preuves — campagne du 14–15 octobre
 
 Manager de A : reçus non rattaché et interentreprises renvoient 200 ; affectation de manager B à employé A acceptée 200. Configuration Docker originale reconstituée avec compte superuser ; privilèges utilisateur réels non inspectés. [Rapport et résultats bruts](../mesures-et-preuves.md). Les mentions de non-exécution précédentes décrivent la preuve initiale ; aucune validation de correction n’est acquise.
+
+## IMPLEMENTATION
+
+### 2026-10-19 — SPEC-06 : volet reçu manager (personne C)
+
+Statut : partielle. Le volet « 1. Reçu » est implémenté ; la validation des suites complètes est rapportée dans une entrée suivante. Le volet « 2. Affectation » n'est pas traité ici : il relève de SPEC-07.
+Spec : [SPEC-06](../../specs/SPEC-06-droits-actuels.md). Révision de départ : `7377486`. Réalisation : `6a8b971` (correction) et `c1af070` (tests), branche `feat/spec-06`.
+
+#### Ce qui a été implémenté
+
+La route de reçu manager joint le propriétaire de la note et exige qu'il soit un collaborateur direct du manager actuel et de la même entreprise avant de générer l'URL signée. Aucun filtre d'état n'est ajouté : un reçu déjà approuvé ou rejeté d'un collaborateur direct reste lisible. Hors périmètre ou note absente : 404 sans URL. Les listes pending du manager et les sélections de ses routes approve/reject ajoutent aussi la condition de même entreprise. La logique de décision elle-même (lecture puis écriture) n'est pas modifiée : elle relève de SPEC-08.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/app/api/manager/expense-notes/[id]/receipt-url/route.ts, requête dans `withUserScope` (l. 17–25) | Remplace la lecture par ID seul (`getPool`) par une jointure `users` avec `manager_id` et `company_id` | Périmètre établi avant l'URL signée |
+| src/app/api/manager/expense-notes/route.ts (l. 29, 31) | Condition `u.company_id` ajoutée | Liste limitée à la même entreprise |
+| src/app/api/manager/expense-notes/[id]/approve/route.ts et reject/route.ts (l. 17–18) | Condition `u.company_id` ajoutée à la sélection | Une relation manager entre entreprises ne donne plus accès |
+| src/lib/current-session.ts | Fournit le rôle et l'entreprise actuels utilisés ci-dessus | Voir [G10](G10-droits-role-actuel.md#implementation) |
+
+#### Nouveau fonctionnement
+
+Manager demande le reçu d'une note → garde de rôle actuel (401 sinon) → une requête sous le contexte du manager cherche la clé de reçu de la note dont le propriétaire a `manager_id` = manager actuel et `company_id` = entreprise actuelle du manager → aucune ligne : 404 sans lien → une ligne : URL signée. Le rattachement et l'entreprise sont lus au moment de la requête : un employé réaffecté ou une entreprise changée modifie l'accès à la requête suivante. Le contrôle protège la demande de lien, pas un lien déjà émis, qui reste valable jusqu'à son expiration.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-006` (DB et S3 jetables du harnais) | Cas de reçu rouges verts ; AFF-011 reste rouge (SPEC-07) | exit 1 ; 31/32 réussis ; seul échec : AFF-011 (volet affectation). DROIT-013 et 014 (origine) verts ; DROIT-024, 029, 030, 032, 033, 036 ajoutés et verts | Sortie locale 2026-10-19, `reports/issues.json` |
+| Les nouveaux cas sur le code de `main` (clone jetable) | Les cas `correction` échouent | DROIT-024, 029, 032 : 3 échecs sur 3 ; DROIT-030, 033, 036 réussis (cas `reference`) | Sortie locale 2026-10-19 |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun | Sortie locale 2026-10-19 |
+| Suites unitaire, api et e2e complètes | Aucune régression | Non exécutées au moment de cette entrée | À ajouter dans une entrée suivante |
+
+#### Écarts et limites
+
+Volet affectation (même entreprise pour le manager choisi, contrainte d'intégrité en base) : non implémenté, AFF-011 rouge attendu jusqu'à SPEC-07. Le comportement de la RLS sous un compte limité n'est pas éprouvé ici (SPEC-09). Les relations interentreprises déjà présentes en base ne sont ni corrigées ni migrées : elles cessent seulement de donner accès.
