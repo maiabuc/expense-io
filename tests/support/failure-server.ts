@@ -35,6 +35,13 @@ export function withRestrictedDatabase<T>(operation: (url: string, logs: () => s
   return withServer({ DATABASE_URL: url.toString() }, operation)
 }
 
+// Base injoignable (port 1 refusé immédiatement) : la session JWT reste valide,
+// seule la relecture en base de l'identité échoue.
+export function withUnreachableDatabase<T>(operation: (url: string, logs: () => string) => Promise<T>) {
+  const url = new URL(testEnvironment().databaseURL); url.port = '1'
+  return withServer({ DATABASE_URL: url.toString() }, operation)
+}
+
 export function withParisMidnight<T>(operation: (url: string, logs: () => string) => Promise<T>) {
   return withServer({ CI_FIXED_TIME: '2026-10-14T22:00:01Z' }, operation)
 }

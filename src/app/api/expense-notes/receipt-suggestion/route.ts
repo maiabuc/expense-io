@@ -1,10 +1,10 @@
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { respondError } from '@/lib/errors'
 import { suggestFields } from '@/lib/ocr'
 
 export async function POST(request: Request) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
