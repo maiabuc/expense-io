@@ -154,3 +154,14 @@ Instruction explicite : « Pas besoin de plan de migration et retour en arrière
 Livrables : [1 — contrats](01-contrats-implementation.md), [2 — permissions/transitions](02-permissions-et-transitions.md), [3 — périmètre/dépendances](03-perimetre-et-dependances.md), [4 — validation](04-reference-de-validation.md), [5 — lots/acceptation](05-lots-et-acceptation.md). Le troisième remplace le livrable exclu. Directions acceptées conservées ; compléments techniques de l’agent identifiés comme tels, pas attribués à une réponse de Maia : clé Idempotency-Key optionnelle pour compatibilité, reprise 200/201, représentation incomplete et action dans le formulaire existant, catalogue d’erreurs, protection concurrente de hiérarchie, défaut de pool OCR conservateur. Aucune nouvelle architecture, file ou migration REST sélectionnée.
 
 Clôture du dossier documentaire sur le périmètre décrit au fichier 5. Aucun nouveau test runtime, aucune implémentation ni validation de correction ; les résultats de la campagne restent inchangés. Tests du professeur absents, formats formels OCR, navigateur/charge et compte DB utilisateur restent des réserves nommées ou critères de réalisation. Aucune garantie de compatibilité externe ni maîtrise indépendante inférée.
+
+## SPEC-05 réalisée — personne B — 18 octobre 2026
+
+Branche `feat/spec-05`, départ `7377486` (main actualisé, sans `feat/spec-01`/`feat/spec-02` encore mergées), réalisation `ba39f53`. Snapshot append-only avant travail : `/tmp/arla-spec-05-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-013 | Implémentée et vérifiée : entreprise (nouvelle ou existante) et premier compte validés sur une transaction PostgreSQL unique ; un échec annule aussi l'entreprise de la tentative, jamais une entreprise déjà existante | Éviter une entreprise orpheline sans premier RH après panne | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-013-signup-consistency.md#implementation), [SPEC-05](../specs/SPEC-05-inscription-atomique.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-013` 7/7 (INS-001…007, dont INS-006 correction par trigger de panne contrôlée) ; e2e 39/60 (AUD-013 0 échec, 21 échecs hors périmètre : AUD-016/017, dépendances non mergées) |
+| AUD-019 | Convention conservée, aucune correction (confirmé) | Ne pas transformer une limite de confiance pédagogique assumée en nouveau périmètre métier | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-019-inscription-domaine.md#implementation) | Relecture du code modifié et des cas INS-001/002 ; aucune vérification de possession de domaine ajoutée |
+
+AUD-016/017 échouent encore sur cette branche uniquement parce que `feat/spec-02`/`feat/spec-04` n'y sont pas mergées : pas des régressions de SPEC-05, fichiers disjoints.
