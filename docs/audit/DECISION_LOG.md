@@ -154,3 +154,23 @@ Instruction explicite : « Pas besoin de plan de migration et retour en arrière
 Livrables : [1 — contrats](01-contrats-implementation.md), [2 — permissions/transitions](02-permissions-et-transitions.md), [3 — périmètre/dépendances](03-perimetre-et-dependances.md), [4 — validation](04-reference-de-validation.md), [5 — lots/acceptation](05-lots-et-acceptation.md). Le troisième remplace le livrable exclu. Directions acceptées conservées ; compléments techniques de l’agent identifiés comme tels, pas attribués à une réponse de Maia : clé Idempotency-Key optionnelle pour compatibilité, reprise 200/201, représentation incomplete et action dans le formulaire existant, catalogue d’erreurs, protection concurrente de hiérarchie, défaut de pool OCR conservateur. Aucune nouvelle architecture, file ou migration REST sélectionnée.
 
 Clôture du dossier documentaire sur le périmètre décrit au fichier 5. Aucun nouveau test runtime, aucune implémentation ni validation de correction ; les résultats de la campagne restent inchangés. Tests du professeur absents, formats formels OCR, navigateur/charge et compte DB utilisateur restent des réserves nommées ou critères de réalisation. Aucune garantie de compatibilité externe ni maîtrise indépendante inférée.
+
+## SPEC-01 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-01`, départ `7377486` (main actualisé), réalisation `a8411b9` ; voir [la PR](https://github.com/maiabuc/expense-io/pull/new/feat/spec-01), pas encore mergée dans `main` à la rédaction de cette entrée. Snapshot append-only avant travail : `/tmp/arla-spec-01-gf.json` (22 fiches) ; contrôle `check` réussi après ajout, aucun préfixe altéré.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Implémentée et vérifiée : réponse publique générique en français + HTTP 500, diagnostic interne structuré (code/opération/statut/message/stack) jamais transmis au client | Séparer feedback utilisateur et diagnostic sans changer les consommateurs UI existants | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-005-public-errors.md#implementation), [SPEC-01](../specs/SPEC-01-erreurs-api.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-005` 3/3 (PANNE-002, PANNE-003, NOTE-022) ; api 64/112 et e2e 38/60 sans aucune régression sur AUD-005 (échecs restants tous attribués à des specs non encore réalisées) |
+
+Catalogue d'erreurs par type, mapping HTTP fin et corrélation de requête restent non définis (hors périmètre explicite d'AUD-005). CI GitHub non déclenchée pour cette réalisation locale ; à confirmer à l'ouverture de la PR. SPEC-02/03/04/06/07/09 adapteront leurs propres routes au mécanisme commun livré ici.
+
+## SPEC-02 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-02`, départ `7377486` (main actualisé, sans `feat/spec-01` encore mergée), réalisation `16cb7ad`. Snapshot append-only avant travail : `/tmp/arla-spec-02-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-016 | Implémentée et vérifiée : les 12 appels fetch des trois écrans libèrent leur état actif en `finally` et affichent un message sûr au `catch` (rejet réseau ou JSON illisible) ; saisie conservée après échec, pas de retry automatique | Rendre les actions utilisables après une panne sans transformer une absence de réponse en certitude d'échec serveur | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation), [SPEC-02](../specs/SPEC-02-recuperation-ui.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-016` 32/32 (NET-001…032) ; e2e 58/60 (AUD-016 0 échec, 2 échecs restants hors périmètre sur AUD-013/017) |
+
+AUD-005 échoue encore sur cette branche (api 61/112) uniquement parce que `feat/spec-01` n'y est pas mergée : ce n'est pas une régression de SPEC-02, les deux branches ne modifient pas les mêmes fichiers. À réévaluer à l'intégration des deux PR.
