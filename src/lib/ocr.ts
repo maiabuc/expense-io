@@ -1,8 +1,80 @@
 import path from 'node:path'
-import { createWorker } from 'tesseract.js'
+import { createWorker, type Worker } from 'tesseract.js'
 
-const SUPPORTED_MIME_TYPES = ['image/png', 'image/jpeg', 'image/webp']
+export const SUPPORTED_MIME_TYPES = ['image/png', 'image/jpeg', 'image/webp']
 const TESSDATA_PATH = path.join(process.cwd(), 'tessdata')
+
+// Capacité initiale d'un seul moteur par processus : à mesurer avant
+// d'augmenter (AUD-008). Pas de file FIFO ni file durable : une demande
+// sans moteur libre est refusée immédiatement.
+const POOL_CAPACITY = 1
+const RECOGNITION_TIMEOUT_MS = 40_000
+
+export class EngineBusyError extends Error {}
+export class RecognitionTimeoutError extends Error {}
+
+const idleEngines: Worker[] = []
+let totalEngines = 0
+
+async function acquireEngine(): Promise<Worker> {
+  const idle = idleEngines.pop()
+  if (idle) return idle
+  if (totalEngines >= POOL_CAPACITY) {
+    throw new EngineBusyError('Pool OCR saturé.')
+  }
+  totalEngines++
+  try {
+    return await createWorker('fra', undefined, {
+      langPath: TESSDATA_PATH,
+      cacheMethod: 'none',
+      // Sans ce handler, tesseract.js relance l'erreur dans le gestionnaire
+      // de messages du worker en plus de rejeter la promesse du job — un
+      // throw non intercepté qui fait planter tout le processus Node (vu en
+      // vérification manuelle sur une image corrompue). Le rejet normal de
+      // `recognize()`, lui, reste intact et c'est lui que suggestFields
+      // traite : fournir ce handler ne supprime donc aucun diagnostic.
+      errorHandler: () => {},
+    })
+  } catch (error) {
+    totalEngines--
+    throw error
+  }
+}
+
+// Un moteur sain rejoint le pool pour réutilisation ; un moteur après
+// panne/délai est réellement arrêté et retiré, sans dépasser la capacité
+// — un remplacement sera créé à la prochaine demande.
+function releaseEngine(worker: Worker, healthy: boolean): void {
+  if (healthy) {
+    idleEngines.push(worker)
+    return
+  }
+  totalEngines--
+  void worker.terminate().catch(() => {})
+}
+
+async function recognizeWithTimeout(worker: Worker, data: Buffer) {
+  const recognition = worker.recognize(data)
+  // Évite un rejet non géré si le délai gagne la course en premier : la
+  // reconnaissance peut encore se terminer (ou échouer) après coup sur un
+  // moteur que releaseEngine aura déjà arrêté.
+  recognition.catch(() => {})
+
+  // L'exécuteur de la promesse est appelé immédiatement (synchrone) : `timer`
+  // est bien assigné avant le `finally` ci-dessous.
+  let timer!: ReturnType<typeof setTimeout>
+  const timeout = new Promise<never>((_, reject) => {
+    timer = setTimeout(
+      () => reject(new RecognitionTimeoutError('Délai de reconnaissance OCR dépassé.')),
+      RECOGNITION_TIMEOUT_MS
+    )
+  })
+  try {
+    return await Promise.race([recognition, timeout])
+  } finally {
+    clearTimeout(timer)
+  }
+}
 
 const AMOUNT_KEYWORD_PATTERN = /total|montant|ttc|à payer|net à/i
 const CURRENCY_HINT_PATTERN = /€|eur\b/i
@@ -35,7 +107,7 @@ const FRENCH_TEXTUAL_DATE_PATTERN = new RegExp(
 )
 
 function stripAccents(value: string): string {
-  return value.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  return value.normalize('NFD').replace(/[̀-ͯ]/g, '')
 }
 
 export interface ExpenseNoteSuggestion {
@@ -103,32 +175,26 @@ function parseExpenseDate(text: string): string | undefined {
   return undefined
 }
 
-// Pas de limite de taille de fichier ici (contrairement à la création d'une
-// note de frais) : un gros fichier peut monopoliser le worker un long
-// moment avant de renvoyer une suggestion vide.
+// Le format annoncé est vérifié par l'appelant (route), qui renvoie 400
+// avant d'atteindre ce module. Toute panne du moteur (donnée non décodable,
+// saturation, délai dépassé) est désormais relayée par une exception :
+// une analyse réussie sans champ reconnu reste {} (AUD-008), mais ce n'est
+// plus la même chose qu'un échec dissimulé en succès vide.
 export async function suggestFields(receipt: {
   data: Buffer
   mimeType: string
 }): Promise<ExpenseNoteSuggestion> {
-  if (!SUPPORTED_MIME_TYPES.includes(receipt.mimeType)) {
-    return {}
-  }
-
+  const worker = await acquireEngine()
+  let healthy = true
   try {
-    const worker = await createWorker('fra', undefined, {
-      langPath: TESSDATA_PATH,
-      cacheMethod: 'none',
-    })
-    try {
-      const {
-        data: { text },
-      } = await worker.recognize(receipt.data)
-      return { amount: parseAmount(text), expenseDate: parseExpenseDate(text) }
-    } finally {
-      await worker.terminate()
-    }
+    const {
+      data: { text },
+    } = await recognizeWithTimeout(worker, receipt.data)
+    return { amount: parseAmount(text), expenseDate: parseExpenseDate(text) }
   } catch (error) {
-    console.error('[ocr] Extraction échouée, suggestion vide renvoyée', error)
-    return {}
+    healthy = false
+    throw error
+  } finally {
+    releaseEngine(worker, healthy)
   }
 }
