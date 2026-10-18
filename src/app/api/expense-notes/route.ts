@@ -4,6 +4,12 @@ import { auth } from '@/lib/auth'
 import { getPool, withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 import { receiptKeyFor, uploadReceipt } from '@/lib/storage'
+import {
+  detectReceiptType,
+  parseStrictAmount,
+  parseStrictExpenseDate,
+  resolveSortOption,
+} from '@/utils/validators'
 
 const ALLOWED_RECEIPT_TYPES = ['image/png', 'image/jpeg', 'image/webp', 'application/pdf']
 const MAX_RECEIPT_BYTES = 10 * 1024 * 1024
@@ -36,10 +42,14 @@ export async function GET(request: NextRequest) {
     }
 
     const url = new URL(request.url)
-    // Le tri est construit dynamiquement plutôt que via une valeur liée :
-    // ORDER BY n'accepte pas de paramètre positionnel pour un nom de colonne
-    // en SQL standard, donc ce fragment est concaténé directement.
-    const sort = url.searchParams.get('sort') || 'created_at DESC'
+    // Le tri est construit depuis une option nommée choisie par le serveur
+    // (jamais depuis le texte reçu) : ORDER BY n'accepte pas de paramètre
+    // positionnel pour un nom de colonne, et la table d'options fixe évite
+    // toute expression SQL arbitraire (AUD-004).
+    const sort = resolveSortOption(url.searchParams.get('sort'))
+    if (sort === null) {
+      return Response.json({ error: 'Option de tri inconnue' }, { status: 400 })
+    }
 
     return withUserScope(session.user.id, async (client) => {
       const result = await client.query(
@@ -62,27 +72,48 @@ export async function POST(request: NextRequest) {
 
     const formData = await request.formData()
     const amountRaw = formData.get('amount')
-    const expenseDate = formData.get('expenseDate')
+    const expenseDateRaw = formData.get('expenseDate')
     const description = formData.get('description')
     const receipt = formData.get('receipt')
 
-    const amount = typeof amountRaw === 'string' ? Number.parseFloat(amountRaw) : NaN
-
     if (
-      !Number.isFinite(amount) ||
-      amount <= 0 ||
-      typeof expenseDate !== 'string' ||
+      typeof amountRaw !== 'string' ||
+      typeof expenseDateRaw !== 'string' ||
       typeof description !== 'string' ||
       description.trim().length === 0 ||
       !(receipt instanceof File)
     ) {
       return Response.json({ error: 'Champs invalides' }, { status: 400 })
     }
+
+    // Validation syntaxique complète avant toute conversion ou écriture
+    // (AUD-014/AUD-015) : la chaîne normalisée, pas un nombre JS arrondi,
+    // est transmise à PostgreSQL pour préserver l'arrondi numeric(10,2).
+    const amount = parseStrictAmount(amountRaw)
+    if (amount === null) {
+      return Response.json({ error: 'Montant invalide' }, { status: 400 })
+    }
+    const expenseDate = parseStrictExpenseDate(expenseDateRaw)
+    if (expenseDate === null) {
+      return Response.json({ error: 'Date invalide' }, { status: 400 })
+    }
+
     if (!ALLOWED_RECEIPT_TYPES.includes(receipt.type)) {
       return Response.json({ error: 'Type de fichier non autorisé pour le reçu' }, { status: 400 })
     }
     if (receipt.size > MAX_RECEIPT_BYTES) {
       return Response.json({ error: 'Fichier trop volumineux' }, { status: 400 })
+    }
+
+    // Détection du format réel par les octets avant toute écriture ou
+    // upload (G14) : le type annoncé seul n'est pas une preuve du contenu.
+    const buffer = Buffer.from(await receipt.arrayBuffer())
+    const detectedType = detectReceiptType(buffer)
+    if (detectedType === null || detectedType !== receipt.type) {
+      return Response.json(
+        { error: 'Format de fichier non reconnu ou incohérent avec le type annoncé' },
+        { status: 400 }
+      )
     }
 
     const note = await withUserScope(session.user.id, async (client) => {
@@ -97,7 +128,6 @@ export async function POST(request: NextRequest) {
 
     const extension = EXTENSION_BY_MIME[receipt.type] ?? path.extname(receipt.name) ?? ''
     const receiptKey = receiptKeyFor(note.receipt_seq, extension)
-    const buffer = Buffer.from(await receipt.arrayBuffer())
     await uploadReceipt(receiptKey, buffer, receipt.type)
 
     const updated = await getPool().query(

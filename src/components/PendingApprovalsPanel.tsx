@@ -16,7 +16,10 @@ const currencyFormatter = new Intl.NumberFormat('fr-FR', {
   currency: 'EUR',
 })
 
-const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' })
+// timeZone: 'UTC' évite un glissement de jour calendaire selon le fuseau
+// du lecteur : expenseDate est une date seule (yyyy-mm-dd), sans heure ni
+// fuseau propre (AUD-017).
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeZone: 'UTC' })
 
 export function PendingApprovalsPanel() {
   const [notes, setNotes] = useState<ExpenseNote[]>([])
