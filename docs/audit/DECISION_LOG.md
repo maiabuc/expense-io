@@ -175,3 +175,16 @@ Branche `feat/spec-02`, départ `7377486` (main actualisé, sans `feat/spec-01` 
 | AUD-016 | Implémentée et vérifiée : les 12 appels fetch des trois écrans libèrent leur état actif en `finally` et affichent un message sûr au `catch` (rejet réseau ou JSON illisible) ; saisie conservée après échec, pas de retry automatique | Rendre les actions utilisables après une panne sans transformer une absence de réponse en certitude d'échec serveur | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation), [SPEC-02](../specs/SPEC-02-recuperation-ui.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-016` 32/32 (NET-001…032) ; e2e 58/60 (AUD-016 0 échec, 2 échecs restants hors périmètre sur AUD-013/017) |
 
 AUD-005 échoue encore sur cette branche (api 61/112) uniquement parce que `feat/spec-01` n'y est pas mergée : ce n'est pas une régression de SPEC-02, les deux branches ne modifient pas les mêmes fichiers. À réévaluer à l'intégration des deux PR.
+## SPEC-04 réalisée — personne B — 18 octobre 2026
+
+Branche `feat/spec-04`, départ `7377486` (main actualisé, sans `feat/spec-01`/`feat/spec-02`/`feat/spec-05` encore mergées), réalisation `c445659`. Snapshot append-only avant travail : `/tmp/arla-spec-04-gf.json` (22 fiches) ; contrôle `check` réussi après ajout. Nouveau module pur `src/utils/validators.ts` (montant/date/tri/détection de reçu), indépendant de Next/pg/AWS, prévu pour réutilisation par SPEC-09.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-004 | Implémentée : table de tri nommée fixe, option inconnue refusée en 400 avant requête | Le texte reçu ne doit jamais devenir une expression SQL | [Entrée](solutions-to-audit/AUD-004-sort-input.md#implementation) | `test:issue -- AUD-004` 6/6 |
+| AUD-014 | Implémentée : montant validé par motif complet + borne BigInt après arrondi, chaîne normalisée transmise à PostgreSQL | Rejeter les formats mal formés sans arrondi JS ni dépassement silencieux | [Entrée](solutions-to-audit/AUD-014-validation-montant.md#implementation) | `test:issue -- AUD-014` 12/12 |
+| AUD-015 | Implémentée : format yyyy-mm-dd, existence réelle du jour, refus du futur selon Europe/Paris | L'horloge cliente est modifiable, le format est déjà établi | [Entrée](solutions-to-audit/AUD-015-validation-date.md#implementation) | `test:issue -- AUD-015` 7/7 (dont minuit Paris) |
+| AUD-017 | Implémentée : affichage en `timeZone: 'UTC'` explicite sur les trois écrans | Éliminer le glissement de jour selon le fuseau du lecteur | [Entrée](solutions-to-audit/AUD-017-affichage-date.md#implementation) | `test:issue -- AUD-017` 4/4 (Paris/UTC/Los Angeles/minuit) |
+| G14 | Implémentée : détection du format réel par signature d'octets avant écriture/upload, comparée au type annoncé | Un type annoncé seul n'est pas une preuve du contenu | [Entrée](solutions-to-audit/G14-controle-recus.md#implementation) | `test:issue -- G14` 11/11 |
+
+api 82/112 (0 échec sur les 5 cartes de ce lot) ; e2e 39/60 (0 échec AUD-017). Échecs restants attribués à des specs non réalisées sur cette branche ou à des dépendances (SPEC-01/02/05) non mergées — pas des régressions de SPEC-04.

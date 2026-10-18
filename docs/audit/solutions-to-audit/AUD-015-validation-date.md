@@ -25,3 +25,36 @@ Vérifications prévues : date valide, absente/vide, syntaxe incorrecte, jour im
 ## Actualisation des preuves — campagne du 14–15 octobre
 
 Date inexistante : 500 ; date 2099-01-01 : 201. Le refus du futur est une règle choisie pendant audit ; ne pas le présenter comme une obligation initiale démontrée. [Rapport et résultats bruts](../mesures-et-preuves.md). Les mentions de non-exécution précédentes décrivent la preuve initiale ; aucune validation de correction n’est acquise.
+
+## IMPLEMENTATION
+
+### 2026-10-18 — SPEC-04, personne B
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-04](../../specs/SPEC-04-entrees-et-affichage.md). Révision de départ : `7377486`. Réalisation : `c445659`.
+
+#### Ce qui a été implémenté
+
+`parseStrictExpenseDate` (src/utils/validators.ts) vérifie le format exact `yyyy-mm-dd`, l'existence réelle du jour (bornes du mois via `Date.UTC(year, month, 0)`, bissextiles incluses) et refuse toute date postérieure à aujourd'hui. « Aujourd'hui » est calculé par `todayInParis()` (`Intl.DateTimeFormat` avec `timeZone: 'Europe/Paris'`), indépendant du fuseau de la machine serveur et de l'horloge cliente.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/validators.ts : `DATE_PATTERN`, `daysInMonth`, `todayInParis`, `parseStrictExpenseDate` | Format, existence réelle, refus du futur en Europe/Paris | Remplace la vérification « est une chaîne » par un contrôle complet |
+| src/app/api/expense-notes/route.ts : `POST` | Appel `parseStrictExpenseDate` → 400 si `null` | Refus avant toute écriture |
+
+#### Nouveau fonctionnement
+
+POST avec `expenseDate` → `parseStrictExpenseDate` vérifie le motif `^\d{4}-\d{2}-\d{2}$` → extrait année/mois/jour → `daysInMonth` calcule la borne réelle du mois (ex. 29 jours en février bissextile, 28 sinon) → rejet si jour hors bornes → comparaison lexicographique `raw > todayInParis()` (valide sur ce format) → rejet si date future selon l'horloge serveur en Europe/Paris, indépendamment du fuseau configuré sur la machine → sinon la chaîne est transmise inchangée à l'`INSERT`.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-015` | DATE-001, NOTE-016…021 réussis | 7/7 réussis, dont le passage de minuit Paris (horloge fixée) : aujourd'hui accepté, demain refusé | `reports/issues.json`, run local 2026-10-18 |
+| `npm run test:api` (suite complète) | Aucune régression | 82/112 (AUD-015 0 échec) | `reports/issues.json` |
+
+#### Écarts et limites
+
+Aucun seuil d'ancienneté minimale ajouté (hors décision retenue). Pays/région et géolocalisation restent hors périmètre, conformément à la fiche. La distinction avec l'horloge UTC utilisée pour l'affichage (AUD-017) est volontaire : ce sont deux règles indépendantes.
