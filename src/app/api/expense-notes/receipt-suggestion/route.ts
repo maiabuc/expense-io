@@ -19,6 +19,6 @@ export async function POST(request: Request) {
     const suggestion = await suggestFields({ data: buffer, mimeType: receipt.type })
     return Response.json(suggestion)
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'expense-notes/receipt-suggestion:POST')
   }
 }
