@@ -21,3 +21,44 @@ Alternatives : conserver temporairement une version avec justification précise 
 ## Validation et priorité
 
 Priorité proposée : P1 pour qualifier les alertes de production, P2 pour le traitement ciblé de l'outillage selon exposition. Aucun exploit, patch ou bénéfice vérifié. Rapporter les avis résolus/restants et pourquoi, ainsi que les résultats des contrôles, sans ignorer les tests de référence. Ce nouveau point provient d'une mesure effectivement demandée, pas d'un élargissement fonctionnel décidé.
+
+## IMPLEMENTATION
+
+### 2026-10-18 — SPEC-12, personne A
+
+Statut : qualification réalisée pour les 8 lignes du rapport (7 avis `next` inclus) ; **aucune mise à jour de dépendance effectuée dans ce lot**, conformément au périmètre (C4). Ceci est une qualification/proposition, pas une correction applicative.
+Spec : [SPEC-12](../../specs/SPEC-12-qualification-dependances.md). Révision de départ : `7377486`. Réalisation (qualification documentaire seulement) : diff local daté 2026-10-18, aucun commit de code.
+
+#### Ce qui a été implémenté
+
+`npm audit --json` relancé dans ce dépôt (installation déjà isolée, lecture seule) : même résultat que la campagne du 14 octobre (7 high/1 critical/8 au total), confirmant l'absence de dérive. Chaque avis a été relu à sa source primaire (API publique GitHub Advisory, `published_at` réel) puis confronté à une recherche effective dans `src` et à la configuration déclarée (`next.config.ts`, sortie de `npm run build`) pour établir l'applicabilité réelle plutôt que la seule présence dans la plage de version signalée.
+
+#### Où
+
+| Fichier et repère | Modification | Rôle |
+| --- | --- | --- |
+| docs/audit/evidence/dependances-20261018/audit.json | Nouveau | Rapport brut `npm audit --json` du 18 octobre |
+| docs/audit/evidence/dependances-20261018/qualification.md | Nouveau | Qualification avis par avis, sources primaires, applicabilité, priorité proposée |
+| package.json, package-lock.json | **Aucune** | Aucune mise à jour sélectionnée dans ce lot |
+
+#### Nouveau fonctionnement
+
+Aucun changement de comportement applicatif : ce lot est une qualification documentaire. Résumé des conclusions (détails et sources dans [qualification.md](../evidence/dependances-20261018/qualification.md)) :
+
+- **next@16.3.5** (critique, 7 avis regroupés) : aucun des sept n'est applicable au code/config réels — RCE `next/og` (aucun import), SSRF image (aucun `images.remotePatterns`), fuite Draft Mode/`use cache` (directive jamais utilisée), deux empoisonnements de cache SSG/ISR (app 100 % App Router et dynamique, aucune page statique/ISR, aucun catch-all racine), fuite métadonnées image (aucune route `opengraph-image`/`generateStaticParams`), fuite endpoint MCP de dev (`next dev` uniquement, jamais exécuté en test/CI/production). Mise à jour non majeure `16.4.2` disponible, raisonnable en défense en profondeur mais non appliquée ici.
+- **Chaîne ESLint** (`@next/eslint-plugin-next`/`braces`/`fast-glob`/`micromatch`/`eslint-config-next`, high) : `eslint-config-next` est en `devDependencies`, jamais chargée par le serveur en service — aucune surface d'attaque exposée. Le correctif automatique proposé (`eslint-config-next@14.2.35`) est un retour majeur incompatible avec Next 16.3.5 (C3) : non retenu.
+- **sharp** (transitive, optionnelle de `next`, high) : chemin vulnérable (décodage SVG) jamais exercé, `next/image` n'étant utilisé nulle part. Patch `0.35.5` disponible, à faible risque, non appliqué dans ce lot.
+- **source-map-js** (transitive via PostCSS/Tailwind/Vite, high) : exposition seulement au moment du build sur le contenu du dépôt, jamais à l'exécution face à un tiers. Patch `1.2.2` disponible, à faible risque, non appliqué dans ce lot.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm audit --json` | Compte réel des avis, pas d'invention | 8 lignes de rapport (7 high/1 critical), identique au 14 octobre | [audit.json](../evidence/dependances-20261018/audit.json) |
+| Sources primaires par avis | Date et condition d'applicabilité réelle, pas seulement le titre | 12 avis distincts relus (7 `next` + 1 braces + 1 sharp + 1 source-map-js, plus recoupement) via `api.github.com/advisories/<id>` | [qualification.md](../evidence/dependances-20261018/qualification.md) |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 chacun (aucun changement attendu) | exit 0 chacun ; build confirme 100 % routes dynamiques (`ƒ`), aucune SSG/ISR | Sortie locale 2026-10-18 |
+| `git status` sur package.json/package-lock.json | Aucune modification | Confirmé : fichiers non touchés par ce lot | Sortie locale 2026-10-18 |
+
+#### Écarts et limites
+
+Qualification fondée sur une recherche statique (`grep`) et la configuration déclarée, pas sur un test d'intrusion ; un chemin d'usage dynamique non détecté par cette méthode resterait non couvert. Aucune mise à jour sélectionnée ni appliquée (conforme à C4) : les alertes restent ouvertes, avec leurs motifs d'applicabilité consignés. Si une mise à jour ciblée est décidée plus tard, la liste des contrôles à relancer est donnée dans [qualification.md](../evidence/dependances-20261018/qualification.md).

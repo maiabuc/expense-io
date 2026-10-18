@@ -154,3 +154,13 @@ Instruction explicite : « Pas besoin de plan de migration et retour en arrière
 Livrables : [1 — contrats](01-contrats-implementation.md), [2 — permissions/transitions](02-permissions-et-transitions.md), [3 — périmètre/dépendances](03-perimetre-et-dependances.md), [4 — validation](04-reference-de-validation.md), [5 — lots/acceptation](05-lots-et-acceptation.md). Le troisième remplace le livrable exclu. Directions acceptées conservées ; compléments techniques de l’agent identifiés comme tels, pas attribués à une réponse de Maia : clé Idempotency-Key optionnelle pour compatibilité, reprise 200/201, représentation incomplete et action dans le formulaire existant, catalogue d’erreurs, protection concurrente de hiérarchie, défaut de pool OCR conservateur. Aucune nouvelle architecture, file ou migration REST sélectionnée.
 
 Clôture du dossier documentaire sur le périmètre décrit au fichier 5. Aucun nouveau test runtime, aucune implémentation ni validation de correction ; les résultats de la campagne restent inchangés. Tests du professeur absents, formats formels OCR, navigateur/charge et compte DB utilisateur restent des réserves nommées ou critères de réalisation. Aucune garantie de compatibilité externe ni maîtrise indépendante inférée.
+
+## SPEC-12 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-12`, départ `7377486`. Qualification documentaire uniquement, aucun commit de code applicatif ni de dépendance. Snapshot append-only avant travail : `/tmp/arla-spec-12-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-023 | Qualification réalisée pour les 8 lignes du rapport `npm audit` (7 avis `next` regroupés + ESLint/sharp/source-map-js) : aucun applicable au code/config réels, sauf un strictement limité à `next dev` | Distinguer version signalée et chemin effectivement exposé, sans suivre aveuglément le correctif automatique (retour majeur incompatible pour eslint-config-next) | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-023-dependances.md#implementation), [qualification complète](evidence/dependances-20261018/qualification.md) | `npm audit --json` relancé (identique au 14 octobre) ; 12 avis relus à leur source primaire (API GitHub Advisory) ; recherche de code et configuration vérifiées ; `package.json`/`package-lock.json` inchangés |
+
+Aucune mise à jour de dépendance effectuée (C4). Propositions pour un lot distinct : `next@16.4.2` (non majeure, défense en profondeur), `sharp@>=0.35.5` et `source-map-js@>=1.2.2` (patchs à faible risque, chemins non exercés) ; `eslint-config-next` conservé en l'état (le correctif automatique serait un retour majeur incohérent avec Next 16.x).
