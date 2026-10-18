@@ -101,3 +101,16 @@ Manager demande le reçu d'une note → garde de rôle actuel (401 sinon) → un
 #### Écarts et limites
 
 Volet affectation (même entreprise pour le manager choisi, contrainte d'intégrité en base) : non implémenté, AFF-011 rouge attendu jusqu'à SPEC-07. Le comportement de la RLS sous un compte limité n'est pas éprouvé ici (SPEC-09). Les relations interentreprises déjà présentes en base ne sont ni corrigées ni migrées : elles cessent seulement de donner accès.
+
+### 2026-10-19 — SPEC-06 : suites complètes et classement des échecs
+
+Statut : partielle (volet reçu vérifié ; volet affectation à SPEC-07).
+Spec : [SPEC-06](../../specs/SPEC-06-droits-actuels.md). Révision exécutée : `a62e6c5`.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:api` et `npm run test:e2e` (suites complètes), puis `test:report` | Aucune régression ; seul AFF-011 reste rouge pour cette fiche | AUD-006 : 31 réussis, 1 échoué (AFF-011). Bilan global : 123 réussis, 68 échoués sur 191, sans aucun cas vert sur `main` devenu rouge | `reports/issues.json`, 2026-10-19 |
+
+Détail du classement des 68 échecs et de la comparaison avec `main` : voir l'entrée du même jour de [G10](G10-droits-role-actuel.md#implementation). AFF-011 (affectation d'un manager d'une autre entreprise → 409) était rouge sur `main` et reste à réaliser dans SPEC-07.

@@ -56,3 +56,19 @@ Requête protégée → `currentSession()` lit l'identité de la session puis la
 #### Écarts et limites
 
 Écart : les pages serveur conservent le rôle de session pour l'affichage (voir plus haut). Non prouvé : la révocation d'actions en cours et de liens déjà émis, hors périmètre retenu. Tests du professeur absents. Les tests injectent les changements de rôle par SQL direct avec le compte superuser du harnais ; ils prouvent le comportement des routes, pas l'effet des politiques RLS (SPEC-09).
+
+### 2026-10-19 — SPEC-06 : suites complètes et classement des échecs
+
+Statut : implémentée et vérifiée sur le périmètre décrit (compléments d'exécution de l'entrée précédente).
+Spec : [SPEC-06](../../specs/SPEC-06-droits-actuels.md). Révision exécutée : `a62e6c5` (code applicatif identique à `6a8b971`, puis tests `c1af070` et documentation).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:unit` | 6/6 | exit 0 ; 6/6 réussis | `reports/unit.json`, 2026-10-19 |
+| `npm run test:api` (suite complète) | Aucune régression ; DROIT-019 à 021 verts | exit 1 ; 79 réussis, 46 échoués sur 125 (référence `main` : 61/112). G10 : 11/11 réussis | `reports/issues.json` |
+| `npm run test:e2e` (suite complète) | Aucune régression | exit 1 ; 38 réussis, 22 échoués sur 60 (référence `main` : 38/60, mêmes cas) | `reports/issues.json` |
+| `npm run test:report` | Bilan agrégé | exit 1 ; 123 réussis, 68 échoués sur 191 | `reports/issues.json` |
+
+Comparaison avec la CI de `main` au même SHA de départ (run `39037399251`, 105/178 réussis) : aucun cas vert sur `main` n'est rouge ; 5 cas passent du rouge au vert (DROIT-013, 014, 019, 020, 021) ; 13 cas ajoutés, tous verts ; les 68 échecs restants étaient déjà rouges sur `main` et appartiennent à d'autres lots (AUD-003/004/005/008/009/013/014/015/016/017/018/020/021, G14, AFF-011 d'AUD-006, AUD-007). Exécution locale sous Node 24.13.0 (la CI GitHub utilise 24.21.0) ; la CI GitHub n'a pas été exécutée pour cette branche.

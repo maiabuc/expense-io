@@ -4,7 +4,7 @@
 
 - Responsable : personne C. Branche : `feat/spec-06`.
 - IDs : G10, AUD-006. Fiches : [G10](../audit/solutions-to-audit/G10-droits-role-actuel.md), [AUD-006](../audit/solutions-to-audit/AUD-006-manager-receipt-authorisation.md).
-- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée, validation incomplète le 19 octobre 2026 (voir Traçabilité et fin).
+- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée et vérifiée sur le périmètre décrit le 19 octobre 2026 (voir Traçabilité et fin).
 - Autorisation : répartition et préparation demandées par Maia ; directions déjà retenues dans l’audit. Les conditions propres aux sujets 11/12 restent applicables.
 - Source d’audit : `265924bc7274047989e708ab635c2854d376230f`.
 - Départ documentaire : `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, fusion CI dans main. Le développeur enregistrera son vrai SHA de départ actualisé avant réalisation.
@@ -74,7 +74,7 @@ Cas ciblés :
 | --- | --- | --- | --- |
 | Tests par issue + nouveaux critères | Tous les cas du lot réussissent | `test:issue -- G10` : 11/11 réussis. `test:issue -- AUD-006` : 31/32 réussis, seul échec AFF-011 (volet affectation, SPEC-07). Les 5 cas rouges de départ (DROIT-013, 014, 019, 020, 021) sont verts ; 13 cas ajoutés (DROIT-022 à 036), dont 8 échouent sur le code de `main` | Run local 2026-10-19 sur `c1af070`, DB et S3 jetables du harnais, Node 24.13.0 |
 | npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | exit 0 chacun (1 avertissement lint préexistant hors périmètre) | Run local 2026-10-19 |
-| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | Non exécuté au moment de cette mise à jour (étape 5) | Résultats à ajouter ; rouge historique à distinguer des régressions |
+| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | unit 6/6 ; api 79/125 ; e2e 38/60 ; bilan 123/191. Aucun cas vert sur `main` devenu rouge ; 5 cas rouge→vert ; 13 cas ajoutés verts ; les 68 échecs restants étaient déjà rouges sur `main` (autres lots) | Run local 2026-10-19 sur `a62e6c5`, Node 24.13.0 ; référence : CI de `main`, run `39037399251`. CI GitHub non exécutée pour la branche |
 | Garde append-only avec snapshot avant travail | Préfixes strictement conservés | `check-append-only.mjs check --snapshot …` : succès, 22 fiches | Snapshot capturé avant toute modification (2026-10-19) |
 
 Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI existants sont un point de départ : ils ne couvrent pas automatiquement tous les mécanismes futurs. Aucun test du professeur fourni ; aucune réussite inférée d’un fichier listé.
@@ -86,4 +86,4 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Vérifier : `node docs/audit/tools/check-append-only.mjs check --snapshot /tmp/arla-spec-06-<identifiant-unique>.json`.
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
 - Entrées IMPLEMENTATION : [G10](../audit/solutions-to-audit/G10-droits-role-actuel.md#implementation) et [AUD-006, volet reçu](../audit/solutions-to-audit/AUD-006-manager-receipt-authorisation.md#implementation), ajoutées le 2026-10-19 (SHA de départ `7377486`, réalisation `6a8b971` et tests `c1af070`).
-- Statut de fin : implémentée, validation incomplète. C1 à C5 sont couverts par les cas ciblés ci-dessus ; les suites api et e2e complètes restent à rapporter. Le volet affectation d'AUD-006 relève de SPEC-07 (AFF-011 rouge attendu). Les pages serveur gardent le rôle de session pour l'affichage. Aucun plan de migration/retour arrière demandé.
+- Statut de fin : implémentée et vérifiée sur le périmètre décrit (suites complètes rapportées ci-dessus ; CI GitHub à confirmer à l'ouverture de la PR). C1 à C5 sont couverts par les cas ciblés. Le volet affectation d'AUD-006 relève de SPEC-07 (AFF-011 rouge attendu). Les pages serveur gardent le rôle de session pour l'affichage. Aucun plan de migration/retour arrière demandé.
