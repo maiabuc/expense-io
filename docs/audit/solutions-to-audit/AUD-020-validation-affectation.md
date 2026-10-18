@@ -32,3 +32,41 @@ Sur environnement isolé et acteur RH autorisé : chaque entrée invalide produi
 ## Actualisation des preuves — campagne du 14–15 octobre
 
 JSON cassé envoyé par RH autorisé : HTTP 200 et manager_id devient null en DB. Les erreurs différenciées de la cible restent à tester. [Rapport et résultats bruts](../mesures-et-preuves.md). Les mentions de non-exécution précédentes décrivent la preuve initiale ; aucune validation de correction n’est acquise.
+
+## IMPLEMENTATION
+
+### 2026-10-19 — SPEC-07, personne C
+
+Statut : implémentée et vérifiée sur le périmètre décrit, sauf AFF-019 resté rouge pour une raison de données de test (voir limites).
+Spec : [SPEC-07](../../specs/SPEC-07-hierarchie-managers.md). Révision de départ : `bb16e63` (tête de `feat/spec-06`, sur `main` `7377486`). Réalisation : `09ca108` (correction) et `2421887` (tests), branche `feat/spec-07`.
+
+#### Ce qui a été implémenté
+
+La route d'affectation lit le corps JSON sans repli sur `null`. JSON illisible, corps non objet, champ `managerId` absent et valeur invalide (autre chose que `null` ou un UUID) sont refusés en 400 avec quatre messages français distincts, avant toute lecture de la hiérarchie et sans mutation. Seul `{"managerId": null}` retire le manager. Un identifiant de cible qui n'est pas un UUID est traité comme une cible absente (404, au lieu d'une erreur 500 de la base). Le code technique de chaque refus est journalisé (`console.warn` JSON) sans figurer dans la réponse.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/app/api/hr/users/[id]/manager/route.ts, l. 33–46 | Lecture du corps, quatre refus 400 distincts, validation UUID | Aucune requête SQL avant un corps valide |
+| src/app/api/hr/users/[id]/manager/route.ts, `refuser` (l. 8–19) | Réponse publique `{ error }` et journal du code interne | Code technique distinct en logs (AUD-005) |
+
+#### Nouveau fonctionnement
+
+Action RH → garde de rôle actuel (403 sinon) → lecture du corps (400 sans mutation selon le cas) → transaction qui verrouille la ligne `companies` de l'entreprise du RH → cible de la même entreprise et de rôle employee ou manager (404 sinon) → contrôles du manager et des boucles, voir [AUD-021](AUD-021-boucles-managers.md#implementation) → écriture. Le retrait par `null` suit le même chemin, sans contrôle de manager. La réponse de succès conserve `id, name, email, role, managerId`.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:api` avec `TEST_ISSUE=AUD-020` | AFF-001 à 008, 019 verts, positifs conservés | 14 réussis sur 15 : AFF-001 à 008 verts (étaient rouges), AFF-009 vert, AFF-020, 021, 028, 029 ajoutés et verts, NAV-015 vert. AFF-019 rouge | Sortie locale 2026-10-19 |
+| Les cas AFF-020, 021, 029 sur le code de départ (`bb16e63`, clone jetable) | Échouent | 3 échecs sur 3 ; AFF-028 (référence) réussit | Sortie locale 2026-10-19 |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun | Sortie locale 2026-10-19 |
+| `npm run test:unit` | 6/6 | 6/6 réussis | `reports/unit.json` |
+| `npm run test:api` (complète) | Aucune régression ; AFF verts | exit 1 ; 101 réussis, 34 échoués sur 135 (SPEC-06 : 79/125 ; main : 61/112) | `reports/issues.json` |
+| `npm run test:e2e` (complète) | Aucune régression | exit 1 ; 38 réussis, 22 échoués sur 60 (identique à main) | `reports/issues.json` |
+| `npm run test:report` | Bilan agrégé | exit 1 ; 145 réussis, 56 échoués sur 201 | `reports/issues.json` |
+
+#### Écarts et limites
+
+AFF-019 reste rouge. Le client Playwright envoie une donnée textuelle non analysable (`{`) sous forme de chaîne JSON valide (`"{"`) : le test n'envoie donc jamais de JSON illisible, et ses entrées `{` et `[]` produisent toutes deux l'erreur « corps non objet », d'où 3 messages distincts au lieu de 4. Le contrat n'a qu'un message pour les corps non objet. Je n'ai pas modifié ce test ; le cas AFF-029 envoie les octets bruts et prouve les quatre messages distincts. Correction possible, à décider : envoyer `Buffer.from('{')` dans AFF-019. Le catalogue prévoit un message 409 « Cette affectation de manager n'est pas autorisée. » ; j'ai conservé « Invalid manager » déjà présent pour compatibilité. Le journal des codes utilise `console.warn` local à la route en attendant l'intégration avec le mécanisme de SPEC-01 (non présent sur cette base).
