@@ -4,7 +4,7 @@
 
 - Responsable : personne A. Branche : `feat/spec-03`.
 - IDs : AUD-008. Fiches : [AUD-008](../audit/solutions-to-audit/AUD-008-ocr-resource-bounds.md).
-- Statut : préparée pour l’équipe le 17 octobre 2026 ; aucune correction réalisée par cette rédaction.
+- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée, validation incomplète (voir Traçabilité et fin) le 18 octobre 2026.
 - Autorisation : répartition et préparation demandées par Maia ; directions déjà retenues dans l’audit. Les conditions propres aux sujets 11/12 restent applicables.
 - Source d’audit : `265924bc7274047989e708ab635c2854d376230f`.
 - Départ documentaire : `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, fusion CI dans main. Le développeur enregistrera son vrai SHA de départ actualisé avant réalisation.
@@ -70,10 +70,12 @@ Cas ciblés :
 
 | Commande / scénario | Prévu | Réel | Preuve / limite |
 | --- | --- | --- | --- |
-| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | Non exécuté pour cette spec | Ajouter comptes, environnement et SHA |
-| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | Non exécuté pour cette spec | Commandes existantes |
-| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | Non exécuté pour cette spec | Rouge historique distingué des régressions ; aucun merge final tant que requis rouge |
-| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Non exécuté pour l’implémentation | Snapshot propre à cette intervention |
+| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | `test:issue -- AUD-008` : OCR-001…006, NAV-016/017 → 8/8 réussis | `reports/issues.json`, run local 2026-10-18 |
+| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | exit 0 chacun (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-18 |
+| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | unit 6/6 ; api 84/112 (AUD-008 0 échec) ; e2e 39/60 (AUD-008 0 échec) ; échecs restants hors périmètre ou dépendances non mergées | `reports/issues.json` |
+| Saturation/panne/réutilisation (vérification manuelle) | Pool correct sous ces trois scénarios | Confirmé par script ad hoc non committé (voir [AUD-008#implementation](../audit/solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation)) | Sortie locale 2026-10-18 |
+| Arrêt réel à 40 s, concurrence 2/4, CPU/RAM | Mesures dédiées | **Non exécuté** — campagne manuelle distincte, déjà notée hors automatisation dans `tests/deferred-coverage.json` | Coût/durée prohibitifs pour cette intervention |
+| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Vérifié : `check-append-only.mjs check --snapshot /tmp/arla-spec-03-gf.json` | Sortie locale 2026-10-18 |
 
 Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI existants sont un point de départ : ils ne couvrent pas automatiquement tous les mécanismes futurs. Aucun test du professeur fourni ; aucune réussite inférée d’un fichier listé.
 
@@ -83,5 +85,5 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Chaque fiche concernée reçoit un ajout daté sous `## IMPLEMENTATION` ; conserver absolument tout le texte et les ajouts antérieurs. Indiquer quoi/où/nouveau fonctionnement, tests réels et limites. Pour AUD-019, documenter seulement la convention conservée ; pour 11/12, ne pas inventer de correction.
 - Vérifier : `node docs/audit/tools/check-append-only.mjs check --snapshot /tmp/arla-spec-03-<identifiant-unique>.json`.
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
-- Entrées IMPLEMENTATION : aucune par cette préparation ; à ajouter lors de la réalisation réelle.
-- Statut de fin : préparée, pas implémentée. Relire les critères et joindre les preuves avant clôture ; aucun plan de migration/retour arrière demandé.
+- Entrées IMPLEMENTATION : [AUD-008](../audit/solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation), ajoutée le 2026-10-18 (SHA de départ `7377486`, réalisation `5393aee`, fusionne `feat/spec-04`).
+- Statut de fin : implémentée, validation incomplète. Critères C1/C2 vérifiés par les tests automatisés et une vérification manuelle ciblée (saturation, panne, réutilisation) ; C3 (arrêt réel à 40 s en conditions réelles) et C4 (mesures CPU/RAM, concurrence 2/4) restent une campagne manuelle dédiée non exécutée ici, conformément à `tests/deferred-coverage.json`. Aucun plan de migration/retour arrière demandé.

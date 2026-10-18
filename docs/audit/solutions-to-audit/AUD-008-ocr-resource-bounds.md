@@ -53,3 +53,40 @@ Mesurer images fixes petites/grandes, froid/chaud et concurrence, avec durées e
 ## Actualisation des preuves — campagne du 14–15 octobre
 
 Trois appels OCR réels ; image corrompue renvoyée 200 avec résultat vide. Gros fichiers, saturation, CPU/RAM et arrêt 40 s non mesurés ; aucun gain du pool encore vérifié. [Rapport et résultats bruts](../mesures-et-preuves.md). Les mentions de non-exécution précédentes décrivent la preuve initiale ; aucune validation de correction n’est acquise.
+
+## IMPLEMENTATION
+
+### 2026-10-18 — SPEC-03, personne A
+
+Statut : implémentée, validation incomplète sur le périmètre décrit (voir écarts : charge/CPU/RAM restent une campagne manuelle distincte, déjà notée hors automatisation dans `tests/deferred-coverage.json`).
+Spec : [SPEC-03](../../specs/SPEC-03-ocr-borne.md). Révision de départ : `7377486`. Réalisation : `5393aee` (fusionne `feat/spec-04`, dépendance non encore mergée dans `main` — voir Écarts).
+
+#### Ce qui a été implémenté
+
+`src/lib/ocr.ts` gère désormais un pool borné d'un moteur par processus (`POOL_CAPACITY = 1`, à mesurer avant d'augmenter), sans file FIFO : `acquireEngine` renvoie immédiatement `EngineBusyError` si aucun moteur n'est libre et que la capacité est atteinte. `recognizeWithTimeout` borne la reconnaissance à 40 s via `Promise.race` ; au dépassement, `RecognitionTimeoutError` est levée. Dans les deux cas de panne (erreur moteur réelle ou délai dépassé), `releaseEngine(worker, false)` retire le moteur du pool et l'arrête réellement (`worker.terminate()`) au lieu de le remettre en circulation — un remplacement est créé à la demande suivante, sans dépasser la capacité. Une analyse réussie sans champ reconnu reste `{}` avec 200 (succès réel, inchangé) ; toute exception (y compris une donnée non décodable) remonte désormais jusqu'à la route au lieu d'être avalée en `{}`. La route `receipt-suggestion` vérifie elle-même le format annoncé (`SUPPORTED_MIME_TYPES`, PDF exclu) et la taille (10 MiB) avant tout appel au moteur, puis traduit `EngineBusyError`→503, `RecognitionTimeoutError`→504, et laisse toute autre exception atteindre `respondError`→500. Un `errorHandler` no-op est fourni à `createWorker` : sans lui, tesseract.js relance l'erreur dans son gestionnaire de messages en plus de rejeter la promesse du job, un `throw` non intercepté qui fait planter tout le processus Node — reproduit en vérification manuelle avec une image corrompue (voir Validation), avant correction.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/lib/ocr.ts : `acquireEngine`, `releaseEngine`, `recognizeWithTimeout`, `EngineBusyError`, `RecognitionTimeoutError` | Pool borné, délai réel, arrêt effectif | Distingue panne/saturation/délai d'un succès vide |
+| src/lib/ocr.ts : `createWorker(..., { errorHandler: () => {} })` | Supprime le `throw` secondaire non intercepté de tesseract.js | Évite un crash processus sur image non décodable |
+| src/app/api/expense-notes/receipt-suggestion/route.ts | Vérifie format/taille avant l'appel moteur ; traduit les erreurs en 503/504/500 | Contrat HTTP conforme à C2 |
+
+#### Nouveau fonctionnement
+
+POST avec `receipt` → format annoncé vérifié (`SUPPORTED_MIME_TYPES`, PDF refusé) → taille vérifiée (≤10 MiB) → `suggestFields` : `acquireEngine()` (moteur idle réutilisé, ou nouveau créé si capacité disponible, sinon `EngineBusyError` immédiat) → `recognizeWithTimeout` course le job contre un délai de 40 s → succès : moteur remis au pool (`releaseEngine(worker, true)`), résultat (`{}` ou champs reconnus) renvoyé 200 → échec (délai ou panne moteur) : moteur arrêté et retiré (`releaseEngine(worker, false)`), exception propagée → la route traduit en 503 (saturation), 504 (délai) ou 500 (autre panne, via `respondError`), jamais en succès vide.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-008` | OCR-001…006, NAV-016/017 réussis | 8/8 réussis, dont OCR-003 (image corrompue → 500, pas 200 vide) et OCR-004 (PDF → 400) désormais corrects | `reports/issues.json`, run local 2026-10-18 |
+| `npm run test:api`/`test:e2e` (suites complètes) | Aucune régression | api 84/112 (AUD-008 0 échec) ; e2e 39/60 (identique à la mesure SPEC-04, AUD-008 0 échec) | `reports/issues.json` |
+| Vérification manuelle : deux appels concurrents (capacité 1) | Un réussit, l'autre `EngineBusyError` | Confirmé (script Node ad hoc, supprimé après vérification, non committé) | Sortie locale 2026-10-18, voir Écarts |
+| Vérification manuelle : image corrompue puis nouvel appel | Rejet propre sans crash processus ; pool opérationnel ensuite | Confirmé après ajout de `errorHandler` (sans lui : crash processus reproduit) | Sortie locale 2026-10-18 |
+| Vérification manuelle : appel séquentiel après libération | Moteur réutilisé (pas de nouvelle création) | Confirmé (résultat identique, pas de délai de réinitialisation supplémentaire observé) | Sortie locale 2026-10-18 |
+
+#### Écarts et limites
+
+Dépend de `feat/spec-04` (validation de fichiers/contenu) comme prévu par la coordination de la spec ; cette branche n'est pas encore mergée dans `main`, donc fusionnée directement dans `feat/spec-03` (SHA `19bdd4c`) pour pouvoir construire dessus — à refléter à l'intégration. **Mesures non faites, conformément à `tests/deferred-coverage.json`** (« Pool réutilisable, saturation et arrêt effectif à 40 s : mécanisme à implémenter » / « Charge CPU/RAM : campagne manuelle dédiée ») : le délai réel de 40 s n'a pas été attendu en conditions réelles (coût prohibitif pour cette vérification), la concurrence 2/4 et le CPU/RAM ne sont pas mesurés. Seule la saturation à capacité 1 (cas le plus simple) et la panne/récupération ont été vérifiées manuellement. Capacité laissée à 1 moteur, conformément à l'instruction « mesurer avant d'augmenter ».
