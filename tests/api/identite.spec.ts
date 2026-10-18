@@ -1,6 +1,6 @@
 import { test, expect, authenticate, submit } from '../support/fixtures'
 import { users, notes, companies } from '../support/data'
-import { db } from '../support/database'
+import { db, donneesHistoriques } from '../support/database'
 import { withUnreachableDatabase } from '../support/failure-server'
 
 const ids = (rows: { id: string }[]) => rows.map(row => row.id).sort()
@@ -14,7 +14,7 @@ test('[G10][DROIT-022][correction] employé promu manager : le nouveau rôle est
 
 test('[G10][DROIT-023][correction] manager passé dans une autre entreprise : plus de liste ni de reçu, session conservée', async ({ request }) => {
   await authenticate(request, 'a_root')
-  await db().query('UPDATE users SET company_id=$1 WHERE id=$2', [companies.b, users.a_root.id])
+  await donneesHistoriques('UPDATE users SET company_id=$1 WHERE id=$2', [companies.b, users.a_root.id])
   const list = await request.get('/api/manager/expense-notes')
   expect(list.status()).toBe(200)
   expect(await list.json()).toEqual([])
@@ -78,7 +78,7 @@ test('[AUD-006][DROIT-030][reference] reçu manager : note rejetée d’un colla
 })
 
 test('[AUD-006][DROIT-032][correction] relation manager interentreprises : ni liste, ni reçu, ni décision', async ({ request }) => {
-  await db().query('UPDATE users SET manager_id=$1 WHERE id=$2', [users.b_root.id, users.a_employee.id])
+  await donneesHistoriques('UPDATE users SET manager_id=$1 WHERE id=$2', [users.b_root.id, users.a_employee.id])
   await authenticate(request, 'b_root')
   expect(ids(await (await request.get('/api/manager/expense-notes')).json())).not.toContain(notes.employee)
   expect((await request.get(`/api/manager/expense-notes/${notes.employee}/receipt-url`)).status()).toBe(404)
