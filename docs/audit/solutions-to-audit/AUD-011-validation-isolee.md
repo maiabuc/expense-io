@@ -63,3 +63,48 @@ Push/PR → installation verrouillée → qualité et build → serveur construi
 #### Écarts et limites
 
 Application, UI, commandes build/README, migrations et scripts d'origine préservés. Les autres issues sont testées, pas corrigées. Les rapports rouges montrent les travaux applicatifs restants. Nouveaux mécanismes de reprise/pool/hexagone à tester avec leur réalisation ; secret reporté et dépendances non qualifiées. Chromium seul, aucune mesure complète de couverture ou de charge ; tests du professeur absents. La protection de branche GitHub n'est pas configurée par ce lot. Aucun acquis de compréhension attribué à Maia.
+
+### 19 octobre 2026 — CI-002, contrôles distincts par spec
+
+Statut : implémentée et vérifiée localement sur le périmètre ci-dessous ; validation hébergée distincte. Demande de Maia : identifier la réussite des tests d’une spec dans ses PR. Base : `73774862cb4f1b172d2b15bdbcb00c75b7cff6c6`. Réalisation mesurée : diff localCI-002, sources fixées par le manifeste de campagne. [Spec](../../specs/CI-002-controles-par-spec.md), [preuve](../evidence/ci-specs-20261019/README.md), [revue des six PR](../revue-pr-g4bi2004-20261019.md).
+
+#### Ce qui a été implémenté
+
+Dix contrôles GitHub distincts SPEC-01…10, conservant les suites complètes et les IDs AUD/G. Un lot n’est plus automatiquement rouge à cause des défauts d’un autre lot : ses propres cas, sa couverture obligatoire et les prérequis communs sont vérifiés. Le bilan global reste bloquant. SPEC-11/12 restent à mesures/revue humaines, explicitement manual-review ; aucun succès fictif n’est ajouté.
+
+Sept frontières publiques supplémentaires et quinze contrôles d’outillage ont été ajoutés. Ces tests ne corrigent aucune application : ils vérifient logs sûrs, petites valeurs, prototype du tri, grammaire/bornes, messageOCR503 et conservation du compte après panne de connexion. Les assertions précédentes sont conservées.
+
+#### Où
+
+| Fichier / repère | Modification | Rôle |
+| --- | --- | --- |
+| .github/workflows/ci.yml, jobs specs/resultat | Matrice des dix specs et synthèse globale | Checks visibles et résultat global toujours requis |
+| tests/specifications.json | Correspondance specs/AUD/cas, couverture obligatoire | Définition lisible des cas du lot et des cas manquants |
+| tests/reporters/specifications.mjs | Sélection, évaluation et validation commune du contexte | Même contrôle de SHA/complétude/prérequis pour synthèse et job |
+| scripts/ci/catalog.mjs, report.mjs, spec-check.mjs | Catalogue enrichi et rapports par spec | Réutilise les résultats réels, sans les réexécuter artificiellement |
+| tests/unit/specification-report.test.ts |15 cas d’outillage | Vérifie les refus de faux verts et le raccordement synthèse/CLI |
+| tests/api/coherence.spec.ts et expenses.spec.ts |5 frontières API | Diagnostics privés et entrées monétaires/tri |
+| tests/e2e/network.spec.ts et signup.spec.ts |2 frontières navigateur | Message de service occupé et panne de connexion après création |
+| tests/support/database.ts et failure-server.ts | Déclencheurs fictifs et capture de diagnostics | Injection de panne limitée aux donnéesCI ; nettoyage garanti |
+| docs/testing/README.md | Guide des contrôles et IDs supplémentaires | Lecture des résultats et limites de couverture |
+
+#### Nouveau fonctionnement
+
+PR → suites unitaires/API/navigateur complètes → artefacts du même run → contrôle de chaque spec. Le job sélectionne ses cas, compare les résultats aux titres/IDs attendus, vérifie SHA, portée et complétude des rapports, erreurs globales, prérequis et cas obligatoires. Tout manque empêche le vert ; le CLI et la synthèse emploient la même validation. Puis le résultat global exige aussi tous les contrôles fonctionnels. Une autre spec rouge reste visible dans le bilan global sans annuler à elle seule les cas réussis du lot considéré.
+
+`npm run test:spec:report -- SPEC-01` lit les résultats disponibles et produit le bilan de la spec ; cette commande n’exécute pas les tests. Une branche de PR ancienne doit récupérer cette CI puis pousser ; relancer son ancien workflow ne change pas le code qui y est exécuté.
+
+#### Validation et preuves
+
+| Contrôle | Résultat réel | Preuve |
+| --- | --- | --- |
+| Installation/lint/types/build | exit0 chacun ;1 avertissement lint historique | [Campagne](../evidence/ci-specs-20261019/README.md) |
+| Unitaires |21/21 réussis, dont15 contrôles du dispositif | [Unitaires](../evidence/ci-specs-20261019/unit.json) |
+| API réelle |62 réussites/55 échecs/0 absent sur117 ; exit1 | [API](../evidence/ci-specs-20261019/api.json) |
+| Navigateur réel |39 réussites/23 échecs/0 absent sur62 ; exit1 | [E2E](../evidence/ci-specs-20261019/e2e.json) |
+| Synthèse complète |122 réussites/78 échecs/0 absent sur200 ; tous les échecs de type correction | [Agrégat](../evidence/ci-specs-20261019/issues.json) |
+| Préfixes et snapshot avant tâche |22 fiches préservées, aucune ancienne IMPLEMENTATION réécrite | [Campagne](../evidence/ci-specs-20261019/README.md) |
+
+#### Écarts et limites
+
+Aucune correction applicative, modification UI, suppression/affaiblissement de test, ni fusion/modification des six PR. Les défauts et compléments sont décrits dans la revue ; la PR5 a aussi été vérifiée séparément sur ses huit scénarios d’inscription avec le harnais complété. Un job vert ne remplace pas la revue ni la preuve des mesures. Les cas futurs de pool/reprise/hexagone restent exigés lorsqu’absents ; SPEC-11/12 ne deviennent pas verts automatiquement. Aucun test du professeur fourni, aucune validation de compréhension de Maia inférée.
