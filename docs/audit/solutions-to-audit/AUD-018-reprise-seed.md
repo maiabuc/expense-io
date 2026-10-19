@@ -37,10 +37,10 @@ Pour chaque note de démonstration, le script relit la note, sa référence de r
 
 | Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
 | --- | --- | --- |
-| scripts/seed.mjs, `readReceipt` (l. 90) | Lecture de l'objet : `null` seulement pour `NoSuchKey`, toute autre panne propagée | Distinguer absent et panne |
-| scripts/seed.mjs, `ensureReceipt` (l. 102) | Dépôt si absent ou différent, puis relecture | Reçu conforme sans upload inutile |
-| scripts/seed.mjs, `seedExpenseNote` (l. 134) | Création incomplete + clé prévue en transaction, reprise selon l'état réel, finalisation de `incomplete` seulement | Même note, même clé, décisions conservées |
-| scripts/seed.mjs, `verifySeed` (l. 181) | Contrôle final note, statut, référence et contenu de l'objet | Pas de faux succès |
+| scripts/seed.mjs, `readReceipt` (l. 80) | Lecture de l'objet : `null` seulement pour `NoSuchKey`, toute autre panne propagée | Distinguer absent et panne |
+| scripts/seed.mjs, `ensureReceipt` (l. 91) | Dépôt si absent ou différent, puis relecture | Reçu conforme sans upload inutile |
+| scripts/seed.mjs, `seedExpenseNote` (l. 116) | Création incomplete + clé prévue en transaction, reprise selon l'état réel, finalisation de `incomplete` seulement | Même note, même clé, décisions conservées |
+| scripts/seed.mjs, `verifySeed` (l. 157) | Contrôle final note, statut, référence et contenu de l'objet | Pas de faux succès |
 | scripts/seed.mjs, bloc `catch` final | Message d'erreur et code de sortie 1 | Échec explicite |
 
 #### Nouveau fonctionnement
