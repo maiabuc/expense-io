@@ -20,6 +20,8 @@ npm run test:report
 
 `test:api` et `test:e2e` démarrent le build de production, PostgreSQL et LocalStack S3 dédiés, préparent le schéma et le bucket avec les scripts originaux, exécutent les scénarios puis détruisent uniquement leurs services jetables. Ne pas lancer les tests Playwright directement contre une application habituelle : les fixtures remettent à zéro les données de la DB de test. Le garde exige `ARLA_TEST_RUN=1`, une DB locale `expense_io_ci_*`, un bucket `ci-*` et interdit les ports locaux usuels 5433/4567. Les deux entreprises et tous les mots de passe sont fictifs.
 
+Deux comptes PostgreSQL sont utilisés : `DATABASE_URL` (compte de préparation, propriétaire des tables, utilisé par les migrations, le seed, les fixtures et les contrôles administratifs) et `CI_APP_DATABASE_URL` (compte applicatif limité `ci_app_login`, membre de `expense_app`, non superutilisateur et sans `BYPASSRLS`). Le serveur de production CI et les instances de panne tournent avec le compte applicatif ; `appDb()` des tests s'y connecte pour prouver la RLS. Les nouveaux essais de protection doivent s'exécuter avec ce compte : une fixture du compte de préparation ne prouve pas la RLS.
+
 Ports par défaut : 15434 (DB), 14568 (S3), 13420 (application), 13421 (instance de panne/droits limités). Pour des exécutions simultanées, affecter des valeurs distinctes à `CI_DB_PORT`, `CI_S3_PORT`, `CI_APP_PORT` (réserver aussi le port suivant). Chaque exécution possède son projet Compose ; les services utilisateur existants sont préservés. Utiliser aussi des copies de travail distinctes pour des lancements locaux simultanés : les rapports et le répertoire Playwright sont remplacés à chaque passage. GitHub utilise des machines séparées.
 
 Pour travailler sur une issue :

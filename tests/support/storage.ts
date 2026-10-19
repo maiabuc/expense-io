@@ -1,5 +1,5 @@
 import { readFile } from 'node:fs/promises'
-import { S3Client, CreateBucketCommand, HeadBucketCommand, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
+import { S3Client, CreateBucketCommand, HeadBucketCommand, PutObjectCommand, ListObjectsV2Command, DeleteObjectsCommand } from '@aws-sdk/client-s3'
 import { testEnvironment } from './environment'
 
 export function storage() {
@@ -19,4 +19,14 @@ export async function objectCount() {
   const client = storage()
   try { return (await client.send(new ListObjectsV2Command({ Bucket: testEnvironment().bucket }))).KeyCount ?? 0 }
   finally { client.destroy() }
+}
+// Les fixtures de base ne réinitialisent pas le stockage : les essais qui comptent les objets de reçu
+// repartent d'un préfixe vide (le compteur de reçu est remis à zéro avec la base, les clés se réutilisent).
+export async function viderRecus() {
+  const client = storage(); const { bucket } = testEnvironment()
+  try {
+    const listing = await client.send(new ListObjectsV2Command({ Bucket: bucket, Prefix: 'receipts/' }))
+    const objets = (listing.Contents ?? []).map(objet => ({ Key: objet.Key! }))
+    if (objets.length) await client.send(new DeleteObjectsCommand({ Bucket: bucket, Delete: { Objects: objets } }))
+  } finally { client.destroy() }
 }

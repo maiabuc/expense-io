@@ -8,7 +8,7 @@ async function withServer<T>(overrides: Record<string, string>, operation: (url:
   const port = Number(new URL(process.env.TEST_BASE_URL ?? 'http://127.0.0.1:13420').port) + 1
   const base = `http://127.0.0.1:${port}`
   const server = spawn(process.execPath, [...(overrides.CI_FIXED_TIME ? ['--import', resolve('tests/support/paris-clock.mjs')] : []), resolve('node_modules/next/dist/bin/next'), 'start', '--hostname', '127.0.0.1', '--port', String(port)],
-    { env: { ...process.env, ...overrides, AUTH_TRUST_HOST: 'true' }, stdio: ['ignore', 'pipe', 'pipe'] })
+    { env: { ...process.env, DATABASE_URL: testEnvironment().appDatabaseURL, ...overrides, AUTH_TRUST_HOST: 'true' }, stdio: ['ignore', 'pipe', 'pipe'] })
   let logs = ''
   server.stderr.on('data', chunk => { logs = (logs + String(chunk)).slice(-100000) })
   try {
