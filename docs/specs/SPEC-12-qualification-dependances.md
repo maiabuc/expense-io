@@ -4,7 +4,7 @@
 
 - Responsable : personne A. Branche : `feat/spec-12`.
 - IDs : AUD-023. Fiches : [AUD-023](../audit/solutions-to-audit/AUD-023-dependances.md).
-- Statut : préparée pour l’équipe le 17 octobre 2026 ; qualification réalisée le 18 octobre 2026, aucune mise à jour sélectionnée (voir Traçabilité et fin).
+- Statut : préparée pour l’équipe le 17 octobre 2026 ; qualification réalisée le 18 octobre 2026, révisée après revue le 19 octobre 2026 ; aucune mise à jour sélectionnée (voir Traçabilité et fin).
 - Autorisation : répartition et préparation demandées par Maia ; directions déjà retenues dans l’audit. Les conditions propres aux sujets 11/12 restent applicables.
 - Source d’audit : `265924bc7274047989e708ab635c2854d376230f`.
 - Départ documentaire : `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, fusion CI dans main. Le développeur enregistrera son vrai SHA de départ actualisé avant réalisation.
@@ -83,5 +83,5 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Chaque fiche concernée reçoit un ajout daté sous `## IMPLEMENTATION` ; conserver absolument tout le texte et les ajouts antérieurs. Indiquer quoi/où/nouveau fonctionnement, tests réels et limites. Pour AUD-019, documenter seulement la convention conservée ; pour 11/12, ne pas inventer de correction.
 - Vérifier : `node docs/audit/tools/check-append-only.mjs check --snapshot /tmp/arla-spec-12-<identifiant-unique>.json`.
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
-- Entrées IMPLEMENTATION : [AUD-023](../audit/solutions-to-audit/AUD-023-dependances.md#implementation), ajoutée le 2026-10-18 (qualification documentaire, aucun commit de code applicatif).
-- Statut de fin : qualification réalisée, critères C1/C2/C3/C4 satisfaits (sources et dates identifiées, applicabilité distinguée, cohérence Next/eslint-config-next préservée en ne touchant à rien, aucune mise à jour réalisée). Choix d'une mise à jour ciblée (next 16.4.2, sharp/source-map-js patch) laissé à une décision et un lot distincts.
+- Entrées IMPLEMENTATION : [AUD-023](../audit/solutions-to-audit/AUD-023-dependances.md#implementation), ajoutée le 2026-10-18 (qualification documentaire, aucun commit de code applicatif). Entrée de révision ajoutée le 2026-10-19 après la revue.
+- Statut de fin : qualification révisée le 19 octobre. Les conclusions du 18 octobre étaient trop absolues : l'exposition en développement était écartée alors que le dépôt utilise `next dev`, et le « risque nul » attribué à l'outillage ne tenait pas compte de la CI. Les trois contextes sont désormais séparés et chaque conclusion est qualifiée d'observation, d'hypothèse ou d'incertitude. `next@16.4.2` est proposée en P2 pour l'exposition en développement. Aucune mise à jour réalisée (C4). SPEC-12 reste en revue humaine (`manual-review`).

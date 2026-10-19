@@ -1,5 +1,7 @@
 # Qualification des alertes de dépendances — 18 octobre 2026
 
+> **Révisé le 19 octobre 2026** : les conclusions « dev uniquement, hors exécution » (endpoint MCP) et « risque nul » (chaîne ESLint) sont remplacées par la [révision en fin de document](#révision-du-19-octobre-2026--après-revue), qui sépare production, CI et développement local.
+
 SPEC-12, personne A. Départ : `7377486` (main actualisé). Commande exécutée dans ce dépôt (installation déjà isolée de tout service utilisateur, aucune modification de fichier) :
 
 ```bash
@@ -64,3 +66,36 @@ Sources primaires consultées via l'API publique GitHub Advisory (`api.github.co
 ## Limites
 
 Qualification fondée sur une recherche statique du code source (`grep`) et la configuration déclarée (`next.config.ts`) : elle ne remplace pas un test d'intrusion. Un chemin d'usage dynamique non détecté par cette recherche (ex. génération de code, import indirect) resterait non détecté par cette méthode. Aucune exploitation n'a été tentée. Toutes les dates de publication proviennent de l'API publique GitHub Advisory (`published_at`), consultée le 18 octobre 2026.
+
+## Révision du 19 octobre 2026 — après revue
+
+La [revue du 19 octobre](../../revue-pr-g4bi2004-20261019.md) relève (P2, C1/C2) deux formulations trop absolues ci-dessus : l'exposition en développement est écartée alors que le dépôt utilise `next dev`, et la chaîne ESLint est présentée comme un « risque nul ». Une recherche d'imports ne démontre pas non plus l'absence de tout chemin interne du framework. Ces passages sont conservés tels quels pour la traçabilité et sont **remplacés** par les conclusions ci-dessous, qui distinguent observation, hypothèse et incertitude.
+
+### Trois contextes d'exécution distincts
+
+| Contexte | Ce qui s'exécute réellement | Source |
+| --- | --- | --- |
+| Production | `next build` puis `next start` ; seules les dépendances de `dependencies` sont chargées en service | `package.json` (`build`, `start`) |
+| CI | `npm ci`, `npm run lint` (ESLint et sa chaîne), `next build`, `next start`, Playwright ; déclenchée sur **toute** pull request, avec `permissions: contents: read` | `.github/workflows/ci.yml` |
+| Développement local | `make dev` → `npm run dev` → **`next dev`** sur le poste du développeur, plus lint et build | `README.md:13,30`, `Makefile:46`, `package.json:6` |
+
+### Conclusions révisées par avis
+
+| Avis | Production | CI | Développement local | Niveau de certitude |
+| --- | --- | --- | --- | --- |
+| GHSA-39w2-rjm5-chcv — endpoint MCP de `next dev` | Non exposé : l'avis indique que les déploiements de production ne servent pas cet endpoint | Non exposé (`next start`) | **Exposé** : pendant que `next dev` tourne, un site malveillant visité par le développeur peut lire chemin du projet, extraits de code, inventaire des routes et journaux de développement (texte de l'avis) | Observation fondée sur l'avis primaire et les commandes du dépôt ; aucune exploitation tentée |
+| GHSA-vfj7-8cjw-p6xm — `braces` via la chaîne ESLint | Non chargé en service (`devDependencies`) | **Exposition conditionnelle** : la CI lint le contenu de toute PR ; une contribution malveillante contrôlant un motif glob lu par ESLint (configuration, motifs d'ignorance) pourrait épuiser la pile et faire échouer le job de lint. Impact : indisponibilité de ce job, pas d'accès aux secrets (lecture seule, `persist-credentials: false`) | Même condition si le développeur lint un contenu non relu | Hypothèse fondée sur l'avis ; non reproduite |
+| GHSA-68fv-2mgg-jv7q — `source-map-js` via PostCSS/Tailwind | Non exécuté par requête : PostCSS ne tourne qu'au build | **Exposition conditionnelle** au build d'une PR contenant une source map indexée forgée : blocage de la boucle d'événements du build (indisponibilité du job) | Même condition | Hypothèse ; non reproduite |
+| GHSA-wq5f-xc86-pv6w — `sharp`/librsvg | Chemin interne possible : l'endpoint `/_next/image` du framework existe sans import `next/image` et peut utiliser `sharp` pour des images locales. Le décodage SVG (librsvg) n'est pas atteint par défaut : `images.dangerouslyAllowSVG` est absent de `next.config.ts` et il n'y a pas de dossier `public/` | Idem au moment de `next start` | Idem avec `next dev` | Déduction de la configuration et des valeurs par défaut documentées ; **non vérifiée par exécution** |
+| GHSA-cjq9-62q9-8jv4 — SSRF optimisation d'image | Non affecté selon l'avis (aucun `images.remotePatterns`) | Idem | Idem | Condition explicite de l'avis primaire |
+| GHSA-vcvr-r3jv-pc5j — `next/og` ImageResponse | Non observé : aucun import `next/og` ni route `opengraph-image`/`twitter-image` qui en créerait | Idem | Idem | Recherche statique ; un import indirect généré ne serait pas couvert |
+| GHSA-3w37, GHSA-4jqv, GHSA-mcj8, GHSA-f87g — cache, Draft Mode, métadonnées | Non observé : aucune directive `"use cache"`, App Router uniquement, aucune page statique/ISR à la sortie de `next build`, aucune route d'image de métadonnées | Idem | `next dev` ne génère pas de cache SSG/ISR persistant | Recherche statique + sortie de build ; non exécuté sous charge |
+
+### Ce qui remplace « risque nul »
+
+Aucun avis n'a d'exploitation démontrée dans ce dépôt, mais plusieurs ne sont pas sans exposition :
+- **Développement local** : un avis faible mais réel (MCP de `next dev`). Atténuation sans mise à jour : ne pas laisser `next dev` tourner en naviguant sur des sites non fiables. Correctif : la mise à jour non majeure `next@16.4.2` ferme l'avis.
+- **CI** : deux expositions conditionnelles de disponibilité (`braces`, `source-map-js`), seulement avec une contribution malveillante dont le contenu est linté ou buildé. Impact : échec du job concerné, sans accès aux secrets.
+- **Production** : aucune exposition observée dans la configuration actuelle. Incertitude résiduelle sur les chemins internes du framework (`/_next/image` et `sharp`), déduits de la configuration et non vérifiés par exécution.
+
+La priorité proposée évolue : la mise à jour `next@16.4.2` devient P2 pour l'exposition en développement (et plus seulement en défense en profondeur). `braces`/`source-map-js` restent P3, avec un correctif `overrides` de faible risque. Aucune mise à jour n'est réalisée dans ce lot (C4).

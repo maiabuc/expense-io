@@ -62,3 +62,36 @@ Aucun changement de comportement applicatif : ce lot est une qualification docum
 #### Écarts et limites
 
 Qualification fondée sur une recherche statique (`grep`) et la configuration déclarée, pas sur un test d'intrusion ; un chemin d'usage dynamique non détecté par cette méthode resterait non couvert. Aucune mise à jour sélectionnée ni appliquée (conforme à C4) : les alertes restent ouvertes, avec leurs motifs d'applicabilité consignés. Si une mise à jour ciblée est décidée plus tard, la liste des contrôles à relancer est donnée dans [qualification.md](../evidence/dependances-20261018/qualification.md).
+
+### 2026-10-19 — SPEC-12, qualification nuancée après revue (personne A)
+
+Statut : qualification révisée ; **aucune mise à jour de dépendance effectuée** (C4).
+Spec : [SPEC-12](../../specs/SPEC-12-qualification-dependances.md). Révision de départ : `feat/spec-12` actualisée avec `main` `651b067`. Réalisation : commit documentaire de cette entrée.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P2, C1/C2) deux conclusions trop absolues dans l'entrée du 18 octobre et dans la qualification :
+- L'avis MCP de `next dev` était classé « hors exécution ». Or le dépôt documente `make dev` / `npm run dev`, donc `next dev` tourne sur les postes de développement.
+- La chaîne ESLint était qualifiée de « risque nul ». Or la CI lint le contenu de toute pull request.
+
+Une recherche d'imports ne prouve pas non plus l'absence de chemins internes au framework. Ces affirmations du 18 octobre sont conservées et corrigées ici. La [qualification](../evidence/dependances-20261018/qualification.md#révision-du-19-octobre-2026--après-revue) reçoit une révision qui sépare production, CI et développement local, et qui indique pour chaque avis s'il s'agit d'une observation, d'une hypothèse ou d'une incertitude.
+
+#### Nouveau fonctionnement
+
+Conclusions révisées, sans changement applicatif :
+- **Développement local** : GHSA-39w2-rjm5-chcv est **applicable**. Un site malveillant visité pendant que `next dev` tourne peut lire des données de développement. Sévérité faible ; fermé par `next@16.4.2` (non majeure), désormais proposée en P2.
+- **CI** : `braces` et `source-map-js` sont des expositions **conditionnelles** de disponibilité. Elles supposent une contribution malveillante dont le contenu est linté ou buildé, avec pour effet l'échec du job, sans accès aux secrets (droits en lecture seule).
+- **Production** : aucune exposition observée dans la configuration actuelle. Une incertitude résiduelle demeure sur `/_next/image` et `sharp` : le chemin interne existe sans import `next/image`, mais le décodage SVG n'est pas activé (`dangerouslyAllowSVG` absent). C'est déduit de la configuration, non vérifié par exécution.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| Relecture des commandes réellement exécutées par contexte | Production, CI et développement distingués | `package.json` (`dev`, `build`, `start`), `README.md:13,30`, `Makefile:46`, `.github/workflows/ci.yml` (déclenchée sur `pull_request`, `contents: read`) | [Révision](../evidence/dependances-20261018/qualification.md#révision-du-19-octobre-2026--après-revue) |
+| Avis primaire GHSA-39w2-rjm5-chcv | Condition d'exposition explicite | « Only applications run with `next dev` are affected » : exposition des postes de développement confirmée, pas de la production | Avis consulté via l'API GitHub Advisory |
+| `package.json` / `package-lock.json` | Inchangés | Inchangés | `git diff` |
+| Garde append-only | Préfixes conservés | `check` réussi avec `/tmp/arla-spec-12-review-gf.json` | Sortie locale 2026-10-19 |
+
+#### Écarts et limites
+
+Aucune exploitation tentée. Les expositions CI sont des hypothèses fondées sur le texte des avis, non reproduites. La conclusion sur `sharp` repose sur la configuration et les valeurs par défaut du framework, pas sur une exécution. SPEC-12 reste `manual-review` : la qualification doit être relue humainement, aucun test automatique ne la valide.
