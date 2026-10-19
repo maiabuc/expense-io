@@ -192,3 +192,14 @@ Branche `feat/spec-03`, départ `7377486`, `feat/spec-04` fusionnée dedans (dé
 | AUD-008 | Implémentée, validation incomplète : pool borné (1 moteur), arrêt réel sur panne/délai au lieu de remise en circulation, panne distincte d'un succès vide, `errorHandler` ajouté après qu'une vérification manuelle a reproduit un crash processus sans lui | Ne pas faire croire qu'un reçu a été analysé quand le moteur n'a pas pu travailler ; ne pas laisser une seule image corrompue planter le serveur pour tous | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation), [SPEC-03](../specs/SPEC-03-ocr-borne.md) | `test:issue -- AUD-008` 8/8 ; api 84/112, e2e 39/60 sans régression ; vérification manuelle de saturation/panne/réutilisation ; **mesures CPU/RAM, concurrence 2/4 et arrêt réel à 40s en conditions réelles non exécutées** (campagne manuelle dédiée, cf. `tests/deferred-coverage.json`) |
 
 La découverte du crash processus (tesseract.js relance l'erreur dans son gestionnaire de messages en plus de rejeter la promesse du job) vient d'une vérification manuelle allant au-delà de la suite automatisée existante, qui ne l'exerçait pas. Corrigée par un `errorHandler` no-op fourni à `createWorker`, sans effet sur le rejet normal déjà traité par le code.
+
+## SPEC-04 corrigée après revue — personne B — 19 octobre 2026
+
+`feat/spec-04` actualisée avec `main` `651b067`, puis correction des constats P1/P2 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-04-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-014 | Positivité contrôlée sur la saisie avant arrondi, borne contrôlée après arrondi | `0.001` est une valeur positive admise par le contrat C3 | [Entrée du 19 octobre](solutions-to-audit/AUD-014-validation-montant.md#implementation) | ENTREE-001/003/004 réussis |
+| AUD-004 | Options de tri dans une `Map` | Une propriété héritée ne doit jamais devenir un fragment SQL | [Entrée du 19 octobre](solutions-to-audit/AUD-004-sort-input.md#implementation) | ENTREE-002 réussi |
+
+`SPEC-04 — tests du lot` vert en local : 44/44 ; unit 21/21. SPEC-03, qui embarque SPEC-04, doit récupérer cette correction.
