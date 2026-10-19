@@ -90,3 +90,50 @@ POST avec `receipt` → format annoncé vérifié (`SUPPORTED_MIME_TYPES`, PDF r
 #### Écarts et limites
 
 Dépend de `feat/spec-04` (validation de fichiers/contenu) comme prévu par la coordination de la spec ; cette branche n'est pas encore mergée dans `main`, donc fusionnée directement dans `feat/spec-03` (SHA `19bdd4c`) pour pouvoir construire dessus — à refléter à l'intégration. **Mesures non faites, conformément à `tests/deferred-coverage.json`** (« Pool réutilisable, saturation et arrêt effectif à 40 s : mécanisme à implémenter » / « Charge CPU/RAM : campagne manuelle dédiée ») : le délai réel de 40 s n'a pas été attendu en conditions réelles (coût prohibitif pour cette vérification), la concurrence 2/4 et le CPU/RAM ne sont pas mesurés. Seule la saturation à capacité 1 (cas le plus simple) et la panne/récupération ont été vérifiées manuellement. Capacité laissée à 1 moteur, conformément à l'instruction « mesurer avant d'augmenter ».
+
+### 2026-10-19 — SPEC-03, correction après revue (personne A)
+
+Statut : implémentée et vérifiée sur le périmètre décrit (mesures de la section Validation ; limites ci-dessous).
+Spec : [SPEC-03](../../specs/SPEC-03-ocr-borne.md). Révision de départ : `feat/spec-03` actualisée avec `main` `651b067` et avec `feat/spec-04` corrigée. Réalisation : commit de cette entrée sur `feat/spec-03`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P1, C3/C4) que l'entrée du 18 octobre décrémentait la capacité *avant* la fin de l'arrêt et ignorait l'échec de `worker.terminate()` (`.catch(() => {})`). Un remplaçant pouvait donc démarrer pendant que l'ancien thread tournait encore. Elle relève aussi qu'aucun test ne prouvait l'arrêt effectif ni le remplacement. Constat confirmé à la lecture de tesseract.js : son `terminate()` demande l'arrêt du thread sans l'attendre et se résout immédiatement, ce qui n'est pas une preuve.
+
+Le pool est désormais une fabrique testable, `createEnginePool`. Un moteur est un thread réel (`worker_threads.Worker`, exposé par tesseract.js) et une fonction de reconnaissance. En cas de panne ou de délai, `stop` demande l'arrêt du thread puis attend son événement `exit`, borné à 5 s. La place n'est rendue qu'après cette confirmation. Si l'arrêt n'est pas confirmé, la place reste réservée : aucun remplaçant ne peut s'ajouter à un thread peut-être actif. L'échec est compté (`unconfirmedStops`) et journalisé (`OCR_STOP_UNCONFIRMED`), jamais ignoré. L'erreur d'origine (panne → 500, délai → 504) est relayée au client. `close()` arrête les moteurs au repos avec la même confirmation (recyclage, fin de processus).
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/lib/ocr.ts : `createEnginePool`, `confirmThreadExit`, `stop`, `close`, `stats` | Pool réécrit en fabrique ; capacité rendue après `exit` | Arrêt effectif avant remplacement |
+| src/lib/ocr.ts : `createTesseractEngine` | Adaptateur vers le thread réel de tesseract.js ; refus si le thread est inaccessible | Arrêt vérifiable |
+| src/lib/ocr.ts : `suggestFields` | Utilise le pool par défaut (capacité 1, 40 s) | Contrat de la route inchangé |
+| tests/unit/ocr-pool.test.ts | OCR-POOL-001…004 | Réutilisation, saturation, arrêt réel au délai, remplacement |
+| docs/audit/evidence/ocr-pool-20261019/ | Script et résultats de mesure | Critère C4 |
+
+#### Nouveau fonctionnement
+
+Demande OCR → `acquire` : moteur au repos réutilisé, ou création si la capacité le permet, sinon `EngineBusyError` immédiat (503) → reconnaissance en course contre le délai → succès : moteur rendu au repos, résultat renvoyé → panne ou délai : `stop` appelle `thread.terminate()` et attend l'événement `exit` → arrêt confirmé : place rendue, un remplaçant sera créé à la demande suivante → arrêt non confirmé en 5 s : place conservée, échec journalisé → dans les deux cas l'erreur d'origine est relayée à la route (500 ou 504).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:unit` | OCR-POOL-001…004 réussis | 25/25 (dont les 4 nouveaux cas) | `reports/unit.json` |
+| Réintroduction volontaire du défaut (place rendue avant confirmation) | Les tests doivent échouer | OCR-POOL-001, 003 et 004 échouent ; code restauré, 4/4 de nouveau | Sortie locale 2026-10-19 |
+| `npm run test:api` ; `npm run test:e2e` (suites complètes) | OCR-001…006, NAV-016/017 réussis | Tous réussis ; api 88/117, e2e 40/62, échecs restants hors SPEC-03/04 | `reports/api.json`, `reports/e2e.json` |
+| `npm run test:spec:report -- SPEC-03` | Contrôle par spec vert, couverture complète | `passed`, 12/12, aucune couverture manquante (référence `main` : `incomplete`, OCR-POOL absents) | `reports/SPEC-03.json` |
+| Campagne de mesure (C4) | Initialisation, reconnaissance, arrêt, concurrence 1/2/4, mémoire/CPU, délai de 40 s réel | Froid 241 ms, chaud ~43 ms, arrêt confirmé 3,2 ms ; concurrence 2/4 : 1 réussite + refus en 0,1 ms ; délai de production : rejet à 40 012 ms, `exit` observé, `threadId` −1 ; ~60 Mio par moteur | [README et résultats](../evidence/ocr-pool-20261019/README.md) |
+| Garde append-only | Préfixes conservés | `check` réussi avec `/tmp/arla-spec-03-review-gf.json` | Sortie locale 2026-10-19 |
+
+#### Écarts et limites
+
+L'entrée du 18 octobre décrivait l'arrêt comme « réel » et le remplacement comme vérifié. Ces affirmations reposaient sur `worker.terminate()` de tesseract.js, qui n'attend pas l'arrêt du thread : elles n'étaient pas prouvées. Ce point est corrigé ici, l'entrée antérieure est conservée telle quelle.
+
+Limites :
+- Le délai de production de 40 s est mesuré sur un thread bloqué synthétique, pas sur une reconnaissance Tesseract réellement longue.
+- Mesures uniques sur une machine de développement, sans grande image.
+- Si la création d'un moteur échoue après le démarrage de son thread, tesseract.js ne rend aucun accès à ce thread : son arrêt n'est pas vérifiable et la place est rendue.
+- Le `.catch(() => {})` restant porte sur la promesse d'un job abandonné après un délai, pas sur l'arrêt du moteur.
+- Capacité maintenue à 1 moteur : une augmentation exigerait une nouvelle mesure.

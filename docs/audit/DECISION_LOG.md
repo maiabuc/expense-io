@@ -203,3 +203,13 @@ La découverte du crash processus (tesseract.js relance l'erreur dans son gestio
 | AUD-004 | Options de tri dans une `Map` | Une propriété héritée ne doit jamais devenir un fragment SQL | [Entrée du 19 octobre](solutions-to-audit/AUD-004-sort-input.md#implementation) | ENTREE-002 réussi |
 
 `SPEC-04 — tests du lot` vert en local : 44/44 ; unit 21/21. SPEC-03, qui embarque SPEC-04, doit récupérer cette correction.
+
+## SPEC-03 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-03` actualisée avec `main` `651b067` puis avec `feat/spec-04` corrigée (SPEC-03 embarque SPEC-04 et en héritait les défauts). Correction du constat P1 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-03-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-008 | Pool en fabrique testable ; place rendue seulement après l'événement `exit` du thread ; arrêt non confirmé : place conservée et échec journalisé | `terminate()` de tesseract.js n'attend pas l'arrêt : il ne prouvait rien, et un remplaçant pouvait tourner en parallèle de l'ancien thread | [Entrée du 19 octobre](solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation), [mesures](evidence/ocr-pool-20261019/README.md) | OCR-POOL-001…004 réussis, et le défaut réintroduit volontairement est détecté ; `SPEC-03 — tests du lot` vert en local (12/12) ; délai de production de 40 s mesuré sur thread bloqué |
+
+Les mesures sont uniques et faites sur une machine de développement. Le délai de 40 s est vérifié sur un thread bloqué synthétique, pas sur une reconnaissance Tesseract longue. La capacité reste à 1.
