@@ -178,3 +178,13 @@ Branche `feat/spec-01`, départ `7377486` (main actualisé), réalisation `a8411
 | AUD-005 | Implémentée et vérifiée : réponse publique générique en français + HTTP 500, diagnostic interne structuré (code/opération/statut/message/stack) jamais transmis au client | Séparer feedback utilisateur et diagnostic sans changer les consommateurs UI existants | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-005-public-errors.md#implementation), [SPEC-01](../specs/SPEC-01-erreurs-api.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-005` 3/3 (PANNE-002, PANNE-003, NOTE-022) ; api 64/112 et e2e 38/60 sans aucune régression sur AUD-005 (échecs restants tous attribués à des specs non encore réalisées) |
 
 Catalogue d'erreurs par type, mapping HTTP fin et corrélation de requête restent non définis (hors périmètre explicite d'AUD-005). CI GitHub non déclenchée pour cette réalisation locale ; à confirmer à l'ouverture de la PR. SPEC-02/03/04/06/07/09 adapteront leurs propres routes au mécanisme commun livré ici.
+
+## SPEC-01 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-01` actualisée avec `main` `651b067` (dispositif CI-002 et nouveaux tests), puis correction du constat P1 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-01-review-gf.json` ; contrôle `check` réussi, entrée du 18 octobre conservée telle quelle.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Diagnostic interne expurgé avant émission (jetons, cookies, identifiants d'URL de connexion, clés sensibles, chaînes de requête d'URL) ; réponse publique inchangée | La validation du 18 octobre couvrait la réponse mais pas le journal : C2 non satisfait, corrigé | [Entrée du 19 octobre](solutions-to-audit/AUD-005-public-errors.md#implementation) | `SPEC-01 — tests du lot` vert en local : 7/7 dont PANNE-004 ; unit 21/21 ; aucune autre spec modifiée par rapport à la référence `main` |
+
+Les cas PANNE-005…007 sont placés dans la suite API : un cas AUD-005 unitaire rendrait le scénario d'outillage CI-SPEC-014 « incomplete » au lieu de « failed ». Le contrôleur AUD-011 n'est pas modifié ; point signalé pour sa revue.

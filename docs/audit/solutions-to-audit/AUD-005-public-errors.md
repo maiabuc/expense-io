@@ -70,3 +70,39 @@ Comptes réels : exécution locale macOS (Docker Desktop, Postgres 16 + LocalSta
 #### Écarts et limites
 
 Catalogue d'erreurs, mapping HTTP par type et corrélation (identifiant de requête) restent non définis, conformément à AUD-005 ("aucun standard nommé ni refonte API sélectionné") : seul le traitement générique des pannes inattendues (HTTP 500 + message contrôlé) est couvert par ce lot. Playwright e2e non réexécuté avec navigateurs additionnels (seul chromium installé). SPEC-02/03/04/06/07/09 adapteront leurs propres routes à ce mécanisme commun, hors périmètre de cette entrée.
+
+### 2026-10-19 — SPEC-01, correction après revue (personne A)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-01](../../specs/SPEC-01-erreurs-api.md). Révision de départ : `ef32e97` (`feat/spec-01` actualisée avec `main` `651b067`). Réalisation : commit de cette entrée sur `feat/spec-01`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève à juste titre (P1, critère C2) que l'entrée du 18 octobre protégeait la réponse publique mais journalisait encore le message et la stack bruts : une exception contenant un jeton ou une URL signée les recopiait dans le journal interne. Cette affirmation antérieure (« sans secrets ») était donc inexacte pour ce cas ; elle est conservée telle quelle ci-dessus et corrigée ici. `redactDiagnostic` expurge désormais le message, la stack et le code avant émission du diagnostic : en-têtes `authorization` et jetons `bearer`, cookies, identifiants intégrés à une URL de connexion (`postgres://utilisateur:motdepasse@`), paires clé=valeur sensibles (mot de passe, jeton, clés d'accès, jeton de session), paramètres `X-Amz-*`, et toute chaîne de requête d'URL (hôte et chemin conservés pour le diagnostic). Le motif entier est remplacé par `[expurgé]`, nom de clé compris.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/lib/errors.ts : `SENSITIVE_PATTERNS`, `URL_QUERY_PATTERN`, `redactDiagnostic` | Nouvelle expurgation | Diagnostic sûr par construction avant émission |
+| src/lib/errors.ts : `logInternalError` | Applique `redactDiagnostic` au code, au message et à la stack | Aucun secret recopié dans le journal |
+| tests/api/diagnostics.spec.ts | PANNE-005/006/007 | Autres formes de secrets, diagnostic utile conservé, journal + réponse sur le module réel |
+
+#### Nouveau fonctionnement
+
+Exception non prévue dans une route → `respondError(error, operation)` → `logInternalError` calcule code, message et stack puis les passe dans `redactDiagnostic` (chaîne de requête d'URL remplacée d'abord, puis chaque motif sensible) → une seule ligne JSON est émise sur `console.error` → la réponse HTTP reste `{ error: "Une erreur inattendue est survenue. Réessaie plus tard." }` avec 500, inchangée. Un message sans donnée sensible (ex. `relation "expense_notes" does not exist`) reste intact.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-19 |
+| `npm run test:unit` | Tous réussis | 21/21 (dont les 15 tests CI-SPEC du contrôleur) | `reports/unit.json` |
+| `npm run test:api` (suite complète) | PANNE-002…007 et NOTE-022 réussis | 69/120 ; les 7 cas AUD-005 réussis, dont PANNE-004 (exception SQL réelle avec jeton et signature fictifs : absents de la réponse et du journal) | `reports/api.json` |
+| `npm run test:e2e` (suite complète) | Aucune régression | 39/62 ; échecs restants hors SPEC-01 | `reports/e2e.json` |
+| `npm run test:report` puis `npm run test:spec:report -- SPEC-01` | Contrôle par spec vert | `passed`, 7/7, aucune couverture manquante ; SPEC-02 à 12 identiques à la référence `main` du 19 octobre | `reports/SPEC-01.json`, `reports/specifications.md` |
+| Garde append-only | Préfixes conservés | `check` réussi avec `/tmp/arla-spec-01-review-gf.json` | Sortie locale 2026-10-19 |
+
+#### Écarts et limites
+
+L'expurgation est une liste de motifs : un secret sous une forme non prévue (ex. valeur isolée sans clé ni préfixe reconnaissable) passerait encore. Elle s'applique au seul diagnostic émis par `respondError` ; les autres `console.error` du dépôt (ex. OCR) ne sont pas couverts par ce lot. PANNE-005/006/007 sont placés dans la suite API et non unitaire : le scénario d'outillage CI-SPEC-014 ne fournit qu'un rapport API pour SPEC-01, et un cas AUD-005 unitaire y apparaîtrait « non exécuté » (statut `incomplete` au lieu de `failed`). Le contrôleur AUD-011 n'est pas modifié par ce lot ; la remarque est transmise pour sa propre revue.
