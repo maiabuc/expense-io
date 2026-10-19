@@ -1,0 +1,126 @@
+{
+  "provenance": {
+    "revision": "4773980fa9d7123ecaf8133d0f7ec199772bba01",
+    "sourceState": "code exact PR5 avec nouveau harnais CI local",
+    "generatedAt": "2026-10-19T08:07:47.156Z",
+    "runId": "689889df-a046-406f-b38c-9752a9e8d21c",
+    "node": "v24.21.0",
+    "platform": "linux/x64",
+    "issue": "AUD-013",
+    "database": "postgres://127.0.0.1:15448/expense_io_ci_e2e",
+    "storage": "http://127.0.0.1:14588/",
+    "bucket": "ci-e2e-receipts"
+  },
+  "suite": "e2e",
+  "status": "passed",
+  "planned": 8,
+  "results": [
+    {
+      "issues": [
+        "AUD-013",
+        "AUD-019"
+      ],
+      "caseId": "INS-001",
+      "kind": "reference",
+      "title": "[AUD-013,AUD-019][INS-001][reference] nouvelle entreprise avec premier RH et connexion",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 1433,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013",
+        "AUD-019"
+      ],
+      "caseId": "INS-002",
+      "kind": "reference",
+      "title": "[AUD-013,AUD-019][INS-002][reference] domaine existant rejoint comme employé",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 1828,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-003",
+      "kind": "reference",
+      "title": "[AUD-013][INS-003][reference] email déjà utilisé refusé sans doublon",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 1139,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-004",
+      "kind": "reference",
+      "title": "[AUD-013][INS-004][reference] nom vide côté serveur refusé",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 370,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-005",
+      "kind": "reference",
+      "title": "[AUD-013][INS-005][reference] mot de passe trop court empêche la création",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 389,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-006",
+      "kind": "correction",
+      "title": "[AUD-013][INS-006][correction] panne de création du compte ne laisse pas une entreprise orpheline",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 825,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-007",
+      "kind": "reference",
+      "title": "[AUD-013][INS-007][reference] inscriptions simultanées donnent un seul premier RH",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 2485,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-008",
+      "kind": "reference",
+      "title": "[AUD-013][INS-008][reference] un échec de connexion automatique ne supprime pas le compte validé",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 762,
+      "errors": [],
+      "retry": 0
+    }
+  ],
+  "invalid": []
+}

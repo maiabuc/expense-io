@@ -1,0 +1,1671 @@
+{
+  "provenance": {
+    "revision": "73774862cb4f1b172d2b15bdbcb00c75b7cff6c6",
+    "sourceState": "diff local CI par spec du19octobre",
+    "generatedAt": "2026-10-19T08:03:38.076Z",
+    "runId": "88015fe1-209c-4a47-822c-2fd7ebd00d82",
+    "node": "v24.21.0",
+    "platform": "linux/x64",
+    "issue": null,
+    "database": "postgres://127.0.0.1:15445/expense_io_ci_api",
+    "storage": "http://127.0.0.1:14585/",
+    "bucket": "ci-api-receipts"
+  },
+  "suite": "api",
+  "status": "failed",
+  "planned": 117,
+  "results": [
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "AUTH-004",
+      "kind": "reference",
+      "title": "[AUD-011][AUTH-004][reference] toutes les routes métier refusent les appels anonymes",
+      "suite": "api",
+      "status": "passed",
+      "duration": 427,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "AUTH-005",
+      "kind": "reference",
+      "title": "[AUD-011][AUTH-005][reference] méthodes non déclarées refusées",
+      "suite": "api",
+      "status": "passed",
+      "duration": 114,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "AUTH-001",
+      "kind": "reference",
+      "title": "[AUD-011][AUTH-001][reference] connexion réelle Credentials et session",
+      "suite": "api",
+      "status": "passed",
+      "duration": 65,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "AUTH-002",
+      "kind": "reference",
+      "title": "[AUD-011][AUTH-002][reference] mot de passe incorrect sans session",
+      "suite": "api",
+      "status": "passed",
+      "duration": 64,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "AUTH-003",
+      "kind": "reference",
+      "title": "[AUD-011][AUTH-003][reference] lecture propriétaire interdite sans session",
+      "suite": "api",
+      "status": "passed",
+      "duration": 40,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-003"
+      ],
+      "caseId": "PANNE-001",
+      "kind": "correction",
+      "title": "[AUD-003][PANNE-001][correction] une panne upload ne laisse pas une note pending sans reçu",
+      "suite": "api",
+      "status": "failed",
+      "duration": 936,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-005"
+      ],
+      "caseId": "PANNE-002",
+      "kind": "correction",
+      "title": "[AUD-005][PANNE-002][correction] erreur de stockage sans détail technique public",
+      "suite": "api",
+      "status": "failed",
+      "duration": 938,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoHaveProperty\u001b[2m(\u001b[22m\u001b[32mpath\u001b[39m\u001b[2m)\u001b[22m\n\nExpected path: not \u001b[32m\"stack\"\u001b[39m\n\nReceived value: \u001b[31m\"NoSuchBucket: The specified bucket does not exist\u001b[39m\n\u001b[31m    at S3RestXmlProtocol.handleError (/app/node_modules/@aws-sdk/core/dist-cjs/submodules/protocols/index.js:2834:27)\u001b[39m\n\u001b[31m    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\u001b[39m\n\u001b[31m    at async S3RestXmlProtocol.deserializeResponse (/app/node_modules/@smithy/core/dist-cjs/submodules/protocols/index.js:406:13)\u001b[39m\n\u001b[31m    at async /app/node_modules/@smithy/core/dist-cjs/submodules/schema/index.js:23:24\u001b[39m\n\u001b[31m    at async /app/node_modules/@aws-sdk/middleware-sdk-s3/dist-cjs/submodules/s3/index.js:366:20\u001b[39m\n\u001b[31m    at async /app/node_modules/@smithy/core/dist-cjs/submodules/retry/index.js:175:50\u001b[39m\n\u001b[31m    at async /app/node_modules/@aws-sdk/checksums/dist-cjs/submodules/flexible-checksums/index.js:234:24\u001b[39m\n\u001b[31m    at async /app/node_modules/@aws-sdk/middleware-sdk-s3/dist-cjs/submodules/s3/index.js:62:28\u001b[39m\n\u001b[31m    at async /app/node_modules/@aws-sdk/middleware-sdk-s3/dist-cjs/submodules/s3/index.js:89:20\u001b[39m\n\u001b[31m    at async /app/node_modules/@aws-sdk/core/dist-cjs/submodules/client/index.js:125:26\"\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-009"
+      ],
+      "caseId": "RLS-001",
+      "kind": "correction",
+      "title": "[AUD-009][RLS-001][correction] le compte applicatif applique réellement RLS",
+      "suite": "api",
+      "status": "failed",
+      "duration": 74,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-009"
+      ],
+      "caseId": "RLS-002",
+      "kind": "correction",
+      "title": "[AUD-009][RLS-002][correction] une politique RH ne donne pas accès à une autre entreprise",
+      "suite": "api",
+      "status": "failed",
+      "duration": 105,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "DEC-001",
+      "kind": "reference",
+      "title": "[AUD-007][DEC-001][reference] approbation manager persistée puis répétition refusée",
+      "suite": "api",
+      "status": "passed",
+      "duration": 238,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "DEC-002",
+      "kind": "reference",
+      "title": "[AUD-007][DEC-002][reference] rejet RH persisté puis répétition refusée",
+      "suite": "api",
+      "status": "passed",
+      "duration": 106,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DEC-003",
+      "kind": "reference",
+      "title": "[AUD-006][DEC-003][reference] manager ne décide pas une note étrangère ou absente",
+      "suite": "api",
+      "status": "passed",
+      "duration": 193,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DEC-004",
+      "kind": "reference",
+      "title": "[AUD-006][DEC-004][reference] RH ne décide pas une note hors périmètre",
+      "suite": "api",
+      "status": "passed",
+      "duration": 177,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "DEC-005",
+      "kind": "correction",
+      "title": "[AUD-007][DEC-005][correction] deux décisions HTTP manager opposées ne s’écrasent pas",
+      "suite": "api",
+      "status": "failed",
+      "duration": 182,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    200,\u001b[22m\n\u001b[32m-   409,\u001b[39m\n\u001b[31m+   200,\u001b[39m\n\u001b[2m  ]\u001b[22m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "DEC-006",
+      "kind": "correction",
+      "title": "[AUD-007][DEC-006][correction] deux décisions HTTP RH opposées ne s’écrasent pas",
+      "suite": "api",
+      "status": "failed",
+      "duration": 179,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    200,\u001b[22m\n\u001b[32m-   409,\u001b[39m\n\u001b[31m+   200,\u001b[39m\n\u001b[2m  ]\u001b[22m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "DEC-007",
+      "kind": "correction",
+      "title": "[AUD-007][DEC-007][correction] deux décisions HTTP identiques ont une seule gagnante",
+      "suite": "api",
+      "status": "failed",
+      "duration": 267,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    200,\u001b[22m\n\u001b[32m-   409,\u001b[39m\n\u001b[31m+   200,\u001b[39m\n\u001b[2m  ]\u001b[22m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-005"
+      ],
+      "caseId": "PANNE-003",
+      "kind": "correction",
+      "title": "[AUD-005][PANNE-003][correction] la panne produit un diagnostic interne structuré sans secret",
+      "suite": "api",
+      "status": "failed",
+      "duration": 1287,
+      "errors": [
+        "Error: Code technique et opération attendus dans le journal interne.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeDefined\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mundefined\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-009"
+      ],
+      "caseId": "RLS-003",
+      "kind": "reference",
+      "title": "[AUD-009][RLS-003][reference] contexte absent puis connexion réutilisée sans fuite du propriétaire",
+      "suite": "api",
+      "status": "passed",
+      "duration": 94,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-009"
+      ],
+      "caseId": "RLS-004",
+      "kind": "reference",
+      "title": "[AUD-009][RLS-004][reference] propriétaire ne peut ni approuver sa note ni modifier librement son montant",
+      "suite": "api",
+      "status": "passed",
+      "duration": 53,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-009"
+      ],
+      "caseId": "RLS-005",
+      "kind": "correction",
+      "title": "[AUD-009][RLS-005][correction] création et finalisation réussissent sans contourner RLS",
+      "suite": "api",
+      "status": "failed",
+      "duration": 1382,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-015"
+      ],
+      "caseId": "DATE-001",
+      "kind": "correction",
+      "title": "[AUD-015][DATE-001][correction] à minuit Paris le serveur accepte aujourd’hui et refuse demain",
+      "suite": "api",
+      "status": "failed",
+      "duration": 1327,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1\u001b[39m\nReceived: \u001b[31m2\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-005"
+      ],
+      "caseId": "PANNE-004",
+      "kind": "correction",
+      "title": "[AUD-005][PANNE-004][correction] le journal ne conserve pas un jeton ou une URL signée présents dans une exception",
+      "suite": "api",
+      "status": "failed",
+      "duration": 812,
+      "errors": [
+        "Error: Aucun diagnostic privé dans la réponse publique.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m",
+        "Error: Aucun jeton ou signature privée dans les diagnostics internes.\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mfalse\u001b[39m\nReceived: \u001b[31mtrue\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-003"
+      ],
+      "caseId": "NOTE-001",
+      "kind": "reference",
+      "title": "[AUD-003][NOTE-001][reference] création persistée et visible dans la liste",
+      "suite": "api",
+      "status": "passed",
+      "duration": 292,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-002",
+      "kind": "reference",
+      "title": "[G14][NOTE-002][reference] dépôt légitime image/png",
+      "suite": "api",
+      "status": "passed",
+      "duration": 77,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-003",
+      "kind": "reference",
+      "title": "[G14][NOTE-003][reference] dépôt légitime image/jpeg",
+      "suite": "api",
+      "status": "passed",
+      "duration": 99,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-004",
+      "kind": "reference",
+      "title": "[G14][NOTE-004][reference] dépôt légitime image/webp",
+      "suite": "api",
+      "status": "passed",
+      "duration": 98,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-005",
+      "kind": "reference",
+      "title": "[G14][NOTE-005][reference] dépôt légitime application/pdf",
+      "suite": "api",
+      "status": "passed",
+      "duration": 95,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-006",
+      "kind": "reference",
+      "title": "[AUD-014][NOTE-006][reference] montant zéro refusé sans note",
+      "suite": "api",
+      "status": "passed",
+      "duration": 112,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-007",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-007][correction] montant invalide 12abc refusé",
+      "suite": "api",
+      "status": "failed",
+      "duration": 120,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-008",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-008][correction] montant invalide 1.2.3 refusé",
+      "suite": "api",
+      "status": "failed",
+      "duration": 176,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-009",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-009][correction] montant invalide 1,2,3 refusé",
+      "suite": "api",
+      "status": "failed",
+      "duration": 202,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-010",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-010][correction] montant invalide 1,2.3 refusé",
+      "suite": "api",
+      "status": "failed",
+      "duration": 204,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-011",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-011][correction] montant invalide NaN refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 201,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-012",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-012][correction] montant invalide Infinity refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 126,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-013",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-013][correction] montant invalide -1 refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 115,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-014",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-014][correction] virgule décimale équivalente au point",
+      "suite": "api",
+      "status": "failed",
+      "duration": 89,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m1.2\u001b[39m\nReceived: \u001b[31m1\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-015",
+      "kind": "reference",
+      "title": "[AUD-014][NOTE-015][reference] arrondi PostgreSQL des décimales supplémentaires conservé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 164,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-015"
+      ],
+      "caseId": "NOTE-016",
+      "kind": "correction",
+      "title": "[AUD-015][NOTE-016][correction] date invalide ou interdite ''",
+      "suite": "api",
+      "status": "failed",
+      "duration": 136,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-015"
+      ],
+      "caseId": "NOTE-017",
+      "kind": "correction",
+      "title": "[AUD-015][NOTE-017][correction] date invalide ou interdite '2026-02-30'",
+      "suite": "api",
+      "status": "failed",
+      "duration": 183,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-015"
+      ],
+      "caseId": "NOTE-018",
+      "kind": "correction",
+      "title": "[AUD-015][NOTE-018][correction] date invalide ou interdite '2023-02-29'",
+      "suite": "api",
+      "status": "failed",
+      "duration": 174,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-015"
+      ],
+      "caseId": "NOTE-019",
+      "kind": "correction",
+      "title": "[AUD-015][NOTE-019][correction] date invalide ou interdite '2099-01-01'",
+      "suite": "api",
+      "status": "failed",
+      "duration": 213,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-015"
+      ],
+      "caseId": "NOTE-020",
+      "kind": "correction",
+      "title": "[AUD-015][NOTE-020][correction] date invalide ou interdite '01/10/2026'",
+      "suite": "api",
+      "status": "failed",
+      "duration": 161,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-015"
+      ],
+      "caseId": "NOTE-021",
+      "kind": "reference",
+      "title": "[AUD-015][NOTE-021][reference] date bissextile réelle acceptée",
+      "suite": "api",
+      "status": "passed",
+      "duration": 114,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-005"
+      ],
+      "caseId": "NOTE-022",
+      "kind": "correction",
+      "title": "[AUD-005][NOTE-022][correction] erreur de date sans stack publique ni message SQL brut",
+      "suite": "api",
+      "status": "failed",
+      "duration": 66,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mnot\u001b[2m.\u001b[22mtoHaveProperty\u001b[2m(\u001b[22m\u001b[32mpath\u001b[39m\u001b[2m)\u001b[22m\n\nExpected path: not \u001b[32m\"stack\"\u001b[39m\n\nReceived value: \u001b[31m\"error: date/time field value out of range: \\\"2026-02-30\\\"\u001b[39m\n\u001b[31m    at /app/node_modules/pg/lib/client.js:694:17\u001b[39m\n\u001b[31m    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\u001b[39m\n\u001b[31m    at async /app/.next/server/chunks/_06xqh46._.js:1:1629\u001b[39m\n\u001b[31m    at async o (/app/.next/server/chunks/[root-of-the-server]__1nq7n4k._.js:561:2049)\u001b[39m\n\u001b[31m    at async d (/app/.next/server/chunks/_06xqh46._.js:1:1583)\u001b[39m\n\u001b[31m    at async rV.do (/app/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:23405)\u001b[39m\n\u001b[31m    at async rV.handle (/app/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:28801)\u001b[39m\n\u001b[31m    at async Y (/app/.next/server/chunks/_06xqh46._.js:3:3487)\u001b[39m\n\u001b[31m    at async rV.handleResponse (/app/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:130297)\u001b[39m\n\u001b[31m    at async Z (/app/.next/server/chunks/_06xqh46._.js:3:4565)\"\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-023",
+      "kind": "correction",
+      "title": "[G14][NOTE-023][correction] texte déguisé en PNG refusé avant toute écriture",
+      "suite": "api",
+      "status": "failed",
+      "duration": 218,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-024",
+      "kind": "reference",
+      "title": "[G14][NOTE-024][reference] type de reçu non supporté refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 136,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-025",
+      "kind": "reference",
+      "title": "[G14][NOTE-025][reference] borne de taille 10485760 octets",
+      "suite": "api",
+      "status": "passed",
+      "duration": 228,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-026",
+      "kind": "reference",
+      "title": "[G14][NOTE-026][reference] borne de taille 10485761 octets",
+      "suite": "api",
+      "status": "passed",
+      "duration": 106,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "NOTE-027",
+      "kind": "reference",
+      "title": "[AUD-011][NOTE-027][reference] description vide refusée",
+      "suite": "api",
+      "status": "passed",
+      "duration": 77,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-028",
+      "kind": "reference",
+      "title": "[G14][NOTE-028][reference] reçu absent refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 66,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-004"
+      ],
+      "caseId": "LIST-001",
+      "kind": "reference",
+      "title": "[AUD-004][LIST-001][reference] liste propriétaire et tri par défaut conservés",
+      "suite": "api",
+      "status": "passed",
+      "duration": 64,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-004"
+      ],
+      "caseId": "LIST-002",
+      "kind": "correction",
+      "title": "[AUD-004][LIST-002][correction] option nommée newest",
+      "suite": "api",
+      "status": "failed",
+      "duration": 82,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-004"
+      ],
+      "caseId": "LIST-003",
+      "kind": "correction",
+      "title": "[AUD-004][LIST-003][correction] option nommée amount_asc",
+      "suite": "api",
+      "status": "failed",
+      "duration": 171,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-004"
+      ],
+      "caseId": "LIST-004",
+      "kind": "correction",
+      "title": "[AUD-004][LIST-004][correction] option nommée AMOUNT_DESC",
+      "suite": "api",
+      "status": "failed",
+      "duration": 164,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m200\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-004"
+      ],
+      "caseId": "LIST-005",
+      "kind": "correction",
+      "title": "[AUD-004][LIST-005][correction] tri inconnu rejeté avant exécution SQL",
+      "suite": "api",
+      "status": "failed",
+      "duration": 175,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-004"
+      ],
+      "caseId": "LIST-006",
+      "kind": "correction",
+      "title": "[AUD-004][LIST-006][correction] expression SQL libre refusée",
+      "suite": "api",
+      "status": "failed",
+      "duration": 117,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "RECU-001",
+      "kind": "reference",
+      "title": "[AUD-006][RECU-001][reference] reçu du propriétaire réellement accessible",
+      "suite": "api",
+      "status": "passed",
+      "duration": 132,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "RECU-002",
+      "kind": "reference",
+      "title": "[AUD-006][RECU-002][reference] reçu propriétaire étranger ou absent refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 68,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "RECU-003",
+      "kind": "reference",
+      "title": "[AUD-006][RECU-003][reference] reçu propriétaire étranger ou absent refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 67,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "LIST-007",
+      "kind": "reference",
+      "title": "[AUD-011][LIST-007][reference] liste vide pour un compte sans note",
+      "suite": "api",
+      "status": "passed",
+      "duration": 79,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-029",
+      "kind": "reference",
+      "title": "[AUD-014][NOTE-029][reference] montant maximal numeric dix chiffres dont deux décimales accepté",
+      "suite": "api",
+      "status": "passed",
+      "duration": 78,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "NOTE-030",
+      "kind": "correction",
+      "title": "[AUD-014][NOTE-030][correction] dépassement de borne monétaire refusé sans écriture",
+      "suite": "api",
+      "status": "failed",
+      "duration": 94,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-031",
+      "kind": "correction",
+      "title": "[G14][NOTE-031][correction] faux PDF refusé avant écriture et upload",
+      "suite": "api",
+      "status": "failed",
+      "duration": 185,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G14"
+      ],
+      "caseId": "NOTE-032",
+      "kind": "correction",
+      "title": "[G14][NOTE-032][correction] contenu PNG déclaré PDF refusé avant écriture et upload",
+      "suite": "api",
+      "status": "failed",
+      "duration": 214,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m3\u001b[39m\nReceived: \u001b[31m4\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "ENTREE-001",
+      "kind": "reference",
+      "title": "[AUD-014][ENTREE-001][reference] petites valeurs positives admises avant leur arrondi PostgreSQL",
+      "suite": "api",
+      "status": "passed",
+      "duration": 155,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-004"
+      ],
+      "caseId": "ENTREE-002",
+      "kind": "correction",
+      "title": "[AUD-004][ENTREE-002][correction] les propriétés du prototype ne sont pas des options de tri",
+      "suite": "api",
+      "status": "failed",
+      "duration": 80,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "ENTREE-003",
+      "kind": "correction",
+      "title": "[AUD-014][ENTREE-003][correction] grammaire décimale conservée et notation exponentielle interdite",
+      "suite": "api",
+      "status": "failed",
+      "duration": 255,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m201\u001b[39m\nReceived: \u001b[31m400\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m201\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-014"
+      ],
+      "caseId": "ENTREE-004",
+      "kind": "correction",
+      "title": "[AUD-014][ENTREE-004][correction] la borne monétaire est vérifiée après arrondi exact",
+      "suite": "api",
+      "status": "failed",
+      "duration": 172,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "OCR-001",
+      "kind": "reference",
+      "title": "[AUD-008][OCR-001][reference] un reçu lisible est réellement reconnu",
+      "suite": "api",
+      "status": "passed",
+      "duration": 728,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "OCR-002",
+      "kind": "reference",
+      "title": "[AUD-008][OCR-002][reference] une analyse réussie sans champ retourne un objet vide",
+      "suite": "api",
+      "status": "passed",
+      "duration": 397,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "OCR-003",
+      "kind": "correction",
+      "title": "[AUD-008][OCR-003][correction] une image corrompue est une erreur et pas un succès vide",
+      "suite": "api",
+      "status": "failed",
+      "duration": 380,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m500\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "OCR-004",
+      "kind": "correction",
+      "title": "[AUD-008][OCR-004][correction] PDF n’est pas ajouté aux formats OCR acceptés",
+      "suite": "api",
+      "status": "failed",
+      "duration": 203,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "OCR-005",
+      "kind": "reference",
+      "title": "[AUD-008][OCR-005][reference] reçu absent refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 147,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "OCR-006",
+      "kind": "reference",
+      "title": "[AUD-008][OCR-006][reference] OCR interdit sans session",
+      "suite": "api",
+      "status": "passed",
+      "duration": 79,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-001",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-001][reference] liste manager limitée aux collaborateurs directs pending",
+      "suite": "api",
+      "status": "passed",
+      "duration": 138,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-002",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-002][reference] liste RH limitée aux managers racines de son entreprise",
+      "suite": "api",
+      "status": "passed",
+      "duration": 103,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-003",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-003][reference] annuaire RH de la même entreprise sans les RH",
+      "suite": "api",
+      "status": "passed",
+      "duration": 100,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "DROIT-004",
+      "kind": "reference",
+      "title": "[AUD-011][DROIT-004][reference] rôle a_employee refusé sur /api/manager/expense-notes",
+      "suite": "api",
+      "status": "passed",
+      "duration": 80,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "DROIT-005",
+      "kind": "reference",
+      "title": "[AUD-011][DROIT-005][reference] rôle a_employee refusé sur /api/hr/expense-notes",
+      "suite": "api",
+      "status": "passed",
+      "duration": 102,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "DROIT-006",
+      "kind": "reference",
+      "title": "[AUD-011][DROIT-006][reference] rôle a_root refusé sur /api/hr/users",
+      "suite": "api",
+      "status": "passed",
+      "duration": 64,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "DROIT-007",
+      "kind": "reference",
+      "title": "[AUD-011][DROIT-007][reference] rôle a_hr refusé sur /api/manager/expense-notes",
+      "suite": "api",
+      "status": "passed",
+      "duration": 85,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "DROIT-008",
+      "kind": "reference",
+      "title": "[AUD-011][DROIT-008][reference] appel anonyme /api/manager/expense-notes refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 68,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "DROIT-009",
+      "kind": "reference",
+      "title": "[AUD-011][DROIT-009][reference] appel anonyme /api/hr/expense-notes refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 49,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "DROIT-010",
+      "kind": "reference",
+      "title": "[AUD-011][DROIT-010][reference] appel anonyme /api/hr/users refusé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 60,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-011",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-011][reference] périmètre du reçu manager : notes.employee",
+      "suite": "api",
+      "status": "passed",
+      "duration": 112,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-012",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-012][reference] périmètre du reçu manager : notes.approved",
+      "suite": "api",
+      "status": "passed",
+      "duration": 105,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-013",
+      "kind": "correction",
+      "title": "[AUD-006][DROIT-013][correction] périmètre du reçu manager : notes.unrelated",
+      "suite": "api",
+      "status": "failed",
+      "duration": 109,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m404\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-014",
+      "kind": "correction",
+      "title": "[AUD-006][DROIT-014][correction] périmètre du reçu manager : notes.b_employee",
+      "suite": "api",
+      "status": "failed",
+      "duration": 109,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m404\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-015",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-015][reference] périmètre du reçu manager : absent",
+      "suite": "api",
+      "status": "passed",
+      "duration": 106,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-016",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-016][reference] périmètre du reçu RH : notes.root",
+      "suite": "api",
+      "status": "passed",
+      "duration": 74,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-017",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-017][reference] périmètre du reçu RH : notes.b_root",
+      "suite": "api",
+      "status": "passed",
+      "duration": 72,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "DROIT-018",
+      "kind": "reference",
+      "title": "[AUD-006][DROIT-018][reference] périmètre du reçu RH : notes.employee",
+      "suite": "api",
+      "status": "passed",
+      "duration": 59,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G10"
+      ],
+      "caseId": "DROIT-019",
+      "kind": "correction",
+      "title": "[G10][DROIT-019][correction] rôle manager rétrogradé pris en compte sans reconnexion",
+      "suite": "api",
+      "status": "failed",
+      "duration": 72,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m401\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G10"
+      ],
+      "caseId": "DROIT-020",
+      "kind": "correction",
+      "title": "[G10][DROIT-020][correction] rôle RH rétrogradé pris en compte sans reconnexion",
+      "suite": "api",
+      "status": "failed",
+      "duration": 156,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m403\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "G10"
+      ],
+      "caseId": "DROIT-021",
+      "kind": "correction",
+      "title": "[G10][DROIT-021][correction] compte supprimé ne garde pas son accès propriétaire",
+      "suite": "api",
+      "status": "failed",
+      "duration": 135,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m401\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-001",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-001][correction] corps invalide sans changement : {",
+      "suite": "api",
+      "status": "failed",
+      "duration": 138,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"10000000-0000-4000-8000-000000000102\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-002",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-002][correction] corps invalide sans changement : null",
+      "suite": "api",
+      "status": "failed",
+      "duration": 131,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"10000000-0000-4000-8000-000000000102\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-003",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-003][correction] corps invalide sans changement : []",
+      "suite": "api",
+      "status": "failed",
+      "duration": 139,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"10000000-0000-4000-8000-000000000102\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-004",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-004][correction] corps invalide sans changement : 42",
+      "suite": "api",
+      "status": "failed",
+      "duration": 124,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"10000000-0000-4000-8000-000000000102\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-005",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-005][correction] corps invalide sans changement : \"texte\"",
+      "suite": "api",
+      "status": "failed",
+      "duration": 105,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"10000000-0000-4000-8000-000000000102\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-006",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-006][correction] corps invalide sans changement : {}",
+      "suite": "api",
+      "status": "failed",
+      "duration": 109,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"10000000-0000-4000-8000-000000000102\"\u001b[39m\nReceived: \u001b[31mnull\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-007",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-007][correction] corps invalide sans changement : {\"managerId\":42}",
+      "suite": "api",
+      "status": "failed",
+      "duration": 109,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-008",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-008][correction] corps invalide sans changement : {\"managerId\":\"invalide\"}",
+      "suite": "api",
+      "status": "failed",
+      "duration": 126,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m500\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-009",
+      "kind": "reference",
+      "title": "[AUD-020][AFF-009][reference] null explicite retire le manager",
+      "suite": "api",
+      "status": "passed",
+      "duration": 153,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "AFF-010",
+      "kind": "reference",
+      "title": "[AUD-006][AFF-010][reference] affectation à un manager autorisé",
+      "suite": "api",
+      "status": "passed",
+      "duration": 72,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "AFF-011",
+      "kind": "correction",
+      "title": "[AUD-006][AFF-011][correction] affectation hors périmètre ou manager invalide",
+      "suite": "api",
+      "status": "failed",
+      "duration": 96,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m409\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "AFF-012",
+      "kind": "reference",
+      "title": "[AUD-006][AFF-012][reference] affectation hors périmètre ou manager invalide",
+      "suite": "api",
+      "status": "passed",
+      "duration": 146,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "AFF-013",
+      "kind": "reference",
+      "title": "[AUD-006][AFF-013][reference] affectation hors périmètre ou manager invalide",
+      "suite": "api",
+      "status": "passed",
+      "duration": 75,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "AFF-014",
+      "kind": "reference",
+      "title": "[AUD-006][AFF-014][reference] affectation hors périmètre ou manager invalide",
+      "suite": "api",
+      "status": "passed",
+      "duration": 88,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-021"
+      ],
+      "caseId": "AFF-015",
+      "kind": "reference",
+      "title": "[AUD-021][AFF-015][reference] auto-affectation refusée",
+      "suite": "api",
+      "status": "passed",
+      "duration": 88,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-021"
+      ],
+      "caseId": "AFF-016",
+      "kind": "correction",
+      "title": "[AUD-021][AFF-016][correction] boucle à deux managers refusée",
+      "suite": "api",
+      "status": "failed",
+      "duration": 88,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m409\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-021"
+      ],
+      "caseId": "AFF-017",
+      "kind": "correction",
+      "title": "[AUD-021][AFF-017][correction] boucle longue refusée",
+      "suite": "api",
+      "status": "failed",
+      "duration": 133,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m409\u001b[39m\nReceived: \u001b[31m200\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-021"
+      ],
+      "caseId": "AFF-018",
+      "kind": "correction",
+      "title": "[AUD-021][AFF-018][correction] deux affectations simultanées ne créent pas de boucle",
+      "suite": "api",
+      "status": "failed",
+      "duration": 214,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // deep equality\u001b[22m\n\n\u001b[32m- Expected  - 1\u001b[39m\n\u001b[31m+ Received  + 1\u001b[39m\n\n\u001b[2m  Array [\u001b[22m\n\u001b[2m    200,\u001b[22m\n\u001b[32m-   409,\u001b[39m\n\u001b[31m+   200,\u001b[39m\n\u001b[2m  ]\u001b[22m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-020"
+      ],
+      "caseId": "AFF-019",
+      "kind": "correction",
+      "title": "[AUD-020][AFF-019][correction] erreurs JSON, structure, champ absent et identifiant sont différenciées",
+      "suite": "api",
+      "status": "failed",
+      "duration": 115,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m400\u001b[39m\nReceived: \u001b[31m200\u001b[39m",
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"string\"\u001b[39m\nReceived: \u001b[31m\"undefined\"\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-018"
+      ],
+      "caseId": "SEED-001",
+      "kind": "reference",
+      "title": "[AUD-018][SEED-001][reference] seed complet relançable sans doublon",
+      "suite": "api",
+      "status": "passed",
+      "duration": 1711,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-018"
+      ],
+      "caseId": "SEED-002",
+      "kind": "correction",
+      "title": "[AUD-018][SEED-002][correction] reprise du seed répare la note après panne du reçu",
+      "suite": "api",
+      "status": "failed",
+      "duration": 2003,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32mtrue\u001b[39m\nReceived: \u001b[31mfalse\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-018"
+      ],
+      "caseId": "SEED-003",
+      "kind": "reference",
+      "title": "[AUD-018][SEED-003][reference] relance du seed conserve une décision existante",
+      "suite": "api",
+      "status": "passed",
+      "duration": 1480,
+      "errors": [],
+      "retry": 0
+    }
+  ],
+  "invalid": []
+}
