@@ -188,3 +188,13 @@ Branche `feat/spec-02`, départ `7377486` (main actualisé, sans `feat/spec-01` 
 | AUD-016 | Implémentée et vérifiée : les 12 appels fetch des trois écrans libèrent leur état actif en `finally` et affichent un message sûr au `catch` (rejet réseau ou JSON illisible) ; saisie conservée après échec, pas de retry automatique | Rendre les actions utilisables après une panne sans transformer une absence de réponse en certitude d'échec serveur | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation), [SPEC-02](../specs/SPEC-02-recuperation-ui.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-016` 32/32 (NET-001…032) ; e2e 58/60 (AUD-016 0 échec, 2 échecs restants hors périmètre sur AUD-013/017) |
 
 AUD-005 échoue encore sur cette branche (api 61/112) uniquement parce que `feat/spec-01` n'y est pas mergée : ce n'est pas une régression de SPEC-02, les deux branches ne modifient pas les mêmes fichiers. À réévaluer à l'intégration des deux PR.
+
+## SPEC-02 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-02` actualisée avec `main` `651b067`, puis correction du constat P2 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-02-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-016 | Le champ `error` d'une réponse non réussie est affiché s'il est lisible, repli sinon, sur les huit chemins qui l'ignoraient | Un 503 « service occupé » ne doit pas être présenté comme une panne générique | [Entrée du 19 octobre](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation) | `SPEC-02 — tests du lot` vert en local : 33/33 dont NET-033 ; unit 21/21 |
+
+La sûreté du texte affiché suppose le contrat serveur de SPEC-01 : intégrer SPEC-01 avec ou avant SPEC-02.
