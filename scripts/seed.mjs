@@ -3,11 +3,14 @@
 // rattaché, et une note de frais en attente pour chacun des deux (avec un
 // vrai reçu uploadé) — pour qu'il n'y ait aucune étape manuelle (signup,
 // promotion de rôle, soumission d'une note) avant de pouvoir naviguer.
-// Idempotent : relançable sans dupliquer les comptes ni les notes.
+// Idempotent : relançable sans dupliquer les comptes ni les notes, et capable de
+// terminer une préparation interrompue (note sans reçu, reçu sans référence,
+// référence sans objet) sur la même note, en conservant approved et rejected.
+// La commande ne réussit que si toutes les données de démonstration sont complètes.
 import bcrypt from 'bcryptjs'
 import { config as loadEnv } from 'dotenv'
 import { Pool } from 'pg'
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 loadEnv({ quiet: true })
 
@@ -73,26 +76,95 @@ async function upsertUser(email, name, password, role, companyId, managerId = nu
   return inserted.rows[0].id
 }
 
-async function seedExpenseNote(userId, description, amount) {
-  const existing = await pool.query(
-    'SELECT id FROM expense_notes WHERE user_id = $1 AND description = $2',
+// Lit l'objet stocké : null s'il n'existe pas ; toute autre panne est propagée (jamais un faux « absent »).
+async function readReceipt(key) {
+  try {
+    const result = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: key }))
+    return Buffer.from(await result.Body.transformToByteArray())
+  } catch (error) {
+    if (error?.name === 'NoSuchKey') return null
+    throw error
+  }
+}
+
+// Dépose le reçu de démonstration seulement s'il manque ou diffère, puis relit l'objet.
+async function ensureReceipt(key) {
+  const stored = await readReceipt(key)
+  if (!stored || !stored.equals(RECEIPT_PNG)) {
+    await s3.send(
+      new PutObjectCommand({ Bucket: bucket, Key: key, Body: RECEIPT_PNG, ContentType: 'image/png' })
+    )
+    const verified = await readReceipt(key)
+    if (!verified || !verified.equals(RECEIPT_PNG)) {
+      throw new Error(`Reçu de démonstration non conforme après dépôt : ${key}`)
+    }
+  }
+}
+
+async function findNote(userId, description) {
+  const found = await pool.query(
+    `SELECT id, status, receipt_key, receipt_seq FROM expense_notes
+     WHERE user_id = $1 AND description = $2 ORDER BY created_at, id`,
     [userId, description]
   )
-  if (existing.rows[0]) return
+  if (found.rows.length > 1) {
+    console.warn(`Attention : ${found.rows.length} notes "${description}" existent ; la plus ancienne est conservée.`)
+  }
+  return found.rows[0]
+}
 
-  const inserted = await pool.query(
-    `INSERT INTO expense_notes (user_id, amount, expense_date, description, receipt_key)
-     VALUES ($1, $2, CURRENT_DATE, $3, '')
-     RETURNING id, receipt_seq`,
-    [userId, amount, description]
-  )
-  const { id, receipt_seq: receiptSeq } = inserted.rows[0]
-  const receiptKey = `receipts/${receiptSeq}.png`
-  await s3.send(
-    new PutObjectCommand({ Bucket: bucket, Key: receiptKey, Body: RECEIPT_PNG, ContentType: 'image/png' })
-  )
-  await pool.query('UPDATE expense_notes SET receipt_key = $1 WHERE id = $2', [receiptKey, id])
-  console.log(`Note de frais "${description}" créée pour ${userId} (${id}).`)
+async function seedExpenseNote(userId, description, amount) {
+  let note = await findNote(userId, description)
+  if (!note) {
+    // Note incomplete avec sa clé de reçu prévue, dans une seule transaction : une
+    // interruption laisse une note récupérable, jamais une note sans clé.
+    const client = await pool.connect()
+    try {
+      await client.query('BEGIN')
+      const inserted = await client.query(
+        `INSERT INTO expense_notes (user_id, amount, expense_date, description, receipt_key, status)
+         VALUES ($1, $2, CURRENT_DATE, $3, '', 'incomplete')
+         RETURNING id, status, receipt_seq`,
+        [userId, amount, description]
+      )
+      note = { ...inserted.rows[0], receipt_key: `receipts/${inserted.rows[0].receipt_seq}.png` }
+      await client.query('UPDATE expense_notes SET receipt_key = $1 WHERE id = $2', [note.receipt_key, note.id])
+      await client.query('COMMIT')
+    } catch (error) {
+      await client.query('ROLLBACK')
+      throw error
+    } finally {
+      client.release()
+    }
+    console.log(`Note de frais "${description}" créée pour ${userId} (${note.id}).`)
+  }
+
+  // Reprise sur la même note selon l'état réel : référence absente, objet absent ou différent.
+  const key = note.receipt_key || `receipts/${note.receipt_seq}.png`
+  await ensureReceipt(key)
+  if (note.receipt_key !== key) {
+    await pool.query('UPDATE expense_notes SET receipt_key = $1 WHERE id = $2', [key, note.id])
+    console.log(`Référence du reçu rétablie pour la note "${description}" (${note.id}).`)
+  }
+  // Seule une note incomplete devient pending ; approved et rejected sont conservées.
+  if (note.status === 'incomplete') {
+    await pool.query("UPDATE expense_notes SET status = 'pending' WHERE id = $1 AND status = 'incomplete'", [note.id])
+    console.log(`Note de frais "${description}" finalisée (${note.id}).`)
+  }
+}
+
+// Vérifie les données attendues : un échec ici rend la commande en erreur, jamais un faux succès.
+async function verifySeed(expected) {
+  const problems = []
+  for (const { userId, description } of expected) {
+    const note = await findNote(userId, description)
+    if (!note) { problems.push(`note absente : "${description}"`); continue }
+    if (!['pending', 'approved', 'rejected'].includes(note.status)) problems.push(`note non finalisée (${note.status}) : "${description}"`)
+    if (!note.receipt_key) { problems.push(`référence du reçu absente : "${description}"`); continue }
+    const stored = await readReceipt(note.receipt_key)
+    if (!stored || !stored.equals(RECEIPT_PNG)) problems.push(`reçu absent ou non conforme : "${description}"`)
+  }
+  if (problems.length) throw new Error(`Données de démonstration incomplètes — ${problems.join(' ; ')}`)
 }
 
 try {
@@ -101,14 +173,21 @@ try {
   const managerId = await upsertUser(managerEmail, 'Manager', managerPassword, 'manager', companyId)
   const employeeId = await upsertUser(employeeEmail, 'Demo', employeePassword, 'employee', companyId, managerId)
 
-  await seedExpenseNote(employeeId, 'Taxi aéroport (seed)', 42.5)
-  await seedExpenseNote(managerId, 'Café client (seed)', 5.9)
+  const notes = [
+    { userId: employeeId, description: 'Taxi aéroport (seed)', amount: 42.5 },
+    { userId: managerId, description: 'Café client (seed)', amount: 5.9 },
+  ]
+  for (const { userId, description, amount } of notes) await seedExpenseNote(userId, description, amount)
+  await verifySeed(notes)
 
   console.log('')
   console.log('Comptes de démonstration prêts :')
   console.log(`  RH       ${hrEmail} / ${hrPassword}`)
   console.log(`  Manager  ${managerEmail} / ${managerPassword} (racine, sans manager assigné)`)
   console.log(`  Employé  ${employeeEmail} / ${employeePassword} (rattaché au manager ci-dessus)`)
+} catch (error) {
+  console.error(`Seed incomplet : ${error.message}`)
+  process.exitCode = 1
 } finally {
   await pool.end()
 }
