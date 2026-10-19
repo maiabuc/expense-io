@@ -1,0 +1,138 @@
+{
+  "pr": 3,
+  "run": 39163301598,
+  "issues": [
+    "AUD-008"
+  ],
+  "sourceSha": "528c01cfd8cfa1bd6404db06ebc45ea3d9522429",
+  "suites": {
+    "Tests api": {
+      "planned": 112,
+      "passed": 84,
+      "failed": 28,
+      "notRun": 0
+    },
+    "Tests e2e": {
+      "planned": 60,
+      "passed": 39,
+      "failed": 21,
+      "notRun": 0
+    }
+  },
+  "selected": [
+    {
+      "caseId": "OCR-001",
+      "title": "[AUD-008][OCR-001][reference] un reçu lisible est réellement reconnu",
+      "suite": "api",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "OCR-002",
+      "title": "[AUD-008][OCR-002][reference] une analyse réussie sans champ retourne un objet vide",
+      "suite": "api",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "OCR-003",
+      "title": "[AUD-008][OCR-003][correction] une image corrompue est une erreur et pas un succès vide",
+      "suite": "api",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "OCR-004",
+      "title": "[AUD-008][OCR-004][correction] PDF n’est pas ajouté aux formats OCR acceptés",
+      "suite": "api",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "OCR-005",
+      "title": "[AUD-008][OCR-005][reference] reçu absent refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "OCR-006",
+      "title": "[AUD-008][OCR-006][reference] OCR interdit sans session",
+      "suite": "api",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NAV-016",
+      "title": "[AUD-008][NAV-016][reference] OCR réel préremplit le montant et la date",
+      "suite": "e2e",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NAV-017",
+      "title": "[AUD-008][NAV-017][reference] absence de texte OCR permet la saisie manuelle",
+      "suite": "e2e",
+      "issues": [
+        "AUD-008"
+      ],
+      "status": "passed"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Installation reproductible",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build de production",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests unitaires",
+      "conclusion": "success"
+    },
+    {
+      "name": "AUD-023 — Dépendances (informatif)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Types TypeScript",
+      "conclusion": "success"
+    },
+    {
+      "name": "Documentation et IDs des tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Lint",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests api",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Tests e2e",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Résultat CI requis",
+      "conclusion": "failure"
+    }
+  ]
+}
