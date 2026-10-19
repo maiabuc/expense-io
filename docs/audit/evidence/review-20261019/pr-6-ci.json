@@ -1,0 +1,63 @@
+{
+  "pr": 6,
+  "run": 39163395873,
+  "issues": [],
+  "sourceSha": "984683872a5b288a1f2469ea5014c317112c3a7e",
+  "suites": {
+    "Tests e2e": {
+      "planned": 60,
+      "passed": 38,
+      "failed": 22,
+      "notRun": 0
+    },
+    "Tests api": {
+      "planned": 112,
+      "passed": 61,
+      "failed": 51,
+      "notRun": 0
+    }
+  },
+  "selected": [],
+  "checks": [
+    {
+      "name": "Installation reproductible",
+      "conclusion": "success"
+    },
+    {
+      "name": "Lint",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests unitaires",
+      "conclusion": "success"
+    },
+    {
+      "name": "AUD-023 — Dépendances (informatif)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Documentation et IDs des tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Types TypeScript",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build de production",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests e2e",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Tests api",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Résultat CI requis",
+      "conclusion": "failure"
+    }
+  ]
+}
