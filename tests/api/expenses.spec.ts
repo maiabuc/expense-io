@@ -285,3 +285,34 @@ test('[G14][NOTE-032][correction] contenu PNG déclaré PDF refusé avant écrit
   expect.soft((await ownNotes(request)).length).toBe(before)
   expect(await objectCount()).toBe(objects)
 })
+
+test('[AUD-014][ENTREE-001][reference] petites valeurs positives admises avant leur arrondi PostgreSQL', async ({ request }) => {
+  await authenticate(request, 'a_employee')
+  for (const amount of ['0.001', '0.004']) {
+    const response = await submit(request, { amount })
+    expect.soft(response.status()).toBe(201)
+    if (response.status() === 201) expect((await response.json()).amount).toBe(0)
+  }
+})
+test('[AUD-004][ENTREE-002][correction] les propriétés du prototype ne sont pas des options de tri', async ({ request }) => {
+  await authenticate(request, 'a_employee')
+  for (const sort of ['constructor', '__proto__']) {
+    expect.soft((await request.get('/api/expense-notes?sort=' + encodeURIComponent(sort))).status()).toBe(400)
+  }
+})
+test('[AUD-014][ENTREE-003][correction] grammaire décimale conservée et notation exponentielle interdite', async ({ request }) => {
+  await authenticate(request, 'a_employee')
+  for (const [amount, value] of [['+1', 1], ['.5', 0.5], ['1.', 1], [',5', 0.5], ['1,', 1]] as const) {
+    const response = await submit(request, { amount })
+    expect.soft(response.status()).toBe(201)
+    if (response.status() === 201) expect.soft((await response.json()).amount).toBe(value)
+  }
+  expect((await submit(request, { amount: '1e2' })).status()).toBe(400)
+})
+test('[AUD-014][ENTREE-004][correction] la borne monétaire est vérifiée après arrondi exact', async ({ request }) => {
+  await authenticate(request, 'a_employee')
+  const accepted = await submit(request, { amount: '99999999.994' })
+  expect(accepted.status()).toBe(201)
+  expect((await accepted.json()).amount).toBe(99999999.99)
+  expect((await submit(request, { amount: '99999999.995' })).status()).toBe(400)
+})

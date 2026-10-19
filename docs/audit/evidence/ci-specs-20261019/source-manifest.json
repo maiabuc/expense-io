@@ -1,0 +1,174 @@
+{
+  "baseRevision": "73774862cb4f1b172d2b15bdbcb00c75b7cff6c6",
+  "sourceState": "Diff local CI-002 du19octobre2026, application inchangée",
+  "files": [
+    {
+      "file": ".github/workflows/ci.yml",
+      "sha256": "ab5192ae2db18a4fd51f4fc09ea118fb455825ccc37927b27d4b97c14827175a"
+    },
+    {
+      "file": "package.json",
+      "sha256": "55c89456916a7f109ea9d8533d39574334151f06829827cefc021c57ba1de36a"
+    },
+    {
+      "file": "scripts/ci/catalog.mjs",
+      "sha256": "b605998b70534f7a0b3de258df870dd866fcbbd1a6f1be34244afb42afd3799c"
+    },
+    {
+      "file": "scripts/ci/dependencies.mjs",
+      "sha256": "627245df6569ef1977ab8a0da9e855b6ddf46f6524629448aded79e2b6677441"
+    },
+    {
+      "file": "scripts/ci/documentation.mjs",
+      "sha256": "2ce1b4517a6162159a9433a03c5b3e705075e20c0e97cb314e7481c3846a8a80"
+    },
+    {
+      "file": "scripts/ci/issue.mjs",
+      "sha256": "d9ba7d2fb294aa6a83a33420f9f98b99cd2a141472253da3f494c6b8d63df3a9"
+    },
+    {
+      "file": "scripts/ci/report.mjs",
+      "sha256": "bb441d301ebf5e0ef23c7af5ab15a4c969c1c3b57f5214b3439e3778e584d128"
+    },
+    {
+      "file": "scripts/ci/run.mjs",
+      "sha256": "fd07ad902e39bc0b38ff634ed4a5ebb60565c8d79f5ae7158fa3c5ffe76fd9e8"
+    },
+    {
+      "file": "scripts/ci/spec-check.mjs",
+      "sha256": "3ca3d21b04aef273b7b8b311b0fc8505865dfd8a6e78bcf580e5fa865aa62d81"
+    },
+    {
+      "file": "scripts/ci/unit.mjs",
+      "sha256": "684ce3f8b3cfe21f9bbfd6b14b381e1abdba345fba40a6d551a498cbe03e468d"
+    },
+    {
+      "file": "tests/api/auth.spec.ts",
+      "sha256": "4699faeb400a9da25a2caf6b548067ffa92b83b07496041570e6b09448351740"
+    },
+    {
+      "file": "tests/api/coherence.spec.ts",
+      "sha256": "87e5261a73009d77ba2ee3ced86e5f66defd2416c3cb8a9240d07b94826ef22c"
+    },
+    {
+      "file": "tests/api/expenses.spec.ts",
+      "sha256": "4c28bfcac4f76eb520f6dc4a6d63364746843731ed9c9b70537ecee1dadf2971"
+    },
+    {
+      "file": "tests/api/ocr.spec.ts",
+      "sha256": "a0c49b29649fd79a7eb49c59a1b4a8c5b1c87c68493f2e6fe7d4f1cd1ed076cc"
+    },
+    {
+      "file": "tests/api/permissions.spec.ts",
+      "sha256": "15bceac223094e50d38fb8080c1a0eaf7cab9faed058c06d719bc563e62111f6"
+    },
+    {
+      "file": "tests/api/seed.spec.ts",
+      "sha256": "db2e58bc60b22e99a8c8895dd738faca8bcd46d8104a89d7cbf6b5a600c9bf79"
+    },
+    {
+      "file": "tests/deferred-coverage.json",
+      "sha256": "08bafbc7bb79e706481b5e0e6c1a58f1688d33ac398850f48605e02c6d0564db"
+    },
+    {
+      "file": "tests/e2e/network.spec.ts",
+      "sha256": "5da0419248a74498cc53b0f98fb43409282204643ea0684ba2562de355a22056"
+    },
+    {
+      "file": "tests/e2e/reference.spec.ts",
+      "sha256": "931578689124129a7e16f475eb31fdaa878189a3efbab6b176b80047e5eab358"
+    },
+    {
+      "file": "tests/e2e/signup.spec.ts",
+      "sha256": "c647b903cc872c95f12308b9a59c24ffafa0e4cd1d74877e6fb0174f806aeaa4"
+    },
+    {
+      "file": "tests/fixtures/blank.png",
+      "sha256": "fdff64773d8bb64b2acb670f8f01166c51b3a0eb90f8e9b34768b3921619f39c"
+    },
+    {
+      "file": "tests/fixtures/corrupt.png",
+      "sha256": "664707e6e801123ff97d499f9d0d2a7a52d73e49957154d526b0bd67207aaf51"
+    },
+    {
+      "file": "tests/fixtures/receipt.jpg",
+      "sha256": "897f097ee2d6659c43c758f6f5bf9075c3efdb764d15f42c6e551065d5149878"
+    },
+    {
+      "file": "tests/fixtures/receipt.pdf",
+      "sha256": "925d9e9997b13ccaa870b2853eb4d1706583f2efb593756eac37fb993a409193"
+    },
+    {
+      "file": "tests/fixtures/receipt.png",
+      "sha256": "cf5d11024216ea43380037cbc808aeaaf14f0534c68b48fcf4b378fb9d169ab6"
+    },
+    {
+      "file": "tests/fixtures/receipt.webp",
+      "sha256": "fdeec3a598f0b5dcc06e5719f891be1bb55b9119eae3d763edc25fa6a73244bb"
+    },
+    {
+      "file": "tests/infra/compose.yml",
+      "sha256": "c4981ea95be4782ce2b7532addbc691e407e4337ff9ba856519a97c35a06a25c"
+    },
+    {
+      "file": "tests/reporters/issues.ts",
+      "sha256": "d73610f0df5add070944a2f3adcff4c62b72e0948e8fe0c4a0d76722ad42f8e0"
+    },
+    {
+      "file": "tests/reporters/metadata.mjs",
+      "sha256": "72c3f6576a6ab792e87899fc58d0e74e6a8478b1a6827d682dd6d9237e79a3e2"
+    },
+    {
+      "file": "tests/reporters/provenance.mjs",
+      "sha256": "cb5b5ef956a29bd2d99a2437491ade9285ec7019c2e7cc756bd48d40cc9ec40f"
+    },
+    {
+      "file": "tests/reporters/specifications.mjs",
+      "sha256": "ad3163d5c106f6ceca89a4eee067fd7eb96bdb3d4bbbd8bd7a0442eeb8e8086f"
+    },
+    {
+      "file": "tests/specifications.json",
+      "sha256": "4b80531a0093fb852b725acd8d31d11d42f4d7297ab3e6a4e71790e60ae55d9b"
+    },
+    {
+      "file": "tests/support/data.ts",
+      "sha256": "5ca44b33d7dae96fedb8e39a5ed2f7de41e3c1a5df82737a64cf6f7eaba719d4"
+    },
+    {
+      "file": "tests/support/database.ts",
+      "sha256": "9e8ccdd9a20fb2018225fb309a7496f5435c1c869d66b064f3b95d83c6612060"
+    },
+    {
+      "file": "tests/support/environment.ts",
+      "sha256": "6351484dc0da7ef95f0b55dd665e4c0e372ef4291d0190785b238ff6d531e5d6"
+    },
+    {
+      "file": "tests/support/failure-server.ts",
+      "sha256": "c738b2d5809a7c661aa3dd6aaffa8c73105867533d6a1eed1eabdfaf1542e274"
+    },
+    {
+      "file": "tests/support/fixtures.ts",
+      "sha256": "82063f7882b5958c9756911b034d91c633c2d8d2a7305e92e4b676a4d7487f45"
+    },
+    {
+      "file": "tests/support/global-setup.ts",
+      "sha256": "cfed57b5a50a722076ff8b0e446f512514548019216a88a498f56c8dfd008d35"
+    },
+    {
+      "file": "tests/support/paris-clock.mjs",
+      "sha256": "2fee720b38f09d1bfde6bdb17b6fe567fea1c20a55f5a46396cbca6406490683"
+    },
+    {
+      "file": "tests/support/storage.ts",
+      "sha256": "eb0f8c7f653d4dfab2b7d5ee149c8d04229816c540d2f75e1275fd1e6f0dd6a8"
+    },
+    {
+      "file": "tests/unit/decisions.test.ts",
+      "sha256": "6fa980276bb2fd9cbf804fc217289b88cb9a413e2ab5bdb2f3928b9bf318ef09"
+    },
+    {
+      "file": "tests/unit/specification-report.test.ts",
+      "sha256": "21f47d494efed7b1f97434f07ba367ffafc59668e5549ccd48b059fb455c1982"
+    }
+  ]
+}

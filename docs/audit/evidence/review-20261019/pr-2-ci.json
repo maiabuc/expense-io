@@ -1,0 +1,354 @@
+{
+  "pr": 2,
+  "run": 39163277566,
+  "issues": [
+    "AUD-016"
+  ],
+  "sourceSha": "4913b507aa1d0ecf4c3123dc81c5633030b75d3c",
+  "suites": {
+    "Tests api": {
+      "planned": 112,
+      "passed": 61,
+      "failed": 51,
+      "notRun": 0
+    },
+    "Tests e2e": {
+      "planned": 60,
+      "passed": 58,
+      "failed": 2,
+      "notRun": 0
+    }
+  },
+  "selected": [
+    {
+      "caseId": "NET-001",
+      "title": "[AUD-016][NET-001][correction] liste propriétaire : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-002",
+      "title": "[AUD-016][NET-002][reference] liste propriétaire : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-003",
+      "title": "[AUD-016][NET-003][correction] liste propriétaire : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-004",
+      "title": "[AUD-016][NET-004][correction] soumission : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-005",
+      "title": "[AUD-016][NET-005][reference] soumission : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-006",
+      "title": "[AUD-016][NET-006][correction] OCR : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-007",
+      "title": "[AUD-016][NET-007][reference] OCR : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-008",
+      "title": "[AUD-016][NET-008][correction] OCR : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-009",
+      "title": "[AUD-016][NET-009][correction] reçu propriétaire : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-010",
+      "title": "[AUD-016][NET-010][reference] reçu propriétaire : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-011",
+      "title": "[AUD-016][NET-011][correction] reçu propriétaire : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-012",
+      "title": "[AUD-016][NET-012][correction] liste manager : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-013",
+      "title": "[AUD-016][NET-013][reference] liste manager : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-014",
+      "title": "[AUD-016][NET-014][correction] liste manager : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-015",
+      "title": "[AUD-016][NET-015][correction] décision manager : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-016",
+      "title": "[AUD-016][NET-016][reference] décision manager : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-017",
+      "title": "[AUD-016][NET-017][correction] reçu manager : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-018",
+      "title": "[AUD-016][NET-018][reference] reçu manager : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-019",
+      "title": "[AUD-016][NET-019][correction] reçu manager : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-020",
+      "title": "[AUD-016][NET-020][correction] annuaire RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-021",
+      "title": "[AUD-016][NET-021][reference] annuaire RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-022",
+      "title": "[AUD-016][NET-022][correction] annuaire RH : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-023",
+      "title": "[AUD-016][NET-023][correction] liste RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-024",
+      "title": "[AUD-016][NET-024][reference] liste RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-025",
+      "title": "[AUD-016][NET-025][correction] liste RH : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-026",
+      "title": "[AUD-016][NET-026][correction] affectation RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-027",
+      "title": "[AUD-016][NET-027][reference] affectation RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-028",
+      "title": "[AUD-016][NET-028][correction] décision RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-029",
+      "title": "[AUD-016][NET-029][reference] décision RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-030",
+      "title": "[AUD-016][NET-030][correction] reçu RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-031",
+      "title": "[AUD-016][NET-031][reference] reçu RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NET-032",
+      "title": "[AUD-016][NET-032][correction] reçu RH : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "issues": [
+        "AUD-016"
+      ],
+      "status": "passed"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Installation reproductible",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build de production",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests unitaires",
+      "conclusion": "success"
+    },
+    {
+      "name": "Lint",
+      "conclusion": "success"
+    },
+    {
+      "name": "Documentation et IDs des tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Types TypeScript",
+      "conclusion": "success"
+    },
+    {
+      "name": "AUD-023 — Dépendances (informatif)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests api",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Tests e2e",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Résultat CI requis",
+      "conclusion": "failure"
+    }
+  ]
+}

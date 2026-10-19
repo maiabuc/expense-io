@@ -1,6 +1,7 @@
 import ts from 'typescript'
 import { readdir, readFile, mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { validateSpecifications, casesForSpecification } from '../../tests/reporters/specifications.mjs'
 import { metadata } from '../../tests/reporters/metadata.mjs'
 
 export async function catalog() {
@@ -29,7 +30,14 @@ export async function catalog() {
     }
     if (!cases.some(c => c.suite === suite)) throw new Error(`Suite ${suite} vide.`)
   }
-  return cases
+  const specifications = JSON.parse(await readFile('tests/specifications.json', 'utf8'))
+  validateSpecifications(specifications, cases)
+  for (const specification of specifications) {
+    const files = await readdir('docs/specs')
+    if (!files.some(file => file.startsWith(specification.id + '-'))) throw new Error(`Fiche spec absente : ${specification.id}`)
+    for (const issue of specification.issues) if (!issues.has(issue)) throw new Error(`Issue inconnue dans ${specification.id} : ${issue}`)
+  }
+  return cases.map(item => ({ ...item, specifications: specifications.filter(specification => casesForSpecification(specification, [item]).length).map(specification => specification.id) }))
 }
 if (process.argv[1]?.endsWith('/catalog.mjs')) {
   const cases = await catalog(); await mkdir('reports', { recursive: true })
