@@ -1,5 +1,19 @@
 # ARLA — Journal des décisions
 
+## Revue des six PR et contrôles CI par spec — 19 octobre 2026
+
+Maia demande de vérifier les six PR de G4BI2004 et de voir les tests d’une spec validés séparément. Base propre :73774862cb4f1b172d2b15bdbcb00c75b7cff6c6. Heads, preuves et conclusions distinctes Standards/Spec dans la [revue](revue-pr-g4bi2004-20261019.md).
+
+| Issue / décision | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- |
+| Revue PR1/2/3/4/5/6 sur SHA fixes | Ne pas confondre tests anciens verts et conformité complète | [Revue](revue-pr-g4bi2004-20261019.md), logsCI archivés parcas, modules exacts exécutés | Logs privés, petitsmontants/prototype, arrêtOCR et messages spécifiques à revoir ; qualificationdev à nuancer ; PR5 testée8/8 avec nouveau scénario |
+| AUD-011 / CI-002 : contrôles distincts par spec réalisés | Donner un contrôleSPEC-01 identifiable et ne pas attribuer les défauts d’un autre lot à celui-ci | [Spec](../specs/CI-002-controles-par-spec.md), [IMPLEMENTATION](solutions-to-audit/AUD-011-validation-isolee.md#implementation), [campagne](evidence/ci-specs-20261019/README.md) |21unitaires/21, API62/117, E2E39/62 ;122 réussites/78 échecs/0 absent sur200 ; aucune assertion supprimée |
+| Couverture obligatoire et provenance commune | Empêcher le vert d’une sélection ancienne, tronquée ou incomplète | TestsCI-SPEC-001…015, dont intégrationCLI/synthèse | Contrôle partagé des SHA/prérequis/erreurs/complétude ; divergence initiale corrigée et deux revues de suivi favorables |
+| SPEC-11/12 : manual-review | Mesures et avis ne sont pas prouvés par un test vide ni la seule présence d’un fichier | Manifeste et guide de tests | Pas de nouveau test fonctionnel artificiel, validation humaine toujours nécessaire |
+
+Toutes les fiches sont en ajout uniquement. Snapshot capturé avant travail : `/tmp/arla-ci-by-spec-20261019.json` (22 fiches). Seul AUD-011 reçoit une nouvelle entrée de réalisation du dispositif ; les autres AUD ne sont pas déclarés corrigés par les tests. Aucune PR fusionnée, branche d’auteur modifiée ou message envoyé à l’équipe. Aucun service utilisateur seedé/migré/arrêté. Les nouveaux contrôles nécessitent l’actualisation des branchesPR pour leur prochain run ; la campagne locale ne vaut pas encore exécution hébergée de cette version.
+
+
 ## Fusion de la CI et répartition à quatre — 17 octobre 2026
 
 Instruction de Maia : fusionner la CI, répartir les specs entre quatre personnes et préparer le message de réalisation. **OBSERVATION Git :** fusion de feat/ci (`11b1223`) dans main, commit `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, publié sur origin/main. Aucun code applicatif ajouté ou corrigé par cette opération. Diff des sources src/migrations/scripts seed-bucket/Makefile/README depuis la source auditée : vide.
