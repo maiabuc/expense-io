@@ -179,3 +179,11 @@ Branche `feat/spec-05`, départ `7377486` (main actualisé, sans `feat/spec-01`/
 | AUD-019 | Convention conservée, aucune correction (confirmé) | Ne pas transformer une limite de confiance pédagogique assumée en nouveau périmètre métier | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-019-inscription-domaine.md#implementation) | Relecture du code modifié et des cas INS-001/002 ; aucune vérification de possession de domaine ajoutée |
 
 AUD-016/017 échouent encore sur cette branche uniquement parce que `feat/spec-02`/`feat/spec-04` n'y sont pas mergées : pas des régressions de SPEC-05, fichiers disjoints.
+
+## SPEC-05 : preuves complétées après revue — personne B — 19 octobre 2026
+
+`feat/spec-05` actualisée avec `main` `651b067`, qui apporte INS-008. Aucun changement de code. Snapshot avant travail : `/tmp/arla-spec-05-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-013 | Échec de connexion après commit désormais prouvé par INS-008 | Le statut « vérifié » du 18 octobre ne reposait sur aucun test de ce scénario | [Entrée du 19 octobre](solutions-to-audit/AUD-013-signup-consistency.md#implementation) | `SPEC-05 — tests du lot` vert en local : 8/8 |

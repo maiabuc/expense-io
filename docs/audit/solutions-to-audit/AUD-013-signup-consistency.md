@@ -77,3 +77,26 @@ Comptes réels : exécution locale macOS, Postgres 16 + LocalStack isolés sur p
 #### Écarts et limites
 
 Branche créée depuis `main` actualisé, sans `feat/spec-02` (AUD-016) ni `feat/spec-01` (AUD-005) encore mergées : les échecs e2e AUD-016 observés sur cette branche sont une dépendance non mergée, pas une régression de ce lot. Aucune vérification de possession du domaine, invitation ou nouveau rôle ajoutée (hors périmètre, AUD-019 reste une limite pédagogique assumée). Coordination avec le compte DB effectif de SPEC-09 non encore faite (SPEC-09 non réalisée à ce jour).
+
+### 2026-10-19 — SPEC-05, preuves complétées après revue (personne B)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-05](../../specs/SPEC-05-inscription-atomique.md). Révision de départ : `feat/spec-05` actualisée avec `main` `651b067` (apporte INS-008). Réalisation : aucune modification de code ; commit documentaire de cette entrée.
+
+#### Ce qui a été implémenté
+
+Aucun changement applicatif. La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P2, validation initiale) que l'entrée du 18 octobre présentait C3 comme vérifié sans avoir exécuté le scénario « connexion automatique échouée après commit ». Le code le traitait déjà (`signIn` après `COMMIT`, hors transaction), mais aucun test ne le prouvait. Le cas INS-008, ajouté par la revue sur `main`, est désormais intégré à la branche et exécuté.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-19 |
+| `npm run test:unit` | Tous réussis | 21/21 | `reports/unit.json` |
+| `npm run test:e2e` (suite complète) | INS-001…008 réussis | 8/8, dont INS-008 : entreprise et compte `hr_admin` conservés après l'échec de connexion, aucune session ouverte | `reports/e2e.json` |
+| `npm run test:spec:report -- SPEC-05` | Contrôle par spec vert | `passed`, 8/8, aucune couverture manquante ; autres specs identiques à la référence `main` | `reports/SPEC-05.json` |
+| Garde append-only | Préfixes conservés | `check` réussi avec `/tmp/arla-spec-05-review-gf.json` | Sortie locale 2026-10-19 |
+
+#### Écarts et limites
+
+Ce contrôle vaut pour le parcours d'inscription, pas pour le reste du projet. La coordination avec le compte DB effectif de SPEC-09 reste à faire à l'intégration.
