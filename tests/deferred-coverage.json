@@ -4,7 +4,6 @@
     "Module hexagonal : contrats des adaptateurs après extraction"
   ],
   "AUD-008": [
-    "Pool réutilisable, saturation et arrêt effectif à 40 s : mécanisme à implémenter",
     "Charge CPU/RAM : campagne manuelle dédiée"
   ],
   "AUD-010": [
