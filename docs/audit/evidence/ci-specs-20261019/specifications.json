@@ -1,0 +1,1019 @@
+{
+  "provenance": {
+    "revision": "73774862cb4f1b172d2b15bdbcb00c75b7cff6c6",
+    "sourceState": "diff local CI par spec du19octobre",
+    "generatedAt": "2026-10-19T08:08:20.029Z",
+    "runId": "8ad1d3dc-541f-44a2-bc19-e1e0f97f2e13",
+    "node": "v24.21.0",
+    "platform": "linux/x64",
+    "issue": null
+  },
+  "scope": [
+    "unit",
+    "api",
+    "e2e"
+  ],
+  "reports": [
+    {
+      "id": "SPEC-01",
+      "title": "Erreurs API",
+      "status": "failed",
+      "planned": 4,
+      "passed": 0,
+      "failed": 4,
+      "notRun": 0,
+      "missingCoverage": [],
+      "cases": [
+        {
+          "caseId": "PANNE-002",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "PANNE-003",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "PANNE-004",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-022",
+          "suite": "api",
+          "status": "failed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-02",
+      "title": "Récupération UI",
+      "status": "failed",
+      "planned": 33,
+      "passed": 12,
+      "failed": 21,
+      "notRun": 0,
+      "missingCoverage": [],
+      "cases": [
+        {
+          "caseId": "NET-001",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-002",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-003",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-004",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-005",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-006",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-007",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-008",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-009",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-010",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-011",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-012",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-013",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-014",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-015",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-016",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-017",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-018",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-019",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-020",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-021",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-022",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-023",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-024",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-025",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-026",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-027",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-028",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-029",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-030",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-031",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NET-032",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NET-033",
+          "suite": "e2e",
+          "status": "failed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-03",
+      "title": "OCR borné",
+      "status": "incomplete",
+      "planned": 8,
+      "passed": 6,
+      "failed": 2,
+      "notRun": 0,
+      "missingCoverage": [
+        "OCR-POOL-001",
+        "OCR-POOL-002",
+        "OCR-POOL-003",
+        "OCR-POOL-004"
+      ],
+      "cases": [
+        {
+          "caseId": "OCR-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "OCR-002",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "OCR-003",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "OCR-004",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "OCR-005",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "OCR-006",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-016",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-017",
+          "suite": "e2e",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-04",
+      "title": "Validation des entrées",
+      "status": "failed",
+      "planned": 44,
+      "passed": 20,
+      "failed": 24,
+      "notRun": 0,
+      "missingCoverage": [],
+      "cases": [
+        {
+          "caseId": "DATE-001",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-002",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-003",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-004",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-005",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-006",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-007",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-008",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-009",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-010",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-011",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-012",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-013",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-014",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-015",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-016",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-017",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-018",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-019",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-020",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-021",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-023",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-024",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-025",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-026",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-028",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "LIST-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "LIST-002",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "LIST-003",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "LIST-004",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "LIST-005",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "LIST-006",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-029",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NOTE-030",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-031",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-032",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "ENTREE-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "ENTREE-002",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "ENTREE-003",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "ENTREE-004",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NAV-018",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-019",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-020",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "NAV-021",
+          "suite": "e2e",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-05",
+      "title": "Inscription atomique",
+      "status": "failed",
+      "planned": 8,
+      "passed": 7,
+      "failed": 1,
+      "notRun": 0,
+      "missingCoverage": [],
+      "cases": [
+        {
+          "caseId": "INS-001",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "INS-002",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "INS-003",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "INS-004",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "INS-005",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "INS-006",
+          "suite": "e2e",
+          "status": "failed"
+        },
+        {
+          "caseId": "INS-007",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "INS-008",
+          "suite": "e2e",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-06",
+      "title": "Droits actuels",
+      "status": "incomplete",
+      "planned": 23,
+      "passed": 18,
+      "failed": 5,
+      "notRun": 0,
+      "missingCoverage": [
+        "DROIT-022"
+      ],
+      "cases": [
+        {
+          "caseId": "DOM-005",
+          "suite": "unit",
+          "status": "passed"
+        },
+        {
+          "caseId": "DEC-003",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DEC-004",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "RECU-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "RECU-002",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "RECU-003",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-002",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-003",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-011",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-012",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-013",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "DROIT-014",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "DROIT-015",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-016",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-017",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-018",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DROIT-019",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "DROIT-020",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "DROIT-021",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NAV-006",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-007",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-010",
+          "suite": "e2e",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-07",
+      "title": "Hiérarchie des managers",
+      "status": "failed",
+      "planned": 20,
+      "passed": 7,
+      "failed": 13,
+      "notRun": 0,
+      "missingCoverage": [],
+      "cases": [
+        {
+          "caseId": "AFF-001",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-002",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-003",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-004",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-005",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-006",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-007",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-008",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-009",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "AFF-010",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "AFF-011",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-012",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "AFF-013",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "AFF-014",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "AFF-015",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "AFF-016",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-017",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-018",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "AFF-019",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NAV-015",
+          "suite": "e2e",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-08",
+      "title": "Décisions atomiques",
+      "status": "incomplete",
+      "planned": 13,
+      "passed": 10,
+      "failed": 3,
+      "notRun": 0,
+      "missingCoverage": [
+        "DEC-008"
+      ],
+      "cases": [
+        {
+          "caseId": "DOM-001",
+          "suite": "unit",
+          "status": "passed"
+        },
+        {
+          "caseId": "DOM-002",
+          "suite": "unit",
+          "status": "passed"
+        },
+        {
+          "caseId": "DOM-003",
+          "suite": "unit",
+          "status": "passed"
+        },
+        {
+          "caseId": "DOM-004",
+          "suite": "unit",
+          "status": "passed"
+        },
+        {
+          "caseId": "DEC-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DEC-002",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "DEC-005",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "DEC-006",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "DEC-007",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NAV-011",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-012",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-013",
+          "suite": "e2e",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-014",
+          "suite": "e2e",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-09",
+      "title": "Soumission et RLS",
+      "status": "incomplete",
+      "planned": 8,
+      "passed": 4,
+      "failed": 4,
+      "notRun": 0,
+      "missingCoverage": [
+        "REPRISE-001",
+        "REPRISE-002",
+        "REPRISE-003",
+        "REPRISE-004",
+        "REPRISE-005",
+        "REPRISE-006",
+        "REPRISE-007",
+        "REPRISE-008",
+        "HEXA-001",
+        "HEXA-002"
+      ],
+      "cases": [
+        {
+          "caseId": "PANNE-001",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "RLS-001",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "RLS-002",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "RLS-003",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "RLS-004",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "RLS-005",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "NOTE-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "NAV-008",
+          "suite": "e2e",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-10",
+      "title": "Seed récupérable",
+      "status": "incomplete",
+      "planned": 3,
+      "passed": 2,
+      "failed": 1,
+      "notRun": 0,
+      "missingCoverage": [
+        "SEED-004",
+        "SEED-005"
+      ],
+      "cases": [
+        {
+          "caseId": "SEED-001",
+          "suite": "api",
+          "status": "passed"
+        },
+        {
+          "caseId": "SEED-002",
+          "suite": "api",
+          "status": "failed"
+        },
+        {
+          "caseId": "SEED-003",
+          "suite": "api",
+          "status": "passed"
+        }
+      ],
+      "errors": []
+    },
+    {
+      "id": "SPEC-11",
+      "title": "Mesures des listes",
+      "status": "manual-review",
+      "passed": 0,
+      "failed": 0,
+      "notRun": 0,
+      "planned": 0,
+      "missingCoverage": [],
+      "cases": [],
+      "errors": [
+        "Mesures comparatives à relire ; aucun test fonctionnel dédié ne prouve le bénéfice."
+      ]
+    },
+    {
+      "id": "SPEC-12",
+      "title": "Qualification des dépendances",
+      "status": "manual-review",
+      "passed": 0,
+      "failed": 0,
+      "notRun": 0,
+      "planned": 0,
+      "missingCoverage": [],
+      "cases": [],
+      "errors": [
+        "Avis, usages et incertitudes à relire ; npm audit ne valide pas la qualification."
+      ]
+    }
+  ]
+}
