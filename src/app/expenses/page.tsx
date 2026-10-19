@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { readErrorMessage } from '@/utils/http'
 
 interface ExpenseNote {
   id: string
@@ -60,7 +61,7 @@ export default function ExpensesPage() {
       if (response.ok) {
         setNotes(await response.json())
       } else {
-        setError('Impossible de charger les notes de frais.')
+        setError(await readErrorMessage(response, 'Impossible de charger les notes de frais.'))
       }
     } catch {
       setError('Impossible de charger les notes de frais. Vérifie ta connexion et réessaie.')
@@ -129,7 +130,7 @@ export default function ExpensesPage() {
       })
 
       if (!response.ok) {
-        setError('Impossible d’analyser ce reçu.')
+        setError(await readErrorMessage(response, 'Impossible d’analyser ce reçu.'))
         return
       }
       // Une réponse vide est valide (rien à suggérer) : sans ce message, ça
@@ -162,7 +163,7 @@ export default function ExpensesPage() {
     try {
       const response = await fetch(`/api/expense-notes/${id}/receipt-url`)
       if (!response.ok) {
-        setError('Impossible de récupérer le reçu.')
+        setError(await readErrorMessage(response, 'Impossible de récupérer le reçu.'))
         return
       }
       const { url } = await response.json()

@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { readErrorMessage } from '@/utils/http'
 
 interface ExpenseNote {
   id: string
@@ -30,7 +31,7 @@ export function PendingApprovalsPanel() {
       if (response.ok) {
         setNotes(await response.json())
       } else {
-        setError('Impossible de charger les notes en attente.')
+        setError(await readErrorMessage(response, 'Impossible de charger les notes en attente.'))
       }
     } catch {
       setError('Impossible de charger les notes en attente. Vérifie ta connexion et réessaie.')
@@ -49,7 +50,7 @@ export function PendingApprovalsPanel() {
     try {
       const response = await fetch(`/api/manager/expense-notes/${id}/receipt-url`)
       if (!response.ok) {
-        setError('Impossible de récupérer le reçu.')
+        setError(await readErrorMessage(response, 'Impossible de récupérer le reçu.'))
         return
       }
       const { url } = await response.json()
