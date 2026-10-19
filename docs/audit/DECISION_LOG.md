@@ -182,3 +182,14 @@ Branche `feat/spec-04`, départ `7377486` (main actualisé, sans `feat/spec-01`/
 | G14 | Implémentée : détection du format réel par signature d'octets avant écriture/upload, comparée au type annoncé | Un type annoncé seul n'est pas une preuve du contenu | [Entrée](solutions-to-audit/G14-controle-recus.md#implementation) | `test:issue -- G14` 11/11 |
 
 api 82/112 (0 échec sur les 5 cartes de ce lot) ; e2e 39/60 (0 échec AUD-017). Échecs restants attribués à des specs non réalisées sur cette branche ou à des dépendances (SPEC-01/02/05) non mergées — pas des régressions de SPEC-04.
+
+## SPEC-04 corrigée après revue — personne B — 19 octobre 2026
+
+`feat/spec-04` actualisée avec `main` `651b067`, puis correction des constats P1/P2 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-04-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-014 | Positivité contrôlée sur la saisie avant arrondi, borne contrôlée après arrondi | `0.001` est une valeur positive admise par le contrat C3 | [Entrée du 19 octobre](solutions-to-audit/AUD-014-validation-montant.md#implementation) | ENTREE-001/003/004 réussis |
+| AUD-004 | Options de tri dans une `Map` | Une propriété héritée ne doit jamais devenir un fragment SQL | [Entrée du 19 octobre](solutions-to-audit/AUD-004-sort-input.md#implementation) | ENTREE-002 réussi |
+
+`SPEC-04 — tests du lot` vert en local : 44/44 ; unit 21/21. SPEC-03, qui embarque SPEC-04, doit récupérer cette correction.

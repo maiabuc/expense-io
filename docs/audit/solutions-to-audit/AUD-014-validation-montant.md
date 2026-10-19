@@ -66,3 +66,33 @@ POST avec `amount` → `parseStrictAmount(amountRaw)` : motif complet vérifié 
 #### Écarts et limites
 
 L'arrondi JS interne ne regarde que le troisième chiffre décimal pour décider d'un report de centime (standard pour un arrondi au centime) ; au-delà de la troisième décimale, seule PostgreSQL applique l'arrondi définitif de stockage — cohérent avec la chaîne non arrondie transmise. Espaces internes à la chaîne non testés spécifiquement (le motif les rejette déjà, aucun cas CI ne les couvre explicitement).
+
+### 2026-10-19 — SPEC-04, correction après revue (personne B)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-04](../../specs/SPEC-04-entrees-et-affichage.md). Révision de départ : `feat/spec-04` actualisée avec `main` `651b067`. Réalisation : commit de cette entrée sur `feat/spec-04`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P1, C3) que l'entrée du 18 octobre contrôlait la positivité *après* l'arrondi au centime : `0.001` donnait 0 centime et était refusé, alors que le contrat admet les petites valeurs positives avant l'arrondi de PostgreSQL. `parseStrictAmount` contrôle désormais la positivité sur la chaîne saisie (au moins un chiffre non nul) et la borne `numeric(10,2)` sur la valeur arrondie au centime. `0.001` et `0.004` sont admis (stockés 0.00 par PostgreSQL), `0`, `0.00` et `.0` restent refusés, `99999999.994` est admis et `99999999.995` (arrondi à 100 000 000,00) refusé.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/validators.ts : `parseStrictAmount` | Positivité testée sur les chiffres saisis avant arrondi ; seule la borne haute reste testée après arrondi | Conforme à C3 |
+
+#### Nouveau fonctionnement
+
+Motif complet vérifié (inchangé) → normalisation → au moins un chiffre non nul dans la partie entière ou décimale saisie, sinon refus → centimes calculés en `BigInt` avec arrondi au chiffre suivant → refus si supérieur à 9 999 999 999 centimes → chaîne normalisée non arrondie transmise à PostgreSQL (inchangé).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:api` (suite complète) | ENTREE-001/003/004 et NOTE-006…015/029/030 réussis | Tous réussis, dont ENTREE-001 (`0.001`, `0.004` → 201, montant 0) et ENTREE-004 (borne après arrondi) | `reports/api.json` |
+| `npm run test:spec:report -- SPEC-04` | Contrôle par spec vert | `passed`, 44/44 | `reports/SPEC-04.json` |
+
+#### Écarts et limites
+
+Un montant positif inférieur à un demi-centime est accepté puis stocké à 0,00 : c'est le comportement demandé par le contrat (C3) et vérifié par ENTREE-001, pas une nouvelle règle métier.
