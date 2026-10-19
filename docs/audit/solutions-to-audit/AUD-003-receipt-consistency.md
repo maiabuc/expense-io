@@ -55,3 +55,47 @@ Vérifications prévues : succès ; échec upload ; upload réussi et finalisati
 ## Actualisation des preuves — campagne du 14–15 octobre
 
 Panne contrôlée de stockage reproduite via HTTP : réponse 500 et note pending avec receipt_key vide. La reprise cible, le doublon et la réponse perdue restent non testés. [Rapport et résultats bruts](../mesures-et-preuves.md). Les mentions de non-exécution précédentes décrivent la preuve initiale ; aucune validation de correction n’est acquise.
+
+## IMPLEMENTATION
+
+### 2026-10-19 — SPEC-09, personne D
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-09](../../specs/SPEC-09-soumission-isolee.md), [ADR-0002](../../adr/0002-hexagonal-soumission.md). Révision de départ : `eaa7fbf` (branche de base locale `base/spec-09` = `main` `7377486` + `feat/spec-01` `f5dc2d6` + `feat/spec-02` `4913b50` + `feat/spec-04` `19bdd4c` + `feat/spec-06` `bb16e63`). Réalisation : `5898c42`, `873f56c`, `1c42784`, tests `e8c1b14` et `036b0d5`, branche `feat/spec-09`.
+
+#### Ce qui a été implémenté
+
+Une demande de soumission est identifiée par une clé UUID (en-tête optionnel `Idempotency-Key`) liée durablement à l'utilisateur et à la note par une contrainte d'unicité. La route `POST /api/expense-notes` ne fait plus que l'authentification, la validation des entrées (fonctions pures de SPEC-04) et la traduction des résultats : elle appelle un module de soumission/reprise qui réserve la note en état `incomplete`, prend une réservation d'exécution à jeton et expiration, vérifie ou envoie le reçu, puis passe la note en `pending` avec une écriture bornée sous l'identité du propriétaire. Une répétition de la même demande retrouve la note : 200 avec l'état actuel (décision comprise) si elle est finalisée, 201 à la première finalisation, 409 si le contenu ou le reçu diffère ou si une exécution est en cours. Une panne d'envoi ou de finalisation laisse la note `incomplete`, récupérable. L'interface affiche « incomplète », exclut ces notes du total et propose « Reprendre » dans le formulaire existant. Un client historique sans clé garde le comportement 201 d'avant.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| migrations/1700000000020_expense-notes-soumission-rls.sql | Statut `incomplete`, colonnes `request_key`, `request_fingerprint`, `receipt_sha256`, `receipt_size`, `claim_token`, `claim_expires_at`, unicité `(user_id, request_key)` | Demande stable et réservation d'exécution garanties en base |
+| src/modules/soumission/soumettre.ts, `soumettre` (l. 34) et `assurerRecu` (l. 98) | Cas d'usage : réserver, prendre, vérifier/déposer le reçu, finaliser, relire après résultat incertain | Orchestration unique, sans Next, pg ni AWS |
+| src/modules/soumission/ports.ts, empreinte.ts | Ports `DemandeStore` et `RecuStore`, résultats et erreurs métier, empreinte canonique du contenu | Contrat entre le module et ses adaptateurs |
+| src/modules/soumission/adaptateurs/postgres.ts (`reserver` l. 30, `prendre` l. 75, `finaliser` l. 89, `liberer` l. 102) | Transactions courtes sous `withUserScope`, `INSERT ... ON CONFLICT DO NOTHING`, `UPDATE` conditionnels à l'état et au jeton | Unicité, exclusivité et finalisation bornée en base |
+| src/modules/soumission/adaptateurs/s3.ts, src/lib/storage.ts (`readReceipt`, délai de 30 s par appel) | Lecture et comparaison d'un objet par taille et empreinte, dépôt borné | Un objet n'est réutilisé que s'il est conforme |
+| src/modules/soumission/assemblage.ts | Point d'assemblage des adaptateurs réels | Injection par paramètres |
+| src/app/api/expense-notes/route.ts, POST (l. 92) et GET | Clé facultative, reçu facultatif pour une reprise, traduction des résultats, `requestId` des seules notes incomplètes du propriétaire | Adaptateur HTTP |
+| src/app/expenses/page.tsx | Clé de tentative en `sessionStorage` par compte, libellé, bouton « Reprendre », total sans les incomplètes | Reprise dans l'interface existante |
+| src/app/api/expense-notes/[id]/receipt-url/route.ts | Une note incomplète n'a pas de reçu confirmé : 404 | Pas d'URL signée vers un objet non vérifié |
+
+#### Nouveau fonctionnement
+
+Employé → formulaire (clé créée ou reprise depuis `sessionStorage`) → `POST /api/expense-notes` avec `Idempotency-Key` → identité actuelle (SPEC-06) et validations d'entrée → `soumettre` : (1) réservation ou relecture de la note, transaction courte ; empreinte du contenu comparée (montant avant arrondi sous forme canonique, date, description, reçu) → 409 si différente ; (2) note déjà finalisée : 200 avec son état actuel, jamais remise à `pending` ; (3) réservation d'exécution par `UPDATE` conditionnel (jeton, expiration de 120 s) : un concurrent reçoit 409 sans envoi ; (4) lecture de l'objet à la clé prévue : conforme → réutilisé, absent ou différent → remplacé par le fichier fourni, sinon 400 « le reçu est requis » ; après un résultat incertain d'écriture, l'objet est relu ; (5) finalisation : `UPDATE` vers `pending` conditionné à l'état `incomplete`, au propriétaire et au jeton ; zéro ligne ou erreur incertaine impose une relecture avant toute conclusion ; (6) 201. Aucune transaction n'est ouverte pendant l'envoi vers S3. Une panne laisse la note `incomplete`, libère la réservation et renvoie 500 « La soumission n'a pas pu être terminée. Veuillez la reprendre. » avec diagnostic interne. Après un arrêt brutal, la réservation expire ; l'objet et l'état sont alors relus avant reprise. L'état `incomplete` est refusé aux décisions par la politique RLS et par les routes (voir [AUD-009](AUD-009-database-company-isolation.md#implementation)).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `test:issue` équivalent, issue AUD-003 (suites complètes) | PANNE-001 vert, cas ajoutés verts | AUD-003 : 38/38 réussis. Ajoutés : 16 unitaires (SOUM-001 à 016), 13 HTTP/SQL/S3 (SOUM-100 à 112), 4 contrats d'adaptateurs réels (SOUM-120 à 123), 2 navigateur (NAV-030, 031). PANNE-001 était rouge | `reports/issues.json`, 2026-10-19 |
+| `npm run ci:docs` ; `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun (234 tests identifiés ; 1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-19 |
+| `npm run test:unit` | Cas du module verts | exit 0 ; 22/22 réussis (16 ajoutés : SOUM-001 à 016) | `reports/unit.json` |
+| `npm run test:api` (complète) | Aucune régression | exit 1 ; 131 réussis, 19 échoués sur 150 (état de référence `base/spec-09` : 102/125) | `reports/issues.json` |
+| `npm run test:e2e` (complète) | Aucune régression | exit 1 ; 61 réussis, 1 échoué sur 62 (référence : 59/60) | `reports/issues.json` |
+| `npm run test:report` | Bilan agrégé | exit 1 ; 214 réussis, 20 échoués sur 234 (référence : 167/191) | `reports/issues.json` |
+
+#### Écarts et limites
+
+Extraction et correction ne sont pas séparées en commits : l'ancienne orchestration de la route est remplacée par le module, pas déplacée à l'identique. Un client sans `Idempotency-Key` ne bénéficie pas de la déduplication (limite acceptée par le contrat). Durées non éprouvées en charge : réservation de 120 s, délai de 30 s par appel S3. Pas de nettoyage automatique des soumissions abandonnées. La reprise depuis la liste préremplit le montant arrondi lu en base si le `sessionStorage` est perdu : un montant saisi avec plus de deux décimales donnerait alors un 409 de contenu différent. Les notes antérieures restent sans clé. Les tests du professeur ne sont pas fournis.
