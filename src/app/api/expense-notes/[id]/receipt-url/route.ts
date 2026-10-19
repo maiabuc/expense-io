@@ -13,7 +13,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
 
     const note = await withUserScope(session.user.id, async (client) => {
       const result = await client.query(
-        'SELECT receipt_key FROM expense_notes WHERE id = $1 AND user_id = $2',
+        "SELECT receipt_key FROM expense_notes WHERE id = $1 AND user_id = $2 AND status <> 'incomplete'",
         [id, session.user.id]
       )
       return result.rows[0]
