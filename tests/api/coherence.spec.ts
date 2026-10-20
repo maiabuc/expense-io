@@ -1,7 +1,7 @@
 import { test, expect, authenticate } from '../support/fixtures'
 import { users, notes, absent } from '../support/data'
 import { db, appDb, overlapping } from '../support/database'
-import { withMissingBucket, withRestrictedDatabase, withParisMidnight } from '../support/failure-server'
+import { withMissingBucket, withRestrictedDatabase, withParisMidnight, withCapturedDiagnostics } from '../support/failure-server'
 import { readFile } from 'node:fs/promises'
 
 test('[AUD-003][PANNE-001][correction] une panne upload ne laisse pas une note pending sans reçu', async ({ request }) => {
@@ -178,4 +178,23 @@ test('[AUD-015][DATE-001][correction] à minuit Paris le serveur accepte aujourd
     }
     expect((await db().query("SELECT count(*)::int AS count FROM expense_notes WHERE description='Minuit Paris CI'")).rows[0].count).toBe(1)
   })
+})
+
+test('[AUD-005][PANNE-004][correction] le journal ne conserve pas un jeton ou une URL signée présents dans une exception', async ({ request }) => {
+  const marker = 'FAKE_CI_PRIVATE_MARKER'
+  await db().query(`CREATE OR REPLACE FUNCTION ci_diagnostic_failure() RETURNS trigger LANGUAGE plpgsql AS $$
+    BEGIN IF NEW.description='Diagnostic confidentiel CI' THEN
+      RAISE EXCEPTION 'authorization: Bearer FAKE_CI_PRIVATE_MARKER https://ci.invalid/receipt?X-Amz-Signature=FAKE_CI_PRIVATE_MARKER';
+    END IF; RETURN NEW; END $$;
+    CREATE TRIGGER ci_diagnostic_failure BEFORE INSERT ON expense_notes FOR EACH ROW EXECUTE FUNCTION ci_diagnostic_failure()`)
+  try {
+    await authenticate(request, 'a_employee')
+    await withCapturedDiagnostics(async (base, logs) => {
+      const response = await request.post(`${base}/api/expense-notes`, { multipart: { amount: '12', expenseDate: '2026-10-01', description: 'Diagnostic confidentiel CI',
+        receipt: { name: 'receipt.png', mimeType: 'image/png', buffer: await readFile('tests/fixtures/receipt.png') } } })
+      expect(response.status()).toBe(500)
+      expect.soft(JSON.stringify(await response.json()).includes(marker), 'Aucun diagnostic privé dans la réponse publique.').toBe(false)
+      expect.soft(logs().includes(marker), 'Aucun jeton ou signature privée dans les diagnostics internes.').toBe(false)
+    })
+  } finally { await db().query('DROP TRIGGER IF EXISTS ci_diagnostic_failure ON expense_notes') }
 })

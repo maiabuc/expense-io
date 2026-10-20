@@ -61,3 +61,19 @@ test('[AUD-013][INS-007][reference] inscriptions simultanées donnent un seul pr
     expect(rows).toEqual([{ role: 'employee' }, { role: 'hr_admin' }])
   } finally { await second.close() }
 })
+
+test('[AUD-013][INS-008][reference] un échec de connexion automatique ne supprime pas le compte validé', async ({ page }) => {
+  // Défaillance contrôlée de l'authentification du seul compte fictif après son insertion.
+  await db().query(`CREATE OR REPLACE FUNCTION ci_login_failure() RETURNS trigger LANGUAGE plpgsql AS $$
+    BEGIN IF NEW.email='login-failure@ci-login-fault.invalid' THEN NEW.password_hash='hachage-invalide-ci'; END IF; RETURN NEW; END $$;
+    CREATE TRIGGER ci_login_failure BEFORE INSERT ON users FOR EACH ROW EXECUTE FUNCTION ci_login_failure()`)
+  try {
+    await fillSignup(page, 'login-failure@ci-login-fault.invalid')
+    const response = page.waitForResponse(r => new URL(r.url()).pathname === '/signup' && r.request().method() === 'POST')
+    await page.getByRole('button', { name: "S'inscrire", exact: true }).click()
+    await response
+    expect((await db().query("SELECT u.role,c.email_domain FROM users u JOIN companies c ON c.id=u.company_id WHERE u.email='login-failure@ci-login-fault.invalid'")).rows)
+      .toEqual([{ role: 'hr_admin', email_domain: 'ci-login-fault.invalid' }])
+    expect((await (await page.request.get('/api/auth/session')).json())?.user).toBeUndefined()
+  } finally { await db().query('DROP TRIGGER IF EXISTS ci_login_failure ON users') }
+})

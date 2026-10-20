@@ -497,3 +497,13 @@ test("[AUD-016][NET-032][correction] reçu RH : échec JSON illisible visible et
   await expect(page.getByText('Chargement…', { exact: true })).toHaveCount(0)
   expect(calls).toBe(1)
 })
+
+test('[AUD-016][NET-033][correction] le message sûr du service OCR occupé est affiché', async ({ page }) => {
+  await loginPage(page, 'a_employee')
+  const message = 'Service temporairement occupé, veuillez réessayer.'
+  await page.route('**/api/expense-notes/receipt-suggestion', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ error: message }) }))
+  await page.getByLabel('Reçu (image ou PDF)', { exact: true }).setInputFiles('tests/fixtures/receipt.png')
+  await page.getByRole('button', { name: 'Pré-remplir depuis le reçu', exact: true }).click()
+  await expect(page.getByRole('alert').filter({ hasText: message })).toBeVisible()
+  await expect(page.getByRole('button', { name: 'Pré-remplir depuis le reçu', exact: true })).toBeEnabled()
+})

@@ -1,0 +1,10 @@
+
+> expense-io-version-b@0.1.0 lint
+> eslint
+
+
+/tmp/expense-io-spec01-fix-20261020/docs/audit/evidence/comment-audit/controle.cjs
+  56:43  warning  'e' is defined but never used  @typescript-eslint/no-unused-vars
+
+✖ 1 problem (0 errors, 1 warning)
+

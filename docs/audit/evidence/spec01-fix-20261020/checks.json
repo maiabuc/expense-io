@@ -1,0 +1,1101 @@
+{
+  "base": "3a343b5c42fca2e92074fd865702318dae869aa7",
+  "sourceState": "Diff local du 20 octobre 2026, avant commit de correction",
+  "sourceHashes": {
+    "src/lib/errors.ts": "239307861c00b972a3e6bf9c8a511563eba4b1cff91303b63c7af4c442ccfa90",
+    "tests/api/diagnostics.spec.ts": "94a12463b7638a1c7bb7ceb1c4d0f39c6af3b0041e4a4e93a42a9189c8045003"
+  },
+  "environment": {
+    "node": "v24.6.0",
+    "npm": "11.5.1",
+    "platform": "linux/x64",
+    "isolatedCopy": "/tmp/expense-io-spec01-fix-20261020",
+    "postgresPort": 15450,
+    "s3Port": 14590,
+    "applicationPort": 13450
+  },
+  "checks": {
+    "npm ci": 0,
+    "npm run lint": 0,
+    "npm run typecheck": 0,
+    "npm run build": 0,
+    "npm run test:unit": 0,
+    "npm run test:api": 1,
+    "SOURCE_SHA=3a343b5 npm run test:spec:report -- SPEC-01": 0
+  },
+  "unit": {
+    "total": 21,
+    "passed": 21,
+    "failed": 0
+  },
+  "api": {
+    "provenance": {
+      "revision": "3a343b5",
+      "sourceState": "SPEC-01 correction locale du 20 octobre 2026, src/lib/errors.ts et deux tests supplémentaires",
+      "generatedAt": "2026-10-20T15:56:09.576Z",
+      "runId": "be8a069f-eefe-457d-be03-e47728274448",
+      "node": "v24.6.0",
+      "platform": "linux/x64",
+      "issue": null,
+      "database": "postgres://127.0.0.1:15450/expense_io_ci_api",
+      "storage": "http://127.0.0.1:14590/",
+      "bucket": "ci-api-receipts"
+    },
+    "planned": 122,
+    "passed": 71,
+    "failed": 51,
+    "invalid": [],
+    "cases": [
+      {
+        "id": "AUTH-004",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AUTH-005",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AUTH-001",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AUTH-002",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AUTH-003",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "PANNE-001",
+        "issues": [
+          "AUD-003"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "PANNE-002",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "RLS-001",
+        "issues": [
+          "AUD-009"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "RLS-002",
+        "issues": [
+          "AUD-009"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DEC-001",
+        "issues": [
+          "AUD-007"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DEC-002",
+        "issues": [
+          "AUD-007"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DEC-003",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DEC-004",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DEC-005",
+        "issues": [
+          "AUD-007"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DEC-006",
+        "issues": [
+          "AUD-007"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DEC-007",
+        "issues": [
+          "AUD-007"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "PANNE-003",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "RLS-003",
+        "issues": [
+          "AUD-009"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "RLS-004",
+        "issues": [
+          "AUD-009"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "RLS-005",
+        "issues": [
+          "AUD-009"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DATE-001",
+        "issues": [
+          "AUD-015"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "PANNE-004",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "PANNE-005",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "PANNE-006",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "PANNE-007",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "PANNE-008",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "PANNE-009",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-001",
+        "issues": [
+          "AUD-003"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-002",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-003",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-004",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-005",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-006",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-007",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-008",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-009",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-010",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-011",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-012",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-013",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-014",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-015",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-016",
+        "issues": [
+          "AUD-015"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-017",
+        "issues": [
+          "AUD-015"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-018",
+        "issues": [
+          "AUD-015"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-019",
+        "issues": [
+          "AUD-015"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-020",
+        "issues": [
+          "AUD-015"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-021",
+        "issues": [
+          "AUD-015"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-022",
+        "issues": [
+          "AUD-005"
+        ],
+        "kind": "correction",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-023",
+        "issues": [
+          "G14"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-024",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-025",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-026",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-027",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-028",
+        "issues": [
+          "G14"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "LIST-001",
+        "issues": [
+          "AUD-004"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "LIST-002",
+        "issues": [
+          "AUD-004"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "LIST-003",
+        "issues": [
+          "AUD-004"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "LIST-004",
+        "issues": [
+          "AUD-004"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "LIST-005",
+        "issues": [
+          "AUD-004"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "LIST-006",
+        "issues": [
+          "AUD-004"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "RECU-001",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "RECU-002",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "RECU-003",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "LIST-007",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-029",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "NOTE-030",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-031",
+        "issues": [
+          "G14"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "NOTE-032",
+        "issues": [
+          "G14"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "ENTREE-001",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "ENTREE-002",
+        "issues": [
+          "AUD-004"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "ENTREE-003",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "ENTREE-004",
+        "issues": [
+          "AUD-014"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "OCR-001",
+        "issues": [
+          "AUD-008"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "OCR-002",
+        "issues": [
+          "AUD-008"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "OCR-003",
+        "issues": [
+          "AUD-008"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "OCR-004",
+        "issues": [
+          "AUD-008"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "OCR-005",
+        "issues": [
+          "AUD-008"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "OCR-006",
+        "issues": [
+          "AUD-008"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-001",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-002",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-003",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-004",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-005",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-006",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-007",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-008",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-009",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-010",
+        "issues": [
+          "AUD-011"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-011",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-012",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-013",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DROIT-014",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DROIT-015",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-016",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-017",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-018",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "DROIT-019",
+        "issues": [
+          "G10"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DROIT-020",
+        "issues": [
+          "G10"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "DROIT-021",
+        "issues": [
+          "G10"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-001",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-002",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-003",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-004",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-005",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-006",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-007",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-008",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-009",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AFF-010",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AFF-011",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-012",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AFF-013",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AFF-014",
+        "issues": [
+          "AUD-006"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AFF-015",
+        "issues": [
+          "AUD-021"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "AFF-016",
+        "issues": [
+          "AUD-021"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-017",
+        "issues": [
+          "AUD-021"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-018",
+        "issues": [
+          "AUD-021"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "AFF-019",
+        "issues": [
+          "AUD-020"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "SEED-001",
+        "issues": [
+          "AUD-018"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      },
+      {
+        "id": "SEED-002",
+        "issues": [
+          "AUD-018"
+        ],
+        "kind": "correction",
+        "status": "failed"
+      },
+      {
+        "id": "SEED-003",
+        "issues": [
+          "AUD-018"
+        ],
+        "kind": "reference",
+        "status": "passed"
+      }
+    ]
+  },
+  "specification": {
+    "id": "SPEC-01",
+    "title": "Erreurs API",
+    "status": "passed",
+    "planned": 9,
+    "passed": 9,
+    "failed": 0,
+    "notRun": 0,
+    "missingCoverage": [],
+    "cases": [
+      {
+        "caseId": "PANNE-002",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "PANNE-003",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "PANNE-004",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "PANNE-005",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "PANNE-006",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "PANNE-007",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "PANNE-008",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "PANNE-009",
+        "suite": "api",
+        "status": "passed"
+      },
+      {
+        "caseId": "NOTE-022",
+        "suite": "api",
+        "status": "passed"
+      }
+    ],
+    "errors": [],
+    "provenance": {
+      "revision": "3a343b5",
+      "sourceState": "commit local",
+      "generatedAt": "2026-10-20T15:56:30.558Z",
+      "runId": "4e850a6a-98fe-4975-8027-f4786c5d1b21",
+      "node": "v24.6.0",
+      "platform": "linux/x64",
+      "issue": null
+    }
+  },
+  "limits": [
+    "Un avertissement lint preexistant",
+    "51 echecs API de corrections hors SPEC-01 ; aucun echec de reference",
+    "E2E non reexecutes localement pour cette correction ; verification GitHub apres push",
+    "Expurgation par motifs reconnaissables ; ne garantit pas un secret arbitraire sans cle ni prefixe",
+    "Services jetables nettoyes par le runner ; aucun service utilisateur modifie"
+  ]
+}

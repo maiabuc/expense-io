@@ -1,0 +1,430 @@
+{
+  "pr": 4,
+  "run": 39163332286,
+  "issues": [
+    "AUD-004",
+    "AUD-014",
+    "AUD-015",
+    "AUD-017",
+    "G14"
+  ],
+  "sourceSha": "19bdd4c0515386e5c4466db378c47fa04feae0b7",
+  "suites": {
+    "Tests api": {
+      "planned": 112,
+      "passed": 82,
+      "failed": 30,
+      "notRun": 0
+    },
+    "Tests e2e": {
+      "planned": 60,
+      "passed": 39,
+      "failed": 21,
+      "notRun": 0
+    }
+  },
+  "selected": [
+    {
+      "caseId": "DATE-001",
+      "title": "[AUD-015][DATE-001][correction] à minuit Paris le serveur accepte aujourd’hui et refuse demain",
+      "suite": "api",
+      "issues": [
+        "AUD-015"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-002",
+      "title": "[G14][NOTE-002][reference] dépôt légitime image/png",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-003",
+      "title": "[G14][NOTE-003][reference] dépôt légitime image/jpeg",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-004",
+      "title": "[G14][NOTE-004][reference] dépôt légitime image/webp",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-005",
+      "title": "[G14][NOTE-005][reference] dépôt légitime application/pdf",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-006",
+      "title": "[AUD-014][NOTE-006][reference] montant zéro refusé sans note",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-007",
+      "title": "[AUD-014][NOTE-007][correction] montant invalide 12abc refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-008",
+      "title": "[AUD-014][NOTE-008][correction] montant invalide 1.2.3 refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-009",
+      "title": "[AUD-014][NOTE-009][correction] montant invalide 1,2,3 refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-010",
+      "title": "[AUD-014][NOTE-010][correction] montant invalide 1,2.3 refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-011",
+      "title": "[AUD-014][NOTE-011][correction] montant invalide NaN refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-012",
+      "title": "[AUD-014][NOTE-012][correction] montant invalide Infinity refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-013",
+      "title": "[AUD-014][NOTE-013][correction] montant invalide -1 refusé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-014",
+      "title": "[AUD-014][NOTE-014][correction] virgule décimale équivalente au point",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-015",
+      "title": "[AUD-014][NOTE-015][reference] arrondi PostgreSQL des décimales supplémentaires conservé",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-016",
+      "title": "[AUD-015][NOTE-016][correction] date invalide ou interdite ''",
+      "suite": "api",
+      "issues": [
+        "AUD-015"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-017",
+      "title": "[AUD-015][NOTE-017][correction] date invalide ou interdite '2026-02-30'",
+      "suite": "api",
+      "issues": [
+        "AUD-015"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-018",
+      "title": "[AUD-015][NOTE-018][correction] date invalide ou interdite '2023-02-29'",
+      "suite": "api",
+      "issues": [
+        "AUD-015"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-019",
+      "title": "[AUD-015][NOTE-019][correction] date invalide ou interdite '2099-01-01'",
+      "suite": "api",
+      "issues": [
+        "AUD-015"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-020",
+      "title": "[AUD-015][NOTE-020][correction] date invalide ou interdite '01/10/2026'",
+      "suite": "api",
+      "issues": [
+        "AUD-015"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-021",
+      "title": "[AUD-015][NOTE-021][reference] date bissextile réelle acceptée",
+      "suite": "api",
+      "issues": [
+        "AUD-015"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-023",
+      "title": "[G14][NOTE-023][correction] texte déguisé en PNG refusé avant toute écriture",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-024",
+      "title": "[G14][NOTE-024][reference] type de reçu non supporté refusé",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-025",
+      "title": "[G14][NOTE-025][reference] borne de taille 10485760 octets",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-026",
+      "title": "[G14][NOTE-026][reference] borne de taille 10485761 octets",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-028",
+      "title": "[G14][NOTE-028][reference] reçu absent refusé",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "LIST-001",
+      "title": "[AUD-004][LIST-001][reference] liste propriétaire et tri par défaut conservés",
+      "suite": "api",
+      "issues": [
+        "AUD-004"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "LIST-002",
+      "title": "[AUD-004][LIST-002][correction] option nommée newest",
+      "suite": "api",
+      "issues": [
+        "AUD-004"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "LIST-003",
+      "title": "[AUD-004][LIST-003][correction] option nommée amount_asc",
+      "suite": "api",
+      "issues": [
+        "AUD-004"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "LIST-004",
+      "title": "[AUD-004][LIST-004][correction] option nommée AMOUNT_DESC",
+      "suite": "api",
+      "issues": [
+        "AUD-004"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "LIST-005",
+      "title": "[AUD-004][LIST-005][correction] tri inconnu rejeté avant exécution SQL",
+      "suite": "api",
+      "issues": [
+        "AUD-004"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "LIST-006",
+      "title": "[AUD-004][LIST-006][correction] expression SQL libre refusée",
+      "suite": "api",
+      "issues": [
+        "AUD-004"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-029",
+      "title": "[AUD-014][NOTE-029][reference] montant maximal numeric dix chiffres dont deux décimales accepté",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-030",
+      "title": "[AUD-014][NOTE-030][correction] dépassement de borne monétaire refusé sans écriture",
+      "suite": "api",
+      "issues": [
+        "AUD-014"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-031",
+      "title": "[G14][NOTE-031][correction] faux PDF refusé avant écriture et upload",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-032",
+      "title": "[G14][NOTE-032][correction] contenu PNG déclaré PDF refusé avant écriture et upload",
+      "suite": "api",
+      "issues": [
+        "G14"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NAV-018",
+      "title": "[AUD-017][NAV-018][reference] date calendaire préservée en Europe/Paris",
+      "suite": "e2e",
+      "issues": [
+        "AUD-017"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NAV-019",
+      "title": "[AUD-017][NAV-019][reference] date calendaire préservée en UTC",
+      "suite": "e2e",
+      "issues": [
+        "AUD-017"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NAV-020",
+      "title": "[AUD-017][NAV-020][correction] date calendaire préservée en America/Los_Angeles",
+      "suite": "e2e",
+      "issues": [
+        "AUD-017"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NAV-021",
+      "title": "[AUD-017][NAV-021][reference] minuit Paris conserve le jour calendaire du reçu",
+      "suite": "e2e",
+      "issues": [
+        "AUD-017"
+      ],
+      "status": "passed"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Installation reproductible",
+      "conclusion": "success"
+    },
+    {
+      "name": "AUD-023 — Dépendances (informatif)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build de production",
+      "conclusion": "success"
+    },
+    {
+      "name": "Documentation et IDs des tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Lint",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests unitaires",
+      "conclusion": "success"
+    },
+    {
+      "name": "Types TypeScript",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests api",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Tests e2e",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Résultat CI requis",
+      "conclusion": "failure"
+    }
+  ]
+}

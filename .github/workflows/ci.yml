@@ -171,10 +171,64 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
+  specs:
+    name: ${{ matrix.spec }} — tests du lot
+    if: always()
+    needs: [installation, qualite, build, parcours]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        spec: [SPEC-01, SPEC-02, SPEC-03, SPEC-04, SPEC-05, SPEC-06, SPEC-07, SPEC-08, SPEC-09, SPEC-10]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - run: npm ci
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tests-*
+          path: incoming/
+      - name: Rassembler les preuves de cette révision
+        if: always()
+        run: |
+          mkdir -p reports
+          if [ -d incoming ]; then
+            for suite in unit api e2e; do
+              find incoming -name "$suite.json" -exec cp {} reports/ \;
+            done
+            find incoming -name unit-environment.json -exec cp {} reports/ \;
+          fi
+      - name: Vérifier les tests et la couverture du lot
+        run: npm run test:spec:report -- "$SPEC"
+        env:
+          SPEC: ${{ matrix.spec }}
+          CI_PREREQUISITES: ${{ toJSON(needs) }}
+      - name: Publier le bilan du lot
+        if: always()
+        run: |
+          if [ -f "reports/$SPEC.md" ]; then cat "reports/$SPEC.md" >> "$GITHUB_STEP_SUMMARY"; fi
+        env:
+          SPEC: ${{ matrix.spec }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: check-${{ matrix.spec }}
+          path: |
+            reports/SPEC-*.json
+            reports/SPEC-*.md
+          if-no-files-found: warn
+          retention-days: 14
+
   resultat:
     name: Résultat CI requis
     if: always()
-    needs: [installation, qualite, build, parcours, dependances]
+    needs: [installation, qualite, build, parcours, dependances, specs]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -199,11 +253,14 @@ jobs:
           done
           find incoming -name unit-environment.json -exec cp {} reports/ \;
           npm run test:report
+        env:
+          CI_PREREQUISITES: ${{ toJSON(needs) }}
       - name: Publier la synthèse
         if: always()
         run: |
+          if [ -f reports/specifications.md ]; then cat reports/specifications.md >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f reports/issues.md ]; then cat reports/issues.md >> "$GITHUB_STEP_SUMMARY"; fi
-          node -e 'const jobs=JSON.parse(process.env.JOBS); for (const [name,job] of Object.entries(jobs)) console.log(name,job.result); if (["installation","qualite","build","parcours"].some(name => jobs[name].result !== "success")) process.exit(1)'
+          node -e 'const jobs=JSON.parse(process.env.JOBS); for (const [name,job] of Object.entries(jobs)) console.log(name,job.result); if (["installation","qualite","build","parcours","specs"].some(name => jobs[name].result !== "success")) process.exit(1)'
         env:
           JOBS: ${{ toJSON(needs) }}
       - uses: actions/upload-artifact@v4
