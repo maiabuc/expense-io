@@ -137,3 +137,40 @@ Requête applicative → `withUserScope` pose `app.current_user_id` pour la dur�
 #### Écarts et limites
 
 Le compte du déploiement fourni (`docker-compose.yml`) reste un superutilisateur : le basculement vers `expense_app` doit être configuré par l'exploitant, il n'est pas imposé aux commandes README. Le droit de passer une note de `incomplete` à `pending` ne vérifie pas l'existence du reçu côté base : cette vérification est dans le module (S3). La contrainte `status IN (...)` et les politiques ne couvrent que `expense_notes` ; `users` n'a pas de RLS. Les décisions concurrentes manager/RH (SPEC-08) ne sont pas encore atomiques : DEC-005 à 007 restent rouges, comme avant.
+
+### 2026-10-20 — SPEC-09 : intégration de `main`, limites du compte applicatif (personne D)
+
+Statut : implémentée et vérifiée sur le périmètre décrit (compte applicatif du harnais CI) ; configuration d'un compte limité en déploiement à la charge de l'exploitant.
+Spec : [SPEC-09](../../specs/SPEC-09-soumission-isolee.md). Révision de départ : `1746cdb`. `main` fusionné : `5dc5024`. Réalisation : aucun changement de politique ni de droit ; état mesuré : `5cccc42`.
+
+#### Ce qui a été implémenté
+
+Aucune modification de la migration `1700000000020` ni des politiques. Le contrôle a été refait sur le code de `main` fusionné : les routes de SPEC-03, 04, 05 et 06 fonctionnent sous `expense_app` (le serveur de test tourne avec `ci_app_login`), RLS-001 et RLS-006 à 013 restent verts.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| migrations/1700000000020_expense-notes-soumission-rls.sql | inchangé | Politiques, rôle `expense_app`, droits de colonne |
+
+#### Nouveau fonctionnement
+
+Inchangé : voir l'entrée du 2026-10-19.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun (lint : 1 avertissement préexistant hors périmètre) | Run local 2026-10-20 sur `5cccc42` |
+| `npm run test:unit` | tous réussis | 41/41 | `reports/unit.json` |
+| `npm run test:api` complète | aucun nouveau rouge | 144/161 ; 17 rouges, tous attendus à ce stade car relevant de SPEC-07 (AFF-001 à 008, 011, 016 à 019), SPEC-08 (DEC-005 à 007) et SPEC-10 (SEED-002), non intégrées dans cette branche | `reports/api.json` |
+| `npm run test:e2e` complète | aucune régression | 64/64 | `reports/e2e.json` |
+| `npm run test:report` | bilan agrégé | exit 1 (les 17 rouges ci-dessus) ; 249/266 ; statut SPEC-09 « incomplete » : REPRISE-001 à 008 et HEXA-001/002 absents du manifeste `tests/specifications.json` (attendu, non traité) | `reports/specifications.json` |
+| `npm run test:issue -- AUD-003` / `AUD-009` | cas verts | AUD-003 39/39 ; AUD-009 13/13 | sorties locales du 2026-10-20 |
+| `AUDIT_BASE_SHA=5dc5024… node scripts/ci/documentation.mjs` | préfixes de `main` conservés | exit 0 | sortie locale |
+| État de référence après fusion de `main` (`3804a97`) | — | unit 41/41, api 143/160, e2e 64/64 (OCR-003, OCR-004 et INS-006, rouges avant la fusion faute de SPEC-03/05, sont verts) | `reports/` du run |
+
+#### Écarts et limites
+
+**Décision D2 (critère C7).** `docker-compose.yml` n'est pas modifié : le compte fourni (`expense`) reste superutilisateur et PostgreSQL n'y applique pas la RLS. La preuve d'un compte non superuser et sans `BYPASSRLS` est apportée par le harnais CI (RLS-001 et RLS-006 à 013 sous `ci_app_login`) et par la documentation de `.env.example` ; l'application réelle n'est protégée que si l'exploitant utilise un rôle membre de `expense_app` comme `DATABASE_URL`. Les commandes README sont conservées.
+Droits de colonne : `UPDATE (receipt_key, status, claim_token, claim_expires_at)` est accordé au rôle, pas à une politique ; une requête SQL émise sous l'identité d'un manager ou du RH pour une note de son périmètre en `pending` pourrait donc aussi modifier `receipt_key` (analyse de la migration, non exécutée ; les routes de l'application ne le font pas). À soumettre à la relecture croisée de C. Une ancienne limite de l'entrée du 2026-10-19 (« décisions manager/RH non atomiques ») est levée par la branche `feat/spec-08`, pas par celle-ci. Ordre des migrations : `0020` ne doit pas être appliquée avant `0010` (SPEC-07) sur une base partagée : node-pg-migrate refuse sinon `0010` sans `--no-check-order` (vérifié sur une base jetable). Relecture croisée de chaque politique et de chaque `GRANT` par une autre personne : non faite.

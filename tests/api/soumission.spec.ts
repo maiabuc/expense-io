@@ -221,3 +221,19 @@ test('[AUD-003][SOUM-112][reference] contrôle des entrées conservé avec une c
   expect((await envoyer(request, { cle: null, fichier: null })).status()).toBe(400)
   expect(notes.employee).toBeTruthy()
 })
+
+// Règle de montant de SPEC-04 : un montant positif avant arrondi est admis (0.001 est stocké 0.00).
+// L'empreinte de la demande porte sur la valeur validée, pas sur la valeur arrondie.
+test('[AUD-003][SOUM-113][reference] petit montant admis par la validation partagée : même clé rejouée sans conflit, valeur distincte avant arrondi en conflit', async ({ request }) => {
+  await authenticate(request, 'a_employee')
+  const premiere = await envoyer(request, { champs: { amount: '0.001' } })
+  expect(premiere.status()).toBe(201)
+  expect((await lignes())[0].amount).toBe('0.00')
+  const objets = await objectCount()
+  expect((await envoyer(request, { champs: { amount: '0.001' } })).status()).toBe(200)
+  expect((await envoyer(request, { champs: { amount: '0.0010' } })).status()).toBe(200) // même valeur, écriture différente
+  const autre = await envoyer(request, { champs: { amount: '0.002' } })
+  expect(autre.status()).toBe(409)
+  expect((await lignes()).length).toBe(1)
+  expect(await objectCount()).toBe(objets)
+})

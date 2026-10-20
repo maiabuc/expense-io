@@ -1,0 +1,93 @@
+{
+  "pr": 1,
+  "run": 39163243666,
+  "issues": [
+    "AUD-005"
+  ],
+  "sourceSha": "f5dc2d672ba3612c5e2a75c9f9a65a77fc21fb01",
+  "suites": {
+    "Tests api": {
+      "planned": 112,
+      "passed": 64,
+      "failed": 48,
+      "notRun": 0
+    },
+    "Tests e2e": {
+      "planned": 60,
+      "passed": 38,
+      "failed": 22,
+      "notRun": 0
+    }
+  },
+  "selected": [
+    {
+      "caseId": "PANNE-002",
+      "title": "[AUD-005][PANNE-002][correction] erreur de stockage sans détail technique public",
+      "suite": "api",
+      "issues": [
+        "AUD-005"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "PANNE-003",
+      "title": "[AUD-005][PANNE-003][correction] la panne produit un diagnostic interne structuré sans secret",
+      "suite": "api",
+      "issues": [
+        "AUD-005"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "NOTE-022",
+      "title": "[AUD-005][NOTE-022][correction] erreur de date sans stack publique ni message SQL brut",
+      "suite": "api",
+      "issues": [
+        "AUD-005"
+      ],
+      "status": "passed"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Installation reproductible",
+      "conclusion": "success"
+    },
+    {
+      "name": "AUD-023 — Dépendances (informatif)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Types TypeScript",
+      "conclusion": "success"
+    },
+    {
+      "name": "Lint",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests unitaires",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build de production",
+      "conclusion": "success"
+    },
+    {
+      "name": "Documentation et IDs des tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests api",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Tests e2e",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Résultat CI requis",
+      "conclusion": "failure"
+    }
+  ]
+}

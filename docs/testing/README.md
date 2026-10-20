@@ -48,3 +48,33 @@ Le workflow distingue installation, lint/types/documentation/unitaires, build, A
 Pour une future protection de branche, le contrôle global s'appelle `Résultat CI requis`. Cette configuration de protection n'est pas modifiée ici. Les images Docker sont fixées sur leur version majeure/mineure documentée, pas sur un digest immuable ; les dépendances npm et la version Node CI sont verrouillées.
 
 La suite actuelle peut être rouge avant les corrections applicatives. Ne pas affaiblir une assertion pour obtenir du vert. À chaque correction : garder le cas existant, compléter les scénarios propres au nouveau mécanisme, exécuter les suites concernées et ajouter IMPLEMENTATION dans la fiche AUD sans modifier son texte préexistant.
+
+## Contrôles visibles par spec
+
+La CI affiche désormais dix jobs distincts : `SPEC-01 — tests du lot` à `SPEC-10 — tests du lot`. Ils réutilisent les vrais résultats unitaires/API/navigateur du même run et du même SHA : aucune suite supplémentaire factice. Un job peut passer quand les cas de sa spec réussissent, même si une autre spec fait échouer la suite globale. Lint, types, documentation, unitaires et build restent des prérequis communs ; le résultat global exige tous les jobs fonctionnels et les suites complètes.
+
+Le manifeste `tests/specifications.json` relie les specs aux AUD et aux IDs de cas. Les tests nouveaux liés à ces AUD rejoignent la sélection automatiquement. Des exceptions explicites répartissent AUD-006 entre SPEC-06 (consultation/droits actuels) et SPEC-07 (affectation). Les tests d’outillage AUD-011 restent dans le contrôle unitaire commun.
+
+Pour lire un lot après exécution des suites :
+
+```bash
+npm run test:spec:report -- SPEC-01
+```
+
+Cette commande **lit les résultats**, elle ne lance pas les tests. Elle produit `reports/SPEC-01.json` et `.md`. La synthèse complète ajoute `reports/specifications.json` et `.md` et la table GitHub. Absence, doublon, ancien SHA, suite tronquée, erreur globale, exécution filtrée par issue ou prérequis échoués ne donnent pas de vert. Une simple relance d’un ancien workflow ne récupère pas ce nouveau code : actualiser la branchePR avec le main contenant le dispositif.
+
+La couverture obligatoire empêche de valider une spec uniquement avec un sous-ensemble ancien. Un cas attendu absent est signalé comme couverture incomplète, sans faux test ignoré. Les IDs sont des conventions opérationnelles des critères existants ; pour les renommer, adapter le manifeste avec une justification et conserver une preuve équivalente.
+
+| Cas supplémentaires | Critère existant protégé |
+| --- | --- |
+| PANNE-004 | SPEC-01 : exception avec jeton/URL signée, aucun secret public ou journalisé |
+| NET-033 | SPEC-02 : message sûr du serviceOCR 503 conservé |
+| OCR-POOL-001…004 | SPEC-03 : réutilisation sans file, saturation, arrêt réel 40 s et remplacement ; à fournir avec le mécanisme |
+| ENTREE-001…004 | SPEC-04 : petits montants, prototype du tri, grammaire et borne après arrondi |
+| INS-008 | SPEC-05 : panne de connexion après commit conserve entreprise et compte |
+| DROIT-022 | SPEC-06 : rattachement changé, session conservée et contrôles positif/négatif ; à ajouter |
+| DEC-008 | SPEC-08 : incomplete non décidable sous les droits effectifs ; à ajouter avec cet état |
+| REPRISE-001…008, HEXA-001/002 | SPEC-09 : clé/contenu, répétition et décision conservée, demandes distinctes, concurrence, pannes, rechargement, contrats adaptateurs et imports ; à fournir avec le module |
+| SEED-004/005 | SPEC-10 : objet/référence divergents dans les deux sens, même note/décision conservée ; à ajouter |
+
+SPEC-11 et SPEC-12 restent `manual-review` dans la synthèse : mesures comparatives et qualification d’avis ne deviennent pas des tests fonctionnels verts par présence d’un fichier. Elles nécessitent leurs preuves et une revue humaine. Un job automatique vert ne remplace pas non plus la revue des autres specs : les six PR examinées montrent pourquoi des tests anciens réussis ne suffisent pas à conclure.

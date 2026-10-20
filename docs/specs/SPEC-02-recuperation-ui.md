@@ -4,7 +4,7 @@
 
 - Responsable : personne A. Branche : `feat/spec-02`.
 - IDs : AUD-016. Fiches : [AUD-016](../audit/solutions-to-audit/AUD-016-erreurs-reseau-ui.md).
-- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée et vérifiée le 18 octobre 2026 (voir Traçabilité et fin).
+- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée le 18 octobre 2026 ; corrigée après revue le 19 octobre 2026 (message `error` sûr affiché, voir Traçabilité et fin).
 - Autorisation : répartition et préparation demandées par Maia ; directions déjà retenues dans l’audit. Les conditions propres aux sujets 11/12 restent applicables.
 - Source d’audit : `265924bc7274047989e708ab635c2854d376230f`.
 - Départ documentaire : `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, fusion CI dans main. Le développeur enregistrera son vrai SHA de départ actualisé avant réalisation.
@@ -73,6 +73,7 @@ Cas ciblés :
 | npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | exit 0 chacun (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-18 |
 | npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | unit 6/6 ; api 61/112 (AUD-016 non applicable côté api ; AUD-005 à 0/3 car SPEC-01 non mergée dans cette branche, pas une régression de SPEC-02) ; e2e 58/60 (AUD-016 32/32, 0 échec ; 2 échecs restants hors périmètre sur AUD-013/017) | `reports/issues.json` |
 | Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Vérifié : `check-append-only.mjs check --snapshot /tmp/arla-spec-02-gf.json` | Sortie locale 2026-10-18 |
+| Correction 19 octobre : suites complètes + `test:spec:report -- SPEC-02` | Contrôle par spec vert, NET-033 compris | unit 21/21 ; SPEC-02 `passed` 33/33 ; autres specs identiques à la référence `main` | `reports/SPEC-02.json`, run local 2026-10-19 |
 
 Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI existants sont un point de départ : ils ne couvrent pas automatiquement tous les mécanismes futurs. Aucun test du professeur fourni ; aucune réussite inférée d’un fichier listé.
 
@@ -82,5 +83,5 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Chaque fiche concernée reçoit un ajout daté sous `## IMPLEMENTATION` ; conserver absolument tout le texte et les ajouts antérieurs. Indiquer quoi/où/nouveau fonctionnement, tests réels et limites. Pour AUD-019, documenter seulement la convention conservée ; pour 11/12, ne pas inventer de correction.
 - Vérifier : `node docs/audit/tools/check-append-only.mjs check --snapshot /tmp/arla-spec-02-<identifiant-unique>.json`.
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
-- Entrées IMPLEMENTATION : [AUD-016](../audit/solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation), ajoutée le 2026-10-18 (SHA de départ `7377486`, réalisation `16cb7ad`).
-- Statut de fin : implémentée et vérifiée sur le périmètre décrit. Critères C1/C2/C3 relus avec les preuves ci-dessus ; branche basée sur `main` sans `feat/spec-01` encore mergée (voir écarts dans l'entrée IMPLEMENTATION) ; aucun plan de migration/retour arrière demandé.
+- Entrées IMPLEMENTATION : [AUD-016](../audit/solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation), ajoutée le 2026-10-18 (SHA de départ `7377486`, réalisation `16cb7ad`). Entrée de correction ajoutée le 2026-10-19 après la revue.
+- Statut de fin : implémentée et vérifiée sur le périmètre décrit. Le 18 octobre, plusieurs chemins masquaient le champ `error` sûr (relevé par la revue du 19 octobre) ; corrigé le 19 octobre. Contrôle `SPEC-02 — tests du lot` vert en local (33/33). La sûreté du message affiché suppose SPEC-01 intégrée. Aucun plan de migration/retour arrière demandé.

@@ -1,0 +1,358 @@
+[
+  {
+    "id": "SPEC-01",
+    "title": "Erreurs API",
+    "mode": "automated",
+    "issues": [
+      "AUD-005"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "PANNE-002",
+      "PANNE-003",
+      "NOTE-022",
+      "PANNE-004"
+    ]
+  },
+  {
+    "id": "SPEC-02",
+    "title": "Récupération UI",
+    "mode": "automated",
+    "issues": [
+      "AUD-016"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "NET-001",
+      "NET-002",
+      "NET-003",
+      "NET-004",
+      "NET-005",
+      "NET-006",
+      "NET-007",
+      "NET-008",
+      "NET-009",
+      "NET-010",
+      "NET-011",
+      "NET-012",
+      "NET-013",
+      "NET-014",
+      "NET-015",
+      "NET-016",
+      "NET-017",
+      "NET-018",
+      "NET-019",
+      "NET-020",
+      "NET-021",
+      "NET-022",
+      "NET-023",
+      "NET-024",
+      "NET-025",
+      "NET-026",
+      "NET-027",
+      "NET-028",
+      "NET-029",
+      "NET-030",
+      "NET-031",
+      "NET-032",
+      "NET-033"
+    ]
+  },
+  {
+    "id": "SPEC-03",
+    "title": "OCR borné",
+    "mode": "automated",
+    "issues": [
+      "AUD-008"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "OCR-001",
+      "OCR-002",
+      "OCR-003",
+      "OCR-004",
+      "OCR-005",
+      "OCR-006",
+      "NAV-016",
+      "NAV-017",
+      "OCR-POOL-001",
+      "OCR-POOL-002",
+      "OCR-POOL-003",
+      "OCR-POOL-004"
+    ]
+  },
+  {
+    "id": "SPEC-04",
+    "title": "Validation des entrées",
+    "mode": "automated",
+    "issues": [
+      "AUD-004",
+      "AUD-014",
+      "AUD-015",
+      "AUD-017",
+      "G14"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "DATE-001",
+      "NOTE-002",
+      "NOTE-003",
+      "NOTE-004",
+      "NOTE-005",
+      "NOTE-006",
+      "NOTE-007",
+      "NOTE-008",
+      "NOTE-009",
+      "NOTE-010",
+      "NOTE-011",
+      "NOTE-012",
+      "NOTE-013",
+      "NOTE-014",
+      "NOTE-015",
+      "NOTE-016",
+      "NOTE-017",
+      "NOTE-018",
+      "NOTE-019",
+      "NOTE-020",
+      "NOTE-021",
+      "NOTE-023",
+      "NOTE-024",
+      "NOTE-025",
+      "NOTE-026",
+      "NOTE-028",
+      "LIST-001",
+      "LIST-002",
+      "LIST-003",
+      "LIST-004",
+      "LIST-005",
+      "LIST-006",
+      "NOTE-029",
+      "NOTE-030",
+      "NOTE-031",
+      "NOTE-032",
+      "NAV-018",
+      "NAV-019",
+      "NAV-020",
+      "NAV-021",
+      "ENTREE-001",
+      "ENTREE-002",
+      "ENTREE-003",
+      "ENTREE-004"
+    ]
+  },
+  {
+    "id": "SPEC-05",
+    "title": "Inscription atomique",
+    "mode": "automated",
+    "issues": [
+      "AUD-013",
+      "AUD-019"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "INS-001",
+      "INS-002",
+      "INS-003",
+      "INS-004",
+      "INS-005",
+      "INS-006",
+      "INS-007",
+      "INS-008"
+    ]
+  },
+  {
+    "id": "SPEC-06",
+    "title": "Droits actuels",
+    "mode": "automated",
+    "issues": [
+      "AUD-006",
+      "G10"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [
+      "AFF-"
+    ],
+    "excludeCases": [
+      "NAV-015"
+    ],
+    "requiredCases": [
+      "DOM-005",
+      "DEC-003",
+      "DEC-004",
+      "RECU-001",
+      "RECU-002",
+      "RECU-003",
+      "DROIT-001",
+      "DROIT-002",
+      "DROIT-003",
+      "DROIT-011",
+      "DROIT-012",
+      "DROIT-013",
+      "DROIT-014",
+      "DROIT-015",
+      "DROIT-016",
+      "DROIT-017",
+      "DROIT-018",
+      "DROIT-019",
+      "DROIT-020",
+      "DROIT-021",
+      "NAV-006",
+      "NAV-007",
+      "NAV-010",
+      "DROIT-022"
+    ]
+  },
+  {
+    "id": "SPEC-07",
+    "title": "Hiérarchie des managers",
+    "mode": "automated",
+    "issues": [
+      "AUD-020",
+      "AUD-021"
+    ],
+    "includePrefixes": [
+      "AFF-"
+    ],
+    "includeCases": [
+      "NAV-015"
+    ],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "AFF-001",
+      "AFF-002",
+      "AFF-003",
+      "AFF-004",
+      "AFF-005",
+      "AFF-006",
+      "AFF-007",
+      "AFF-008",
+      "AFF-009",
+      "AFF-010",
+      "AFF-011",
+      "AFF-012",
+      "AFF-013",
+      "AFF-014",
+      "AFF-015",
+      "AFF-016",
+      "AFF-017",
+      "AFF-018",
+      "AFF-019",
+      "NAV-015"
+    ]
+  },
+  {
+    "id": "SPEC-08",
+    "title": "Décisions atomiques",
+    "mode": "automated",
+    "issues": [
+      "AUD-007"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "DOM-001",
+      "DOM-002",
+      "DOM-003",
+      "DOM-004",
+      "DEC-001",
+      "DEC-002",
+      "DEC-005",
+      "DEC-006",
+      "DEC-007",
+      "NAV-011",
+      "NAV-012",
+      "NAV-013",
+      "NAV-014",
+      "DEC-008"
+    ]
+  },
+  {
+    "id": "SPEC-09",
+    "title": "Soumission et RLS",
+    "mode": "automated",
+    "issues": [
+      "AUD-003",
+      "AUD-009"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "PANNE-001",
+      "RLS-001",
+      "RLS-002",
+      "RLS-003",
+      "RLS-004",
+      "RLS-005",
+      "NOTE-001",
+      "NAV-008",
+      "REPRISE-001",
+      "REPRISE-002",
+      "REPRISE-003",
+      "REPRISE-004",
+      "REPRISE-005",
+      "REPRISE-006",
+      "REPRISE-007",
+      "REPRISE-008",
+      "HEXA-001",
+      "HEXA-002"
+    ]
+  },
+  {
+    "id": "SPEC-10",
+    "title": "Seed récupérable",
+    "mode": "automated",
+    "issues": [
+      "AUD-018"
+    ],
+    "includePrefixes": [],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "SEED-001",
+      "SEED-002",
+      "SEED-003",
+      "SEED-004",
+      "SEED-005"
+    ]
+  },
+  {
+    "id": "SPEC-11",
+    "title": "Mesures des listes",
+    "mode": "manual",
+    "issues": [
+      "AUD-022"
+    ],
+    "reason": "Mesures comparatives à relire ; aucun test fonctionnel dédié ne prouve le bénéfice."
+  },
+  {
+    "id": "SPEC-12",
+    "title": "Qualification des dépendances",
+    "mode": "manual",
+    "issues": [
+      "AUD-023"
+    ],
+    "reason": "Avis, usages et incertitudes à relire ; npm audit ne valide pas la qualification."
+  }
+]

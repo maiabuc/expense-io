@@ -4,7 +4,7 @@
 
 - Responsable : personne B. Branche : `feat/spec-05`.
 - IDs : AUD-013, AUD-019. Fiches : [AUD-013](../audit/solutions-to-audit/AUD-013-signup-consistency.md), [AUD-019](../audit/solutions-to-audit/AUD-019-inscription-domaine.md).
-- Statut : préparée pour l’équipe le 17 octobre 2026 ; aucune correction réalisée par cette rédaction.
+- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée le 18 octobre 2026 ; preuves complétées après revue le 19 octobre 2026 (INS-008, voir Traçabilité et fin).
 - Autorisation : répartition et préparation demandées par Maia ; directions déjà retenues dans l’audit. Les conditions propres aux sujets 11/12 restent applicables.
 - Source d’audit : `265924bc7274047989e708ab635c2854d376230f`.
 - Départ documentaire : `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, fusion CI dans main. Le développeur enregistrera son vrai SHA de départ actualisé avant réalisation.
@@ -69,10 +69,11 @@ Cas ciblés :
 
 | Commande / scénario | Prévu | Réel | Preuve / limite |
 | --- | --- | --- | --- |
-| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | Non exécuté pour cette spec | Ajouter comptes, environnement et SHA |
-| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | Non exécuté pour cette spec | Commandes existantes |
-| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | Non exécuté pour cette spec | Rouge historique distingué des régressions ; aucun merge final tant que requis rouge |
-| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Non exécuté pour l’implémentation | Snapshot propre à cette intervention |
+| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | `npm run test:issue -- AUD-013` : INS-001…007 → 7/7 réussis (y compris INS-006, correction) | `reports/issues.json`, run local 2026-10-18 |
+| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | exit 0 chacun (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-18 |
+| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | unit 6/6 ; api 61/112 (identique à la référence `main`, AUD-013 sans cas API) ; e2e 39/60 (AUD-013 0 échec ; 21 échecs hors périmètre : AUD-016/017, dépendances non mergées sur cette branche) | `reports/issues.json` |
+| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Vérifié : `check-append-only.mjs check --snapshot /tmp/arla-spec-05-gf.json` | Sortie locale 2026-10-18 |
+| Revue 19 octobre : suites complètes + `test:spec:report -- SPEC-05` | Contrôle par spec vert, INS-008 compris | unit 21/21 ; e2e : INS-001…008 réussis ; SPEC-05 `passed` 8/8 | `reports/SPEC-05.json`, run local 2026-10-19 |
 
 Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI existants sont un point de départ : ils ne couvrent pas automatiquement tous les mécanismes futurs. Aucun test du professeur fourni ; aucune réussite inférée d’un fichier listé.
 
@@ -82,5 +83,5 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Chaque fiche concernée reçoit un ajout daté sous `## IMPLEMENTATION` ; conserver absolument tout le texte et les ajouts antérieurs. Indiquer quoi/où/nouveau fonctionnement, tests réels et limites. Pour AUD-019, documenter seulement la convention conservée ; pour 11/12, ne pas inventer de correction.
 - Vérifier : `node docs/audit/tools/check-append-only.mjs check --snapshot /tmp/arla-spec-05-<identifiant-unique>.json`.
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
-- Entrées IMPLEMENTATION : aucune par cette préparation ; à ajouter lors de la réalisation réelle.
-- Statut de fin : préparée, pas implémentée. Relire les critères et joindre les preuves avant clôture ; aucun plan de migration/retour arrière demandé.
+- Entrées IMPLEMENTATION : [AUD-013](../audit/solutions-to-audit/AUD-013-signup-consistency.md#implementation) (correction) et [AUD-019](../audit/solutions-to-audit/AUD-019-inscription-domaine.md#implementation) (convention conservée), ajoutées le 2026-10-18 (SHA de départ `7377486`, réalisation `ba39f53`). Entrée de preuves ajoutée le 2026-10-19 dans AUD-013 après la revue.
+- Statut de fin : implémentée et vérifiée sur le périmètre décrit. Le 18 octobre, C3 était déclaré vérifié sans test de l'échec de connexion après commit (relevé par la revue du 19 octobre) ; INS-008 l'exécute désormais avec succès, sans changement de code. Contrôle `SPEC-05 — tests du lot` vert en local (8/8). Aucun plan de migration/retour arrière demandé.

@@ -1,0 +1,760 @@
+{
+  "reviewDate": "2026-10-20",
+  "base": "651b0677911740c69cee4d7f023615822880e44d",
+  "prs": [
+    {
+      "n": 6,
+      "branch": "feat/spec-12",
+      "sha": "3c8af43d2aa79df7ed10540555c8b6e345534c94",
+      "base": "651b0677911740c69cee4d7f023615822880e44d",
+      "url": "https://github.com/maiabuc/expense-io/pull/6",
+      "state": "open",
+      "runs": [
+        {
+          "id": 39257217790,
+          "sha": "3c8af43d2aa79df7ed10540555c8b6e345534c94",
+          "event": "pull_request",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/maiabuc/expense-io/actions/runs/39257217790",
+          "created": "2026-10-19T13:05:33Z"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 118075417651,
+          "name": "Installation reproductible",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075570647,
+          "name": "Build de production",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075570721,
+          "name": "Documentation et IDs des tests",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075570751,
+          "name": "AUD-023 — Dépendances (informatif)",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075570829,
+          "name": "Tests unitaires",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075570867,
+          "name": "Types TypeScript",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075571003,
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075873311,
+          "name": "Tests api",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118075873411,
+          "name": "Tests e2e",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675294,
+          "name": "SPEC-03 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675314,
+          "name": "SPEC-06 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675361,
+          "name": "SPEC-04 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675509,
+          "name": "SPEC-09 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675615,
+          "name": "SPEC-01 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675654,
+          "name": "SPEC-02 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675655,
+          "name": "SPEC-05 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675686,
+          "name": "SPEC-10 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675780,
+          "name": "SPEC-07 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077675840,
+          "name": "SPEC-08 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077985213,
+          "name": "Résultat CI requis",
+          "conclusion": "failure"
+        }
+      ],
+      "ownSummary": "manual-review"
+    },
+    {
+      "n": 5,
+      "branch": "feat/spec-05",
+      "sha": "2118e49330edc7a04083181405f78883b4abdeed",
+      "base": "651b0677911740c69cee4d7f023615822880e44d",
+      "url": "https://github.com/maiabuc/expense-io/pull/5",
+      "state": "open",
+      "runs": [
+        {
+          "id": 39257214142,
+          "sha": "2118e49330edc7a04083181405f78883b4abdeed",
+          "event": "pull_request",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/maiabuc/expense-io/actions/runs/39257214142",
+          "created": "2026-10-19T13:05:31Z"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 118075402897,
+          "name": "Installation reproductible",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075603843,
+          "name": "Build de production",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075603917,
+          "name": "Documentation et IDs des tests",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075603929,
+          "name": "AUD-023 — Dépendances (informatif)",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075603956,
+          "name": "Tests unitaires",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075604030,
+          "name": "Types TypeScript",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075605011,
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075902738,
+          "name": "Tests e2e",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118075902999,
+          "name": "Tests api",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878241,
+          "name": "SPEC-07 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878259,
+          "name": "SPEC-01 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878266,
+          "name": "SPEC-10 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878282,
+          "name": "SPEC-06 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878293,
+          "name": "SPEC-04 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878306,
+          "name": "SPEC-09 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878345,
+          "name": "SPEC-03 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878393,
+          "name": "SPEC-02 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077878396,
+          "name": "SPEC-05 — tests du lot",
+          "conclusion": "success"
+        },
+        {
+          "id": 118077878492,
+          "name": "SPEC-08 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118078229004,
+          "name": "Résultat CI requis",
+          "conclusion": "failure"
+        }
+      ],
+      "ownSummary": "2026-10-19T13:11:22.1975333Z {\"spec\":\"SPEC-05\",\"status\":\"passed\",\"passed\":8,\"failed\":0,\"notRun\":0,\"missingCoverage\":[],\"errors\":[]}"
+    },
+    {
+      "n": 4,
+      "branch": "feat/spec-04",
+      "sha": "3650c2460487915cc350231f09b649f2df84613e",
+      "base": "651b0677911740c69cee4d7f023615822880e44d",
+      "url": "https://github.com/maiabuc/expense-io/pull/4",
+      "state": "open",
+      "runs": [
+        {
+          "id": 39257207927,
+          "sha": "3650c2460487915cc350231f09b649f2df84613e",
+          "event": "pull_request",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/maiabuc/expense-io/actions/runs/39257207927",
+          "created": "2026-10-19T13:05:28Z"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 118075381767,
+          "name": "Installation reproductible",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075564024,
+          "name": "Build de production",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075564149,
+          "name": "AUD-023 — Dépendances (informatif)",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075564155,
+          "name": "Documentation et IDs des tests",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075564188,
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075564199,
+          "name": "Types TypeScript",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075564237,
+          "name": "Tests unitaires",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075913198,
+          "name": "Tests api",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118075913302,
+          "name": "Tests e2e",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676442,
+          "name": "SPEC-08 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676524,
+          "name": "SPEC-05 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676525,
+          "name": "SPEC-09 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676529,
+          "name": "SPEC-07 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676558,
+          "name": "SPEC-10 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676566,
+          "name": "SPEC-06 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676600,
+          "name": "SPEC-02 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676609,
+          "name": "SPEC-03 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676642,
+          "name": "SPEC-01 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077676684,
+          "name": "SPEC-04 — tests du lot",
+          "conclusion": "success"
+        },
+        {
+          "id": 118077962963,
+          "name": "Résultat CI requis",
+          "conclusion": "failure"
+        }
+      ],
+      "ownSummary": "2026-10-19T13:10:44.9101616Z {\"spec\":\"SPEC-04\",\"status\":\"passed\",\"passed\":44,\"failed\":0,\"notRun\":0,\"missingCoverage\":[],\"errors\":[]}"
+    },
+    {
+      "n": 3,
+      "branch": "feat/spec-03",
+      "sha": "c4782b98bc22ea103a73fa4204095a49106f3ca1",
+      "base": "651b0677911740c69cee4d7f023615822880e44d",
+      "url": "https://github.com/maiabuc/expense-io/pull/3",
+      "state": "open",
+      "runs": [
+        {
+          "id": 39257202543,
+          "sha": "c4782b98bc22ea103a73fa4204095a49106f3ca1",
+          "event": "pull_request",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/maiabuc/expense-io/actions/runs/39257202543",
+          "created": "2026-10-19T13:05:26Z"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 118075362801,
+          "name": "Installation reproductible",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075545380,
+          "name": "Build de production",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075545432,
+          "name": "Types TypeScript",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075545445,
+          "name": "Documentation et IDs des tests",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075545477,
+          "name": "Tests unitaires",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075545498,
+          "name": "AUD-023 — Dépendances (informatif)",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075545629,
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075879108,
+          "name": "Tests e2e",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118075879235,
+          "name": "Tests api",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745685,
+          "name": "SPEC-04 — tests du lot",
+          "conclusion": "success"
+        },
+        {
+          "id": 118077745693,
+          "name": "SPEC-03 — tests du lot",
+          "conclusion": "success"
+        },
+        {
+          "id": 118077745718,
+          "name": "SPEC-05 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745720,
+          "name": "SPEC-07 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745749,
+          "name": "SPEC-08 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745776,
+          "name": "SPEC-06 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745820,
+          "name": "SPEC-10 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745932,
+          "name": "SPEC-09 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745936,
+          "name": "SPEC-02 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077745952,
+          "name": "SPEC-01 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118078076991,
+          "name": "Résultat CI requis",
+          "conclusion": "failure"
+        }
+      ],
+      "ownSummary": "2026-10-19T13:11:01.9642450Z {\"spec\":\"SPEC-03\",\"status\":\"passed\",\"passed\":12,\"failed\":0,\"notRun\":0,\"missingCoverage\":[],\"errors\":[]}"
+    },
+    {
+      "n": 2,
+      "branch": "feat/spec-02",
+      "sha": "83e79ab9daaf7f8cda667faeb4efb8aed52aa1e5",
+      "base": "651b0677911740c69cee4d7f023615822880e44d",
+      "url": "https://github.com/maiabuc/expense-io/pull/2",
+      "state": "open",
+      "runs": [
+        {
+          "id": 39257198956,
+          "sha": "83e79ab9daaf7f8cda667faeb4efb8aed52aa1e5",
+          "event": "pull_request",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/maiabuc/expense-io/actions/runs/39257198956",
+          "created": "2026-10-19T13:05:24Z"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 118075351236,
+          "name": "Installation reproductible",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075555345,
+          "name": "Documentation et IDs des tests",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075555418,
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075555500,
+          "name": "Build de production",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075555540,
+          "name": "Types TypeScript",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075555550,
+          "name": "Tests unitaires",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075555654,
+          "name": "AUD-023 — Dépendances (informatif)",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075959014,
+          "name": "Tests api",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118075959076,
+          "name": "Tests e2e",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996312,
+          "name": "SPEC-10 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996317,
+          "name": "SPEC-07 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996337,
+          "name": "SPEC-08 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996338,
+          "name": "SPEC-01 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996347,
+          "name": "SPEC-09 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996396,
+          "name": "SPEC-04 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996470,
+          "name": "SPEC-06 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996474,
+          "name": "SPEC-02 — tests du lot",
+          "conclusion": "success"
+        },
+        {
+          "id": 118076996487,
+          "name": "SPEC-05 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118076996548,
+          "name": "SPEC-03 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077310838,
+          "name": "Résultat CI requis",
+          "conclusion": "failure"
+        }
+      ],
+      "ownSummary": "2026-10-19T13:09:17.2859057Z {\"spec\":\"SPEC-02\",\"status\":\"passed\",\"passed\":33,\"failed\":0,\"notRun\":0,\"missingCoverage\":[],\"errors\":[]}"
+    },
+    {
+      "n": 1,
+      "branch": "feat/spec-01",
+      "sha": "6e8b2680477221f6bcc322d4e36aa5a513d6e3e5",
+      "base": "651b0677911740c69cee4d7f023615822880e44d",
+      "url": "https://github.com/maiabuc/expense-io/pull/1",
+      "state": "open",
+      "runs": [
+        {
+          "id": 39257189940,
+          "sha": "6e8b2680477221f6bcc322d4e36aa5a513d6e3e5",
+          "event": "pull_request",
+          "status": "completed",
+          "conclusion": "failure",
+          "url": "https://github.com/maiabuc/expense-io/actions/runs/39257189940",
+          "created": "2026-10-19T13:05:21Z"
+        }
+      ],
+      "jobs": [
+        {
+          "id": 118075322626,
+          "name": "Installation reproductible",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075556656,
+          "name": "Tests unitaires",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075556725,
+          "name": "Lint",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075556743,
+          "name": "Build de production",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075556849,
+          "name": "Documentation et IDs des tests",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075556856,
+          "name": "Types TypeScript",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075556945,
+          "name": "AUD-023 — Dépendances (informatif)",
+          "conclusion": "success"
+        },
+        {
+          "id": 118075878532,
+          "name": "Tests e2e",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118075878944,
+          "name": "Tests api",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687246,
+          "name": "SPEC-05 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687262,
+          "name": "SPEC-06 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687286,
+          "name": "SPEC-01 — tests du lot",
+          "conclusion": "success"
+        },
+        {
+          "id": 118077687312,
+          "name": "SPEC-03 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687357,
+          "name": "SPEC-09 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687531,
+          "name": "SPEC-07 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687537,
+          "name": "SPEC-02 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687602,
+          "name": "SPEC-10 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687718,
+          "name": "SPEC-04 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077687773,
+          "name": "SPEC-08 — tests du lot",
+          "conclusion": "failure"
+        },
+        {
+          "id": 118077997273,
+          "name": "Résultat CI requis",
+          "conclusion": "failure"
+        }
+      ],
+      "ownSummary": "2026-10-19T13:10:51.7434746Z {\"spec\":\"SPEC-01\",\"status\":\"passed\",\"passed\":7,\"failed\":0,\"notRun\":0,\"missingCoverage\":[],\"errors\":[]}"
+    }
+  ],
+  "moduleProbe": {
+    "revision": "6e8b2680477221f6bcc322d4e36aa5a513d6e3e5",
+    "method": "Module errors.ts exact lu par git show et transpilé TypeScript ; appel réel redactDiagnostic ; marqueur fictif uniquement. Exit 0 après reprise hors sandbox (spawnSync git EPERM initial). Aucun appel DB/HTTP.",
+    "cases": [
+      {
+        "format": "password=<fictif>",
+        "leaks": false
+      },
+      {
+        "format": "password=\"<fictif>\"",
+        "leaks": true
+      },
+      {
+        "format": "{\"token\":\"<fictif>\"}",
+        "leaks": true
+      },
+      {
+        "format": "Authorization: Bearer <fictif>",
+        "leaks": false
+      }
+    ]
+  }
+}

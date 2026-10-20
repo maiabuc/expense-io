@@ -99,3 +99,42 @@ Employé → formulaire (clé créée ou reprise depuis `sessionStorage`) → `P
 #### Écarts et limites
 
 Extraction et correction ne sont pas séparées en commits : l'ancienne orchestration de la route est remplacée par le module, pas déplacée à l'identique. Un client sans `Idempotency-Key` ne bénéficie pas de la déduplication (limite acceptée par le contrat). Durées non éprouvées en charge : réservation de 120 s, délai de 30 s par appel S3. Pas de nettoyage automatique des soumissions abandonnées. La reprise depuis la liste préremplit le montant arrondi lu en base si le `sessionStorage` est perdu : un montant saisi avec plus de deux décimales donnerait alors un 409 de contenu différent. Les notes antérieures restent sans clé. Les tests du professeur ne sont pas fournis.
+
+### 2026-10-20 — SPEC-09 : intégration de `main` et alignement sur SPEC-01 et SPEC-04 (personne D)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-09](../../specs/SPEC-09-soumission-isolee.md). Révision de départ : `1746cdb`. `main` fusionné : `5dc5024` (fusion `3804a97`). Réalisation : `bc2bd13` (journal des refus), `ce35e50` (test SOUM-113) ; état mesuré : `5cccc42`.
+
+#### Ce qui a été implémenté
+
+La branche contient désormais la version finale de SPEC-01 à 06 (elle n'avait que les premières versions de SPEC-01, 02 et 04, et ni SPEC-03 ni SPEC-05). Seule adaptation nécessaire : les refus de la route de soumission (400 reçu requis, 409 contenu différent ou demande en cours) sont journalisés par `respondRefusal` de `src/lib/errors.ts` au lieu d'un `console.warn` local ; contrat de réponse inchangé. La route utilisait déjà `parseStrictAmount`, `parseStrictExpenseDate`, `detectReceiptType` et `resolveSortOption` : la règle finale de SPEC-04 (montant positif avant arrondi) ne change pas le comportement attendu, ce que prouve SOUM-113. SPEC-02 (`readErrorMessage`), SPEC-03 (`ocr.ts`) et SPEC-05 (`auth.ts`) n'exigent aucune adaptation : l'inscription n'utilise que `SELECT`, `INSERT` et `ON CONFLICT DO NOTHING`, couverts par les droits de `expense_app`.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/lib/errors.ts, `respondRefusal` (fin de fichier) | Journal d'un refus attendu et réponse `{ error }` | Même fonction, texte identique, que sur `feat/spec-07` |
+| src/app/api/expense-notes/route.ts, `refuser` | Délègue à `respondRefusal` | Journal interne unifié |
+| tests/api/soumission.spec.ts, SOUM-113 | Montant 0.001 : 201, stocké 0.00, rejeu avec la même clé en 200 (même écriture ou `0.0010`), valeur distincte avant arrondi (0.002) en 409 | Empreinte sur la valeur validée |
+| tests/api/coherence.spec.ts | Union des imports de `main` (`withCapturedDiagnostics`) et de SPEC-09 (`appDb`) | Résolution du conflit de fusion |
+
+#### Nouveau fonctionnement
+
+Inchangé par rapport à l'entrée du 2026-10-19 : route → `soumettre` → adaptateurs PostgreSQL et S3. Seul le chemin de journalisation des refus passe par `respondRefusal`.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun (lint : 1 avertissement préexistant hors périmètre) | Run local 2026-10-20 sur `5cccc42` |
+| `npm run test:unit` | tous réussis | 41/41 | `reports/unit.json` |
+| `npm run test:api` complète | aucun nouveau rouge | 144/161 ; 17 rouges, tous attendus à ce stade car relevant de SPEC-07 (AFF-001 à 008, 011, 016 à 019), SPEC-08 (DEC-005 à 007) et SPEC-10 (SEED-002), non intégrées dans cette branche | `reports/api.json` |
+| `npm run test:e2e` complète | aucune régression | 64/64 | `reports/e2e.json` |
+| `npm run test:report` | bilan agrégé | exit 1 (les 17 rouges ci-dessus) ; 249/266 ; statut SPEC-09 « incomplete » : REPRISE-001 à 008 et HEXA-001/002 absents du manifeste `tests/specifications.json` (attendu, non traité) | `reports/specifications.json` |
+| `npm run test:issue -- AUD-003` / `AUD-009` | cas verts | AUD-003 39/39 ; AUD-009 13/13 | sorties locales du 2026-10-20 |
+| `AUDIT_BASE_SHA=5dc5024… node scripts/ci/documentation.mjs` | préfixes de `main` conservés | exit 0 | sortie locale |
+| État de référence après fusion de `main` (`3804a97`) | — | unit 41/41, api 143/160, e2e 64/64 (OCR-003, OCR-004 et INS-006, rouges avant la fusion faute de SPEC-03/05, sont verts) | `reports/` du run |
+
+#### Écarts et limites
+
+Extraction (route vers module) et correction restent dans les mêmes commits de la livraison du 2026-10-19 (`5898c42`, `873f56c`) : défaut d'historique connu, non corrigé car l'historique n'est pas réécrit. Les REPRISE-001 à 008 et HEXA-001/002 attendus par le manifeste correspondent à des cas existants sous d'autres identifiants (SOUM-100 à 111 ; SOUM-015 ; SOUM-120 à 123) ; rien n'est renommé ici, la décision revient à Maia. Autres limites de l'entrée du 2026-10-19 inchangées (durées de réservation de 120 s et de délai S3 de 30 s non éprouvées en charge, pas de nettoyage des soumissions abandonnées). Relecture croisée par une autre personne : non faite.

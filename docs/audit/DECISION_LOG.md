@@ -1,5 +1,19 @@
 # ARLA — Journal des décisions
 
+## Revue des six PR et contrôles CI par spec — 19 octobre 2026
+
+Maia demande de vérifier les six PR de G4BI2004 et de voir les tests d’une spec validés séparément. Base propre :73774862cb4f1b172d2b15bdbcb00c75b7cff6c6. Heads, preuves et conclusions distinctes Standards/Spec dans la [revue](revue-pr-g4bi2004-20261019.md).
+
+| Issue / décision | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- |
+| Revue PR1/2/3/4/5/6 sur SHA fixes | Ne pas confondre tests anciens verts et conformité complète | [Revue](revue-pr-g4bi2004-20261019.md), logsCI archivés parcas, modules exacts exécutés | Logs privés, petitsmontants/prototype, arrêtOCR et messages spécifiques à revoir ; qualificationdev à nuancer ; PR5 testée8/8 avec nouveau scénario |
+| AUD-011 / CI-002 : contrôles distincts par spec réalisés | Donner un contrôleSPEC-01 identifiable et ne pas attribuer les défauts d’un autre lot à celui-ci | [Spec](../specs/CI-002-controles-par-spec.md), [IMPLEMENTATION](solutions-to-audit/AUD-011-validation-isolee.md#implementation), [campagne](evidence/ci-specs-20261019/README.md) |21unitaires/21, API62/117, E2E39/62 ;122 réussites/78 échecs/0 absent sur200 ; aucune assertion supprimée |
+| Couverture obligatoire et provenance commune | Empêcher le vert d’une sélection ancienne, tronquée ou incomplète | TestsCI-SPEC-001…015, dont intégrationCLI/synthèse | Contrôle partagé des SHA/prérequis/erreurs/complétude ; divergence initiale corrigée et deux revues de suivi favorables |
+| SPEC-11/12 : manual-review | Mesures et avis ne sont pas prouvés par un test vide ni la seule présence d’un fichier | Manifeste et guide de tests | Pas de nouveau test fonctionnel artificiel, validation humaine toujours nécessaire |
+
+Toutes les fiches sont en ajout uniquement. Snapshot capturé avant travail : `/tmp/arla-ci-by-spec-20261019.json` (22 fiches). Seul AUD-011 reçoit une nouvelle entrée de réalisation du dispositif ; les autres AUD ne sont pas déclarés corrigés par les tests. Aucune PR fusionnée, branche d’auteur modifiée ou message envoyé à l’équipe. Aucun service utilisateur seedé/migré/arrêté. Les nouveaux contrôles nécessitent l’actualisation des branchesPR pour leur prochain run ; la campagne locale ne vaut pas encore exécution hébergée de cette version.
+
+
 ## Fusion de la CI et répartition à quatre — 17 octobre 2026
 
 Instruction de Maia : fusionner la CI, répartir les specs entre quatre personnes et préparer le message de réalisation. **OBSERVATION Git :** fusion de feat/ci (`11b1223`) dans main, commit `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, publié sur origin/main. Aucun code applicatif ajouté ou corrigé par cette opération. Diff des sources src/migrations/scripts seed-bucket/Makefile/README depuis la source auditée : vide.
@@ -166,6 +180,32 @@ Branche `feat/spec-01`, départ `7377486` (main actualisé), réalisation `a8411
 
 Catalogue d'erreurs par type, mapping HTTP fin et corrélation de requête restent non définis (hors périmètre explicite d'AUD-005). CI GitHub non déclenchée pour cette réalisation locale ; à confirmer à l'ouverture de la PR. SPEC-02/03/04/06/07/09 adapteront leurs propres routes au mécanisme commun livré ici.
 
+## SPEC-01 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-01` actualisée avec `main` `651b067` (dispositif CI-002 et nouveaux tests), puis correction du constat P1 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-01-review-gf.json` ; contrôle `check` réussi, entrée du 18 octobre conservée telle quelle.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Diagnostic interne expurgé avant émission (jetons, cookies, identifiants d'URL de connexion, clés sensibles, chaînes de requête d'URL) ; réponse publique inchangée | La validation du 18 octobre couvrait la réponse mais pas le journal : C2 non satisfait, corrigé | [Entrée du 19 octobre](solutions-to-audit/AUD-005-public-errors.md#implementation) | `SPEC-01 — tests du lot` vert en local : 7/7 dont PANNE-004 ; unit 21/21 ; aucune autre spec modifiée par rapport à la référence `main` |
+
+Les cas PANNE-005…007 sont placés dans la suite API : un cas AUD-005 unitaire rendrait le scénario d'outillage CI-SPEC-014 « incomplete » au lieu de « failed ». Le contrôleur AUD-011 n'est pas modifié ; point signalé pour sa revue.
+## Contre-revue des corrections de Gab — 20 octobre 2026
+
+Demande : revérifier les specs après passage annoncé de la pipeline. [Rapport](revue-pr-g4bi2004-20261020.md) et [preuves épinglées aux six SHA](evidence/review-20261020/ci-and-probe.json). OBSERVATION : contrôles SPEC-01 à 05 verts (7/7, 33/33, 12/12, 44/44, 8/8) ; les six pipelines globales restent rouges. SPEC-12 est documentaire, le job dépendances est informatif.
+
+AUD-005 / SPEC-01 : conserver le refus de clôture, car le module actuel laisse passer les secrets sous forme JSON ou entre guillemets. MESUREMENT : reproduction réelle sur `6e8b268`, deux formats exposés et deux témoins filtrés ; aucune donnée sensible réelle. Compléter le filtrage ou limiter les diagnostics à des champs maîtrisés, puis tester ces frontières. AUD-008 / SPEC-03 : arrêt réel et remplacement désormais couverts ; C4 reste partiel, campagne trop courte et sans tous les indicateurs/provenance du protocole retenu. Compléter les preuves sans changer la décision pool sans FIFO, capacité initiale 1, délai 40 s.
+
+Corrections demandées des SPEC-02/04/05 présentes et contrôles verts sur le périmètre décrit ; nuance documentaire SPEC-12 ajoutée. Pas de nouveau choix métier, correction applicative ou fusion dans cette tâche. Les fiches AUD restent intactes ; la revue est consignée ici, sans fausse section IMPLEMENTATION applicative.
+
+## Correction SPEC-01 avant intégration — 20 octobre 2026
+
+Instruction Maia : corriger SPEC-01 sur sa branche, pousser, puis fusionner successivement SPEC-01 à 05 dans main. Confirmation après interruption : ne pas fusionner SPEC-01 vers main avant correction. Aucune fusion applicative vers main effectuée à ce stade ; seule la contre-revue a été conservée puis récupérée dans feat/spec-01.
+
+| Issue | Décision | Pourquoi | Preuve | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Corriger valeurs JSON/citées et ajouter PANNE-008/009 avant push/merge | Les motifs s'arrêtaient aux guillemets avant le secret | [Ajout IMPLEMENTATION](solutions-to-audit/AUD-005-public-errors.md#2026-10-20--spec-01-secrets-json-et-valeurs-citées), [checks](evidence/spec01-fix-20261020/checks.json) | SPEC-01 9/9 ; unit 21/21 ; lint/types/build exit 0 ; API 71/122, 51 échecs hors lot, aucune référence en échec |
+
+Les contrôles globaux restent requis et leurs échecs publiés. L'instruction explicite autorise les fusions successives malgré le rouge lié aux lots non intégrés ; aucun contournement du workflow ni changement des assertions. SPEC-03 contient déjà SPEC-04 : son intégration amènera cette dépendance ; vérifier ensuite que SPEC-04 est entièrement ancêtre de main. La réserve de mesures C4 OCR reste ouverte, sans changer le choix pool sans FIFO et 40 s.
 ## SPEC-02 réalisée — personne A — 18 octobre 2026
 
 Branche `feat/spec-02`, départ `7377486` (main actualisé, sans `feat/spec-01` encore mergée), réalisation `16cb7ad`. Snapshot append-only avant travail : `/tmp/arla-spec-02-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
@@ -175,6 +215,16 @@ Branche `feat/spec-02`, départ `7377486` (main actualisé, sans `feat/spec-01` 
 | AUD-016 | Implémentée et vérifiée : les 12 appels fetch des trois écrans libèrent leur état actif en `finally` et affichent un message sûr au `catch` (rejet réseau ou JSON illisible) ; saisie conservée après échec, pas de retry automatique | Rendre les actions utilisables après une panne sans transformer une absence de réponse en certitude d'échec serveur | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation), [SPEC-02](../specs/SPEC-02-recuperation-ui.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-016` 32/32 (NET-001…032) ; e2e 58/60 (AUD-016 0 échec, 2 échecs restants hors périmètre sur AUD-013/017) |
 
 AUD-005 échoue encore sur cette branche (api 61/112) uniquement parce que `feat/spec-01` n'y est pas mergée : ce n'est pas une régression de SPEC-02, les deux branches ne modifient pas les mêmes fichiers. À réévaluer à l'intégration des deux PR.
+
+## SPEC-02 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-02` actualisée avec `main` `651b067`, puis correction du constat P2 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-02-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-016 | Le champ `error` d'une réponse non réussie est affiché s'il est lisible, repli sinon, sur les huit chemins qui l'ignoraient | Un 503 « service occupé » ne doit pas être présenté comme une panne générique | [Entrée du 19 octobre](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation) | `SPEC-02 — tests du lot` vert en local : 33/33 dont NET-033 ; unit 21/21 |
+
+La sûreté du texte affiché suppose le contrat serveur de SPEC-01 : intégrer SPEC-01 avec ou avant SPEC-02.
 ## SPEC-04 réalisée — personne B — 18 octobre 2026
 
 Branche `feat/spec-04`, départ `7377486` (main actualisé, sans `feat/spec-01`/`feat/spec-02`/`feat/spec-05` encore mergées), réalisation `c445659`. Snapshot append-only avant travail : `/tmp/arla-spec-04-gf.json` (22 fiches) ; contrôle `check` réussi après ajout. Nouveau module pur `src/utils/validators.ts` (montant/date/tri/détection de reçu), indépendant de Next/pg/AWS, prévu pour réutilisation par SPEC-09.
@@ -188,6 +238,55 @@ Branche `feat/spec-04`, départ `7377486` (main actualisé, sans `feat/spec-01`/
 | G14 | Implémentée : détection du format réel par signature d'octets avant écriture/upload, comparée au type annoncé | Un type annoncé seul n'est pas une preuve du contenu | [Entrée](solutions-to-audit/G14-controle-recus.md#implementation) | `test:issue -- G14` 11/11 |
 
 api 82/112 (0 échec sur les 5 cartes de ce lot) ; e2e 39/60 (0 échec AUD-017). Échecs restants attribués à des specs non réalisées sur cette branche ou à des dépendances (SPEC-01/02/05) non mergées — pas des régressions de SPEC-04.
+
+## SPEC-03 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-03`, départ `7377486`, `feat/spec-04` fusionnée dedans (dépendance de validation de fichiers requise par la coordination de la spec, pas encore dans `main`), réalisation `5393aee`. Snapshot append-only avant travail : `/tmp/arla-spec-03-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-008 | Implémentée, validation incomplète : pool borné (1 moteur), arrêt réel sur panne/délai au lieu de remise en circulation, panne distincte d'un succès vide, `errorHandler` ajouté après qu'une vérification manuelle a reproduit un crash processus sans lui | Ne pas faire croire qu'un reçu a été analysé quand le moteur n'a pas pu travailler ; ne pas laisser une seule image corrompue planter le serveur pour tous | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation), [SPEC-03](../specs/SPEC-03-ocr-borne.md) | `test:issue -- AUD-008` 8/8 ; api 84/112, e2e 39/60 sans régression ; vérification manuelle de saturation/panne/réutilisation ; **mesures CPU/RAM, concurrence 2/4 et arrêt réel à 40s en conditions réelles non exécutées** (campagne manuelle dédiée, cf. `tests/deferred-coverage.json`) |
+
+La découverte du crash processus (tesseract.js relance l'erreur dans son gestionnaire de messages en plus de rejeter la promesse du job) vient d'une vérification manuelle allant au-delà de la suite automatisée existante, qui ne l'exerçait pas. Corrigée par un `errorHandler` no-op fourni à `createWorker`, sans effet sur le rejet normal déjà traité par le code.
+
+## SPEC-04 corrigée après revue — personne B — 19 octobre 2026
+
+`feat/spec-04` actualisée avec `main` `651b067`, puis correction des constats P1/P2 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-04-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-014 | Positivité contrôlée sur la saisie avant arrondi, borne contrôlée après arrondi | `0.001` est une valeur positive admise par le contrat C3 | [Entrée du 19 octobre](solutions-to-audit/AUD-014-validation-montant.md#implementation) | ENTREE-001/003/004 réussis |
+| AUD-004 | Options de tri dans une `Map` | Une propriété héritée ne doit jamais devenir un fragment SQL | [Entrée du 19 octobre](solutions-to-audit/AUD-004-sort-input.md#implementation) | ENTREE-002 réussi |
+
+`SPEC-04 — tests du lot` vert en local : 44/44 ; unit 21/21. SPEC-03, qui embarque SPEC-04, doit récupérer cette correction.
+
+## SPEC-03 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-03` actualisée avec `main` `651b067` puis avec `feat/spec-04` corrigée (SPEC-03 embarque SPEC-04 et en héritait les défauts). Correction du constat P1 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-03-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-008 | Pool en fabrique testable ; place rendue seulement après l'événement `exit` du thread ; arrêt non confirmé : place conservée et échec journalisé | `terminate()` de tesseract.js n'attend pas l'arrêt : il ne prouvait rien, et un remplaçant pouvait tourner en parallèle de l'ancien thread | [Entrée du 19 octobre](solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation), [mesures](evidence/ocr-pool-20261019/README.md) | OCR-POOL-001…004 réussis, et le défaut réintroduit volontairement est détecté ; `SPEC-03 — tests du lot` vert en local (12/12) ; délai de production de 40 s mesuré sur thread bloqué |
+
+Les mesures sont uniques et faites sur une machine de développement. Le délai de 40 s est vérifié sur un thread bloqué synthétique, pas sur une reconnaissance Tesseract longue. La capacité reste à 1.
+## SPEC-05 réalisée — personne B — 18 octobre 2026
+
+Branche `feat/spec-05`, départ `7377486` (main actualisé, sans `feat/spec-01`/`feat/spec-02` encore mergées), réalisation `ba39f53`. Snapshot append-only avant travail : `/tmp/arla-spec-05-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-013 | Implémentée et vérifiée : entreprise (nouvelle ou existante) et premier compte validés sur une transaction PostgreSQL unique ; un échec annule aussi l'entreprise de la tentative, jamais une entreprise déjà existante | Éviter une entreprise orpheline sans premier RH après panne | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-013-signup-consistency.md#implementation), [SPEC-05](../specs/SPEC-05-inscription-atomique.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-013` 7/7 (INS-001…007, dont INS-006 correction par trigger de panne contrôlée) ; e2e 39/60 (AUD-013 0 échec, 21 échecs hors périmètre : AUD-016/017, dépendances non mergées) |
+| AUD-019 | Convention conservée, aucune correction (confirmé) | Ne pas transformer une limite de confiance pédagogique assumée en nouveau périmètre métier | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-019-inscription-domaine.md#implementation) | Relecture du code modifié et des cas INS-001/002 ; aucune vérification de possession de domaine ajoutée |
+
+AUD-016/017 échouent encore sur cette branche uniquement parce que `feat/spec-02`/`feat/spec-04` n'y sont pas mergées : pas des régressions de SPEC-05, fichiers disjoints.
+
+## SPEC-05 : preuves complétées après revue — personne B — 19 octobre 2026
+
+`feat/spec-05` actualisée avec `main` `651b067`, qui apporte INS-008. Aucun changement de code. Snapshot avant travail : `/tmp/arla-spec-05-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-013 | Échec de connexion après commit désormais prouvé par INS-008 | Le statut « vérifié » du 18 octobre ne reposait sur aucun test de ce scénario | [Entrée du 19 octobre](solutions-to-audit/AUD-013-signup-consistency.md#implementation) | `SPEC-05 — tests du lot` vert en local : 8/8 |
 ## SPEC-06 — identité actuelle et reçu manager — 19 octobre 2026
 
 | Issue | Décision et état | Pourquoi | Preuves | Validation |
@@ -215,3 +314,12 @@ Choix techniques. Les colonnes de demande sont portées par `expense_notes` (pas
 | AUD-018 | Implémentée et vérifiée : relecture de la note, de la référence et de l'objet, réparation de la même note, décisions conservées, vérification finale avec code de sortie en erreur si incomplet | Un script relançable sans doublon doit aussi terminer une préparation interrompue, sans faux succès | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-018-reprise-seed.md#implementation), [SPEC-10](../specs/SPEC-10-seed-recuperable.md) | AUD-018 10/10 |
 
 Choix techniques. La note de démonstration est créée `incomplete` avec sa clé de reçu prévue dans une transaction, puis passée `pending` après vérification du reçu : même état intermédiaire que la soumission de SPEC-09. Le seed garde le compte de préparation et n'ouvre aucun droit de modification supplémentaire. Aucune exécution du seed sur les services de l'utilisateur ; les essais lancent le vrai script sur base et bucket CI jetables. Suites complètes : unit 22/22, api 139/157, e2e 61/62, bilan 222/241, 0 régression sur la base `feat/spec-09`.
+
+## SPEC-09 — intégration avec `main` et décision D2 — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-003 | Intégrée avec `main` ; refus de la route journalisés par `respondRefusal` (`src/lib/errors.ts`, texte identique à `feat/spec-07`) ; SOUM-113 ajouté pour la règle de montant de SPEC-04 | Un seul mécanisme de diagnostic (SPEC-01) ; la règle finale de SPEC-04 ne change pas le comportement attendu | [AUD-003](solutions-to-audit/AUD-003-receipt-consistency.md#implementation), [SPEC-09](../specs/SPEC-09-soumission-isolee.md) | AUD-003 39/39 sur `5cccc42` |
+| AUD-009 | `docker-compose.yml` non modifié (décision D2) : le compte fourni reste superutilisateur ; le critère C7 est prouvé sur le harnais CI | Les commandes README sont conservées ; le basculement vers `expense_app` relève de l'exploitant | [AUD-009](solutions-to-audit/AUD-009-database-company-isolation.md#implementation) | AUD-009 13/13 |
+
+Suites complètes (`5cccc42`) : unit 41/41, api 144/161, e2e 64/64 ; les 17 rouges de l'API relèvent de SPEC-07, 08 et 10. REPRISE-001 à 008 et HEXA-001/002 du manifeste n'existent pas : statut SPEC-09 « incomplete » attendu, non traité. ADR-0002 indiqué comme implémenté dans `docs/adr/README.md`. Fichiers de `main` modifiés : `src/lib/errors.ts` (ajout de `respondRefusal`), `docs/adr/README.md`.

@@ -1,0 +1,20 @@
+
+> expense-io-version-b@0.1.0 test:unit
+> node scripts/ci/unit.mjs
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.4 /tmp/expense-io-spec01-fix-20261020
+
+ ✓ tests/unit/decisions.test.ts (6 tests) 5ms
+ ✓ tests/unit/specification-report.test.ts (15 tests) 803ms
+   ✓ [AUD-011][CI-SPEC-014][outillage] la synthèse et le job refusent ensemble les résultats d’un ancien SHA 794ms
+
+ Test Files  2 passed (2)
+      Tests  21 passed (21)
+   Start at  17:55:08
+   Duration  1.42s (tests 59%, import 26%, transform 14%, worker 1%)
+
+JSON report written to /tmp/expense-io-spec01-fix-20261020/reports/unit.json

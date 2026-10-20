@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { readErrorMessage } from '@/utils/http'
 
 interface CompanyUser {
   id: string
@@ -49,7 +50,7 @@ export function AdminConsole() {
       if (response.ok) {
         setUsers(await response.json())
       } else {
-        setUsersError("Impossible de charger l'annuaire.")
+        setUsersError(await readErrorMessage(response, "Impossible de charger l'annuaire."))
       }
     } catch {
       setUsersError("Impossible de charger l'annuaire. Vérifie ta connexion et réessaie.")
@@ -64,7 +65,7 @@ export function AdminConsole() {
       if (response.ok) {
         setNotes(await response.json())
       } else {
-        setNotesError('Impossible de charger les notes en attente.')
+        setNotesError(await readErrorMessage(response, 'Impossible de charger les notes en attente.'))
       }
     } catch {
       setNotesError('Impossible de charger les notes en attente. Vérifie ta connexion et réessaie.')
@@ -111,7 +112,7 @@ export function AdminConsole() {
     try {
       const response = await fetch(`/api/hr/expense-notes/${id}/receipt-url`)
       if (!response.ok) {
-        setNotesError('Impossible de récupérer le reçu.')
+        setNotesError(await readErrorMessage(response, 'Impossible de récupérer le reçu.'))
         return
       }
       const { url } = await response.json()
