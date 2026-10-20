@@ -1,6 +1,7 @@
 import { test, expect, authenticate } from '../support/fixtures'
 import { users, absent } from '../support/data'
 import { db, overlapping } from '../support/database'
+import { respondRefusal } from '../../src/lib/errors'
 
 const managerOf = async (id: string) =>
   (await db().query('SELECT manager_id FROM users WHERE id=$1', [id])).rows[0].manager_id
@@ -125,4 +126,24 @@ test('[AUD-020][AFF-029][correction] JSON réellement illisible, corps non objet
   const invalid = await raw('{"managerId":"invalide"}')
   expect(new Set([json, structure, absent, invalid]).size).toBe(4)
   expect(await managerOf(users.a_employee.id)).toBe(users.a_root.id)
+})
+
+test('[AUD-020][AFF-030][correction] refus journalisé avec code, opération et statut, sans message public ni secret', async () => {
+  const marker = 'FAKE_CI_PRIVATE_MARKER'
+  const logged: string[] = []
+  const original = console.warn
+  console.warn = (line: unknown) => { logged.push(String(line)) }
+  try {
+    const response = respondRefusal(`MANAGER_TEST authorization: Bearer ${marker}`, 'Message public.', 409, 'hr/users/[id]/manager:PUT')
+    expect(response.status).toBe(409)
+    expect(await response.json()).toEqual({ error: 'Message public.' })
+    expect(logged).toHaveLength(1)
+    expect(logged[0]).not.toContain(marker)
+    const record = JSON.parse(logged[0])
+    expect(record).toMatchObject({ operation: 'hr/users/[id]/manager:PUT', status: 409 })
+    expect(record.code).toContain('MANAGER_TEST')
+    expect(record).not.toHaveProperty('message')
+  } finally {
+    console.warn = original
+  }
 })

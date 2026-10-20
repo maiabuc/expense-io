@@ -1,21 +1,15 @@
 import { currentSession } from '@/lib/current-session'
 import { withUserScope } from '@/lib/db'
-import { respondError } from '@/lib/errors'
+import { respondError, respondRefusal } from '@/lib/errors'
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+const OPERATION = 'hr/users/[id]/manager:PUT'
 
 // Refus d'une requête d'affectation : le message est public, le code
 // technique reste dans les logs internes (AUD-005, AUD-020).
 function refuser(code: string, message: string, status: number) {
-  console.warn(
-    JSON.stringify({
-      timestamp: new Date().toISOString(),
-      code,
-      operation: 'hr/users/[id]/manager:PUT',
-      status,
-    })
-  )
-  return Response.json({ error: message }, { status })
+  return respondRefusal(code, message, status, OPERATION)
 }
 
 export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -111,6 +105,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       })
     })
   } catch (error) {
-    return respondError(error, 'hr/users/[id]/manager:PUT')
+    return respondError(error, OPERATION)
   }
 }
