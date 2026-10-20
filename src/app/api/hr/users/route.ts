@@ -26,6 +26,6 @@ export async function GET() {
       }))
     )
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'hr/users:GET')
   }
 }

@@ -13,7 +13,7 @@ const hash = bcrypt.hashSync(password, 4) // Coût réduit des seules fixtures f
 export async function resetDatabase() {
   const client = await db().connect()
   try {
-    await client.query('DROP TRIGGER IF EXISTS ci_signup_failure ON users; DROP TRIGGER IF EXISTS ci_decision_barrier ON expense_notes; DROP TRIGGER IF EXISTS ci_manager_barrier ON users; DROP TRIGGER IF EXISTS ci_assignment_failure ON users')
+    await client.query('DROP TRIGGER IF EXISTS ci_signup_failure ON users; DROP TRIGGER IF EXISTS ci_login_failure ON users; DROP TRIGGER IF EXISTS ci_diagnostic_failure ON expense_notes; DROP TRIGGER IF EXISTS ci_decision_barrier ON expense_notes; DROP TRIGGER IF EXISTS ci_manager_barrier ON users; DROP TRIGGER IF EXISTS ci_assignment_failure ON users')
     await client.query('BEGIN')
     await client.query('TRUNCATE expense_notes, users, companies RESTART IDENTITY CASCADE')
     for (const [key, id] of Object.entries(companies)) {

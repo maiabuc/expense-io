@@ -30,6 +30,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const url = await getReceiptUrl(note.receipt_key)
     return Response.json({ url })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'manager/expense-notes/[id]/receipt-url:GET')
   }
 }

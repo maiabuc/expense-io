@@ -42,6 +42,6 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
       })
     })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'manager/expense-notes/[id]/approve:POST')
   }
 }

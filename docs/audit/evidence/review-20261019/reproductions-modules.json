@@ -1,0 +1,20 @@
+{
+  "base": "73774862cb4f1b172d2b15bdbcb00c75b7cff6c6",
+  "method": "git show SHA:path | node --input-type=module ; stripTypeScriptTypes et import dataURL, sans écrire de sourceapp",
+  "pr1": {
+    "head": "f5dc2d672ba3612c5e2a75c9f9a65a77fc21fb01",
+    "publicStatus": 500,
+    "publicLeaks": false,
+    "internalLeaks": true,
+    "marker": "Valeur fictive, aucun secret réel"
+  },
+  "pr4": {
+    "head": "19bdd4c0515386e5c4466db378c47fa04feae0b7",
+    "smallAmount": "0.001",
+    "parsedSmall": null,
+    "constructorType": "function",
+    "prototypeType": "object",
+    "prototypeRejected": false
+  },
+  "limits": "Modules purs seulement ; pas d’appelHTTP sur ces deux heads."
+}

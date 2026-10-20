@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { readErrorMessage } from '@/utils/http'
 
 interface ExpenseNote {
   id: string
@@ -19,7 +20,10 @@ const currencyFormatter = new Intl.NumberFormat('fr-FR', {
   currency: 'EUR',
 })
 
-const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' })
+// timeZone: 'UTC' évite un glissement de jour calendaire selon le fuseau
+// du lecteur : expenseDate est une date seule (yyyy-mm-dd), sans heure ni
+// fuseau propre (AUD-017).
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeZone: 'UTC' })
 
 const STATUS_STYLES: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
@@ -55,13 +59,18 @@ export default function ExpensesPage() {
   const receiptInputRef = useRef<HTMLInputElement>(null)
 
   const loadNotes = useCallback(async () => {
-    const response = await fetch('/api/expense-notes')
-    if (response.ok) {
-      setNotes(await response.json())
-    } else {
-      setError('Impossible de charger les notes de frais.')
+    try {
+      const response = await fetch('/api/expense-notes')
+      if (response.ok) {
+        setNotes(await response.json())
+      } else {
+        setError(await readErrorMessage(response, 'Impossible de charger les notes de frais.'))
+      }
+    } catch {
+      setError('Impossible de charger les notes de frais. Vérifie ta connexion et réessaie.')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -78,25 +87,30 @@ export default function ExpensesPage() {
     const form = event.currentTarget
     const formData = new FormData(form)
 
-    const response = await fetch('/api/expense-notes', {
-      method: 'POST',
-      body: formData,
-    })
-    setSubmitting(false)
+    try {
+      const response = await fetch('/api/expense-notes', {
+        method: 'POST',
+        body: formData,
+      })
 
-    if (response.ok) {
-      form.reset()
-      setAmount('')
-      setExpenseDate('')
-      setSuggestionNotice(null)
-      await loadNotes()
-    } else {
-      const body = await response.json().catch(() => null)
-      setError(
-        typeof body?.error === 'string'
-          ? body.error
-          : 'Échec de la soumission de la note de frais.'
-      )
+      if (response.ok) {
+        form.reset()
+        setAmount('')
+        setExpenseDate('')
+        setSuggestionNotice(null)
+        await loadNotes()
+      } else {
+        const body = await response.json().catch(() => null)
+        setError(
+          typeof body?.error === 'string'
+            ? body.error
+            : 'Échec de la soumission de la note de frais.'
+        )
+      }
+    } catch {
+      setError('Échec de la soumission de la note de frais. Vérifie ta connexion et réessaie.')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -110,46 +124,56 @@ export default function ExpensesPage() {
     setError(null)
     setSuggestionNotice(null)
 
-    const formData = new FormData()
-    formData.set('receipt', receipt)
-    const response = await fetch('/api/expense-notes/receipt-suggestion', {
-      method: 'POST',
-      body: formData,
-    })
-    setExtracting(false)
+    try {
+      const formData = new FormData()
+      formData.set('receipt', receipt)
+      const response = await fetch('/api/expense-notes/receipt-suggestion', {
+        method: 'POST',
+        body: formData,
+      })
 
-    if (!response.ok) {
-      setError('Impossible d’analyser ce reçu.')
-      return
-    }
-    // Une réponse vide est valide (rien à suggérer) : sans ce message, ça
-    // ne se distinguerait pas visuellement d'un bouton qui n'a rien fait.
-    const suggestion = (await response.json()) as { amount?: number; expenseDate?: string }
-    const foundAmount = typeof suggestion.amount === 'number'
-    const foundDate = typeof suggestion.expenseDate === 'string'
-    if (foundAmount) {
-      setAmount(String(suggestion.amount))
-    }
-    if (foundDate) {
-      setExpenseDate(suggestion.expenseDate as string)
-    }
-    if (!foundAmount && !foundDate) {
-      setSuggestionNotice('Aucune information reconnue sur ce reçu — saisis les champs manuellement.')
-    } else if (!foundAmount || !foundDate) {
-      setSuggestionNotice(
-        `${foundAmount ? 'Date' : 'Montant'} non reconnu(e) sur ce reçu — vérifie ce champ.`
-      )
+      if (!response.ok) {
+        setError(await readErrorMessage(response, 'Impossible d’analyser ce reçu.'))
+        return
+      }
+      // Une réponse vide est valide (rien à suggérer) : sans ce message, ça
+      // ne se distinguerait pas visuellement d'un bouton qui n'a rien fait.
+      const suggestion = (await response.json()) as { amount?: number; expenseDate?: string }
+      const foundAmount = typeof suggestion.amount === 'number'
+      const foundDate = typeof suggestion.expenseDate === 'string'
+      if (foundAmount) {
+        setAmount(String(suggestion.amount))
+      }
+      if (foundDate) {
+        setExpenseDate(suggestion.expenseDate as string)
+      }
+      if (!foundAmount && !foundDate) {
+        setSuggestionNotice('Aucune information reconnue sur ce reçu — saisis les champs manuellement.')
+      } else if (!foundAmount || !foundDate) {
+        setSuggestionNotice(
+          `${foundAmount ? 'Date' : 'Montant'} non reconnu(e) sur ce reçu — vérifie ce champ.`
+        )
+      }
+    } catch {
+      setError('Impossible d’analyser ce reçu. Vérifie ta connexion et réessaie.')
+    } finally {
+      setExtracting(false)
     }
   }
 
   async function handleViewReceipt(id: string) {
-    const response = await fetch(`/api/expense-notes/${id}/receipt-url`)
-    if (!response.ok) {
-      setError('Impossible de récupérer le reçu.')
-      return
+    setError(null)
+    try {
+      const response = await fetch(`/api/expense-notes/${id}/receipt-url`)
+      if (!response.ok) {
+        setError(await readErrorMessage(response, 'Impossible de récupérer le reçu.'))
+        return
+      }
+      const { url } = await response.json()
+      window.open(url, '_blank', 'noopener,noreferrer')
+    } catch {
+      setError('Impossible de récupérer le reçu. Vérifie ta connexion et réessaie.')
     }
-    const { url } = await response.json()
-    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   const total = notes.reduce((sum, note) => sum + note.amount, 0)

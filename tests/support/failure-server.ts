@@ -45,3 +45,7 @@ export function withUnreachableDatabase<T>(operation: (url: string, logs: () => 
 export function withParisMidnight<T>(operation: (url: string, logs: () => string) => Promise<T>) {
   return withServer({ CI_FIXED_TIME: '2026-10-14T22:00:01Z' }, operation)
 }
+
+export function withCapturedDiagnostics<T>(operation: (url: string, logs: () => string) => Promise<T>) {
+  return withServer({}, operation)
+}

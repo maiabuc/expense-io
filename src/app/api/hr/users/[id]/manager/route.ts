@@ -111,6 +111,6 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
       })
     })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'hr/users/[id]/manager:PUT')
   }
 }
