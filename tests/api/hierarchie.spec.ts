@@ -147,3 +147,17 @@ test('[AUD-020][AFF-030][correction] refus journalisé avec code, opération et 
     console.warn = original
   }
 })
+
+test('[AUD-006][AFF-031][correction] affectation interdite : 409 avec le message du catalogue, distinct de celui de la boucle', async ({ request }) => {
+  await authenticate(request, 'a_hr')
+  const message = "Cette affectation de manager n'est pas autorisée."
+  for (const managerId of [users.a_employee.id, users.b_root.id, users.a_hr.id, absent]) {
+    const response = await assign(request, users.a_employee.id, { managerId }) // y compris l'auto-affectation
+    expect.soft(response.status(), managerId).toBe(409)
+    expect((await response.json()).error).toBe(message)
+  }
+  const loop = await assign(request, users.a_root.id, { managerId: users.a_sub.id })
+  expect(loop.status()).toBe(409)
+  expect((await loop.json()).error).not.toBe(message)
+  expect(await managerOf(users.a_employee.id)).toBe(users.a_root.id)
+})

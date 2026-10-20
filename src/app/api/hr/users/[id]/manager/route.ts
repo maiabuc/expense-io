@@ -70,7 +70,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
                 )
               ).rows[0]
         if (!manager) {
-          return refuser('MANAGER_AFFECTATION_INTERDITE', 'Invalid manager', 409)
+          return refuser('MANAGER_AFFECTATION_INTERDITE', "Cette affectation de manager n'est pas autorisée.", 409)
         }
 
         // Boucle : la chaîne des supérieurs du manager atteint la cible.
