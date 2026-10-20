@@ -1,21 +1,28 @@
-import { auth } from '@/lib/auth'
-import { getPool } from '@/lib/db'
+import { currentSession } from '@/lib/current-session'
+import { withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 import { getReceiptUrl } from '@/lib/storage'
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user || session.user.role !== 'manager') {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
     const { id } = await params
 
-    // La note existe forcément dans la liste des notes en attente du
-    // manager avant qu'il n'en consulte le reçu — pas besoin de revérifier
-    // le rattachement ici.
-    const result = await getPool().query('SELECT receipt_key FROM expense_notes WHERE id = $1', [id])
-    const note = result.rows[0]
+    // Le périmètre est établi avant de générer l'URL signée (AUD-006) :
+    // collaborateur direct du manager actuel, même entreprise. Aucun filtre
+    // d'état : un reçu déjà approuvé ou rejeté reste consultable.
+    const note = await withUserScope(session.user.id, async (client) => {
+      const result = await client.query(
+        `SELECT en.receipt_key FROM expense_notes en
+         JOIN users u ON u.id = en.user_id
+         WHERE en.id = $1 AND u.manager_id = $2 AND u.company_id = $3`,
+        [id, session.user.id, session.user.companyId]
+      )
+      return result.rows[0]
+    })
     if (!note) {
       return Response.json({ error: 'Not found' }, { status: 404 })
     }

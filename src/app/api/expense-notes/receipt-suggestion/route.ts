@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { respondError } from '@/lib/errors'
 import { EngineBusyError, RecognitionTimeoutError, SUPPORTED_MIME_TYPES, suggestFields } from '@/lib/ocr'
 
@@ -6,7 +6,7 @@ const MAX_RECEIPT_BYTES = 10 * 1024 * 1024
 
 export async function POST(request: Request) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
