@@ -16,16 +16,18 @@ const REDACTED = '[expurgé]'
 // etc.). Le motif entier est remplacé, nom de clé compris.
 const SENSITIVE_PATTERNS: RegExp[] = [
   // En-tête d'autorisation et jeton porteur.
-  /authorization\s*[:=]\s*(?:bearer|basic)?\s*[^\s"',;]+/gi,
+  /authorization["']?\s*[:=]\s*(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|(?:bearer|basic)?\s*[^\s"',;]+)/gi,
   /bearer\s+[^\s"',;]+/gi,
   // Cookies et en-têtes de session.
-  /(?:set-)?cookie\s*[:=][^\n"]*/gi,
+  /(?:set-)?cookie["']?\s*[:=][^\r\n]*/gi,
   // Identifiants intégrés à une URL de connexion (postgres://user:mdp@hôte).
   /\b[a-z][a-z0-9+.-]*:\/\/[^\s/"'@]+@/gi,
-  // Paires clé=valeur sensibles (mot de passe, jeton, clé d'accès…).
-  /\b(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key(?:[_-]?id)?|secret[_-]?access[_-]?key|session[_-]?token|credential)s?\s*[:=]\s*[^\s"',;&]+/gi,
+  // Clés JSON et paires clé=valeur : les valeurs citées sont consommées
+  // en entier, y compris leurs virgules et caractères échappés. Sinon,
+  // un guillemet interromprait le filtre avant la valeur secrète.
+  /\b(?:password|passwd|pwd|secret|token|api[_-]?key|access[_-]?key(?:[_-]?id)?|secret[_-]?access[_-]?key|session[_-]?token|credential)s?["']?\s*[:=]\s*(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s"',;&]+)/gi,
   // Paramètres de signature AWS isolés (hors URL complète).
-  /X-Amz-[A-Za-z-]+=[^\s&"']+/gi,
+  /X-Amz-[A-Za-z-]+["']?\s*[:=]\s*(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|[^\s&"']+)/gi,
 ]
 
 // Chaîne de requête d'URL : peut porter une signature temporaire ou un jeton.

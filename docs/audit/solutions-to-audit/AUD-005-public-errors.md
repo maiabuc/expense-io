@@ -106,3 +106,40 @@ Exception non prévue dans une route → `respondError(error, operation)` → `l
 #### Écarts et limites
 
 L'expurgation est une liste de motifs : un secret sous une forme non prévue (ex. valeur isolée sans clé ni préfixe reconnaissable) passerait encore. Elle s'applique au seul diagnostic émis par `respondError` ; les autres `console.error` du dépôt (ex. OCR) ne sont pas couverts par ce lot. PANNE-005/006/007 sont placés dans la suite API et non unitaire : le scénario d'outillage CI-SPEC-014 ne fournit qu'un rapport API pour SPEC-01, et un cas AUD-005 unitaire y apparaîtrait « non exécuté » (statut `incomplete` au lieu de `failed`). Le contrôleur AUD-011 n'est pas modifié par ce lot ; la remarque est transmise pour sa propre revue.
+
+### 2026-10-20 — SPEC-01, secrets JSON et valeurs citées
+
+Statut : implémentée et vérifiée sur les frontières décrites ; CI distante à confirmer après push.
+Spec : [SPEC-01](../../specs/SPEC-01-erreurs-api.md). Départ : `3a343b5c42fca2e92074fd865702318dae869aa7`, après récupération des notes de main dans la branche SPEC-01. Réalisation : diff local du 20 octobre, empreintes des deux fichiers applicatif/test dans les [preuves](../evidence/spec01-fix-20261020/checks.json).
+
+#### Ce qui a été implémenté
+
+La contre-revue a reproduit une fuite avec `password="<fictif>"`, une clé JSON `token` et un cookie cité. Les motifs précédents s'arrêtaient aux guillemets avant de consommer la valeur. Les motifs traitent maintenant les clés JSON et valeurs entre guillemets simples/doubles, y compris caractères échappés, virgules et espaces internes. La même protection couvre Authorization, Cookie et paramètres AWS. Les constats historiques restent conservés ci-dessus.
+
+#### Où
+
+| Fichier et repère | Modification | Rôle |
+| --- | --- | --- |
+| src/lib/errors.ts, SENSITIVE_PATTERNS | Consommation complète des valeurs citées et des cookies | Filtrer avant journalisation |
+| tests/api/diagnostics.spec.ts, PANNE-008/009 | Deux cas supplémentaires, neuf formes sensibles et journal réellement émis | Protéger le filtre et son utilisation |
+
+#### Nouveau fonctionnement
+
+Exception serveur → respondError → code/message/stack soumis à redactDiagnostic → clé et valeur sensibles remplacées ensemble → diagnostic JSON interne → réponse publique 500 générique inchangée. Aucun changement des réponses métier, succès, permissions, données ou UI. Les messages techniques sans secret reconnaissable restent utilisables.
+
+#### Validation et preuves
+
+| Commande/scénario | Résultat réel | Preuve |
+| --- | --- | --- |
+| Reproduction JSON avant correction | Assertion en échec, exit 1 | Contre-revue et reproduction du 20 octobre |
+| Reproduction après correction | 5 frontières réussies ; deux axes de revue sans nouveau blocage | [Contre-revue](../revue-pr-g4bi2004-20261020.md) et module courant |
+| npm ci ; npm run lint ; npm run typecheck ; npm run build | Exit 0 chacun ; un avertissement lint historique | [Dossier de checks](../evidence/spec01-fix-20261020/) |
+| npm run test:unit | 21/21, exit 0 | [checks.json](../evidence/spec01-fix-20261020/checks.json) |
+| npm run test:api | 122 exécutés, 71 réussis, 51 échecs de corrections hors lot, 0 absent, aucune erreur globale ni échec de référence ; exit 1 conservé | Même preuve, état de chaque cas conservé |
+| npm run test:spec:report -- SPEC-01, SOURCE_SHA=3a343b5 | passed, 9/9, 0 échec/absent/couverture manquante, exit 0 | Même preuve |
+
+Essais Linux/Node 24.6.0/npm 11.5.1, copie isolée /tmp, PostgreSQL et LocalStack jetables ; aucun service utilisateur modifié. Snapshot append-only capturé avant correction : `/tmp/arla-spec01-correction-oct20.json`.
+
+#### Écarts et limites
+
+Cette correction ferme les formats cités reproduits ; une liste de motifs ne prouve pas la confidentialité d'une chaîne arbitraire sans clé ou préfixe. Les autres producteurs de logs restent hors de cette correction. E2E non rejoués localement pour ce correctif ; la CI sera relancée après push. Les 51 échecs API des autres lots restent visibles, sans assertion modifiée, suppression ou skip. La demande explicite de Maia autorise ensuite l'intégration successive des SPEC-01 à 05 ; elle ne transforme pas le rouge global restant en réussite.

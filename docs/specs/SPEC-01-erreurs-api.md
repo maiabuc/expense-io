@@ -1,5 +1,7 @@
 # SPEC-01 — Erreurs API sûres et diagnostics internes
 
+Mise à jour du 20 octobre 2026 : correction complémentaire des secrets JSON/cités dans les diagnostics, PANNE-008/009 ajoutés. [Ajout AUD-005](../audit/solutions-to-audit/AUD-005-public-errors.md#2026-10-20--spec-01-secrets-json-et-valeurs-citées) et [preuves](../audit/evidence/spec01-fix-20261020/checks.json). Lint/types/build et 21 unitaires réussis ; contrôle SPEC-01 9/9 sur suite API complète (71/122, 51 échecs hors lot, aucune référence en échec). CI distante à confirmer après push ; aucune fusion applicative vers main avant correction. Les anciens comptes ci-dessous décrivent leurs révisions historiques.
+
 ## Identification
 
 - Responsable : personne A. Branche : `feat/spec-01`.

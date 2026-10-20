@@ -195,3 +195,13 @@ Demande : revérifier les specs après passage annoncé de la pipeline. [Rapport
 AUD-005 / SPEC-01 : conserver le refus de clôture, car le module actuel laisse passer les secrets sous forme JSON ou entre guillemets. MESUREMENT : reproduction réelle sur `6e8b268`, deux formats exposés et deux témoins filtrés ; aucune donnée sensible réelle. Compléter le filtrage ou limiter les diagnostics à des champs maîtrisés, puis tester ces frontières. AUD-008 / SPEC-03 : arrêt réel et remplacement désormais couverts ; C4 reste partiel, campagne trop courte et sans tous les indicateurs/provenance du protocole retenu. Compléter les preuves sans changer la décision pool sans FIFO, capacité initiale 1, délai 40 s.
 
 Corrections demandées des SPEC-02/04/05 présentes et contrôles verts sur le périmètre décrit ; nuance documentaire SPEC-12 ajoutée. Pas de nouveau choix métier, correction applicative ou fusion dans cette tâche. Les fiches AUD restent intactes ; la revue est consignée ici, sans fausse section IMPLEMENTATION applicative.
+
+## Correction SPEC-01 avant intégration — 20 octobre 2026
+
+Instruction Maia : corriger SPEC-01 sur sa branche, pousser, puis fusionner successivement SPEC-01 à 05 dans main. Confirmation après interruption : ne pas fusionner SPEC-01 vers main avant correction. Aucune fusion applicative vers main effectuée à ce stade ; seule la contre-revue a été conservée puis récupérée dans feat/spec-01.
+
+| Issue | Décision | Pourquoi | Preuve | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Corriger valeurs JSON/citées et ajouter PANNE-008/009 avant push/merge | Les motifs s'arrêtaient aux guillemets avant le secret | [Ajout IMPLEMENTATION](solutions-to-audit/AUD-005-public-errors.md#2026-10-20--spec-01-secrets-json-et-valeurs-citées), [checks](evidence/spec01-fix-20261020/checks.json) | SPEC-01 9/9 ; unit 21/21 ; lint/types/build exit 0 ; API 71/122, 51 échecs hors lot, aucune référence en échec |
+
+Les contrôles globaux restent requis et leurs échecs publiés. L'instruction explicite autorise les fusions successives malgré le rouge lié aux lots non intégrés ; aucun contournement du workflow ni changement des assertions. SPEC-03 contient déjà SPEC-04 : son intégration amènera cette dépendance ; vérifier ensuite que SPEC-04 est entièrement ancêtre de main. La réserve de mesures C4 OCR reste ouverte, sans changer le choix pool sans FIFO et 40 s.

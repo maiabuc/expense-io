@@ -49,3 +49,39 @@ test('[AUD-005][PANNE-007][correction] journal interne et réponse publique sans
     console.error = original
   }
 })
+
+test('[AUD-005][PANNE-008][correction] secrets JSON et valeurs citées expurgés avec leurs caractères échappés', () => {
+  const samples = [
+    `password="${MARKER}"`,
+    `password='${MARKER}'`,
+    JSON.stringify({ password: MARKER, token: MARKER }),
+    JSON.stringify({ credentials: { secret_access_key: `début,"${MARKER}\\fin` } }),
+    `Cookie: authjs.session-token="${MARKER}"`,
+    JSON.stringify({ cookie: `authjs.session-token="${MARKER}"` }),
+    `Authorization: "Bearer ${MARKER}"`,
+    JSON.stringify({ Authorization: `Basic ${MARKER}` }),
+    `X-Amz-Security-Token="${MARKER}"`,
+  ]
+  for (const sample of samples) {
+    expect(redactDiagnostic(sample), sample).not.toContain(MARKER)
+  }
+})
+
+test('[AUD-005][PANNE-009][correction] aucun secret cité dans les champs effectivement journalisés', async () => {
+  const logged: string[] = []
+  const original = console.error
+  console.error = (line: unknown) => { logged.push(String(line)) }
+  try {
+    const error = Object.assign(new Error(JSON.stringify({ token: MARKER, password: MARKER })), {
+      code: `token="${MARKER}"`,
+    })
+    const response = respondError(error, 'expense-notes:POST')
+    expect(response.status).toBe(500)
+    expect(JSON.stringify(await response.json())).not.toContain(MARKER)
+    expect(logged).toHaveLength(1)
+    expect(logged[0]).not.toContain(MARKER)
+    expect(JSON.parse(logged[0])).toMatchObject({ operation: 'expense-notes:POST', status: 500 })
+  } finally {
+    console.error = original
+  }
+})
