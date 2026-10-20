@@ -62,3 +62,39 @@ Pour chaque note de démonstration, le script relit la note, sa référence de r
 #### Écarts et limites
 
 Le script ne verrouille pas contre deux lancements simultanés (non demandé) : deux seeds parallèles sur une base vide pourraient créer deux notes. La détection des doublons historiques se limite à conserver la plus ancienne. Le seed n'écrit pas de clé de demande (`request_key`) : ses notes ne sont pas reprenables par l'API de soumission, ce qui n'est pas leur usage. Le jeu de démonstration reste celui de l'audit (un seul domaine d'entreprise) ; la vérification à deux entreprises est assurée par les fixtures des autres tests, pas par le seed. Le seed exige le schéma de SPEC-09 (statut `incomplete`) : lancé avant la migration, il échoue explicitement.
+
+### 2026-10-20 — SPEC-10 : intégration de `feat/spec-09` et de `main`, limites du seed (personne D)
+
+Statut : implémentée et vérifiée sur le périmètre décrit (script réel sur base et bucket de test isolés ; aucun seed lancé sur les données de l'utilisateur).
+Spec : [SPEC-10](../../specs/SPEC-10-seed-recuperable.md). Révision de départ : `f08f8a7`. Fusionné : `feat/spec-09` à `eabdb41` (qui contient `main` `5dc5024`), fusion `80319af`. Réalisation du seed : `3670415` et `3679960` (inchangées) ; état mesuré : `80319af`.
+
+#### Ce qui a été implémenté
+
+Aucun changement de code : `scripts/seed.mjs` s'exécute sans modification sur le schéma, les droits et le harnais à deux comptes de la version à jour de SPEC-09 (le seed tourne sous le compte de préparation, propriétaire des tables, et n'a pas besoin d'`UPDATE` supplémentaire pour le compte applicatif). Décision D3 appliquée : le seed garde son identification propre (utilisateur et description de la note) et n'utilise pas `request_key`. SPEC-10 n'exige pas cette clé : elle demande de « relire note, référence et objet, réparer la même note et le reçu selon état réel, conserver approved/rejected » et, en coordination, « même personne D pour éviter une seconde orchestration contradictoire », sans prescrire de passer par le module de soumission.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| scripts/seed.mjs | inchangé depuis `3670415` (`readReceipt` l. 80, `ensureReceipt` l. 91, `seedExpenseNote` l. 116, `verifySeed` l. 157) | Reprise sur la même note et vérification finale |
+| docs/audit/DECISION_LOG.md | Union des sections de SPEC-10 et de SPEC-09 | Aucune ligne perdue (contrôlé) |
+
+#### Nouveau fonctionnement
+
+Inchangé : voir l'entrée du 2026-10-19.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun (lint : 1 avertissement préexistant hors périmètre) | Run local 2026-10-20 sur `80319af` |
+| `npm run test:unit` | tous réussis | 41/41 | `reports/unit.json` |
+| `npm run test:api` complète | aucun nouveau rouge | 152/168 ; 16 rouges, tous attendus à ce stade : SPEC-07 (AFF-001 à 008, 011, 016 à 019) et SPEC-08 (DEC-005 à 007), non intégrées dans cette branche. SEED-001 à 010 verts | `reports/api.json` |
+| `npm run test:e2e` complète | aucune régression | 64/64 | `reports/e2e.json` |
+| `npm run test:report` | bilan agrégé | exit 1 (les 16 rouges) ; 257/273 ; statut SPEC-10 « passed » | `reports/specifications.json` |
+| `npm run test:issue -- AUD-018` | SEED-001 à 010 verts | 10/10 | sortie locale du 2026-10-20 |
+| `AUDIT_BASE_SHA=5dc5024… node scripts/ci/documentation.mjs` | préfixes de `main` conservés | exit 0 | sortie locale |
+
+#### Écarts et limites
+
+Pas de verrou contre deux lancements simultanés du seed : deux processus qui trouvent la note absente en même temps peuvent créer chacun une note ; le script avertit ensuite d'une note en double et conserve la plus ancienne. SPEC-10 n'exige pas ce verrou et le seed n'est pas une commande concurrente. Une note `incomplete` laissée par un seed interrompu n'a pas de `request_key` : l'écran ne peut pas la reprendre avec « Reprendre » (le serveur ne renvoie pas de `requestId` exploitable), seule la relance du seed la répare (analyse du code de la route et de la page, non exécutée). Le défaut d'historique du commit `f08f8a7`, qui a modifié quatre lignes de l'entrée du 2026-10-19 déjà commitée au lieu d'ajouter une correction, n'est pas réécrit : l'historique n'est pas modifié ; le texte actuel de l'entrée du 2026-10-19 est celui de `f08f8a7`. Relecture croisée par une autre personne : non faite.

@@ -323,3 +323,11 @@ Choix techniques. La note de démonstration est créée `incomplete` avec sa cl�
 | AUD-009 | `docker-compose.yml` non modifié (décision D2) : le compte fourni reste superutilisateur ; le critère C7 est prouvé sur le harnais CI | Les commandes README sont conservées ; le basculement vers `expense_app` relève de l'exploitant | [AUD-009](solutions-to-audit/AUD-009-database-company-isolation.md#implementation) | AUD-009 13/13 |
 
 Suites complètes (`5cccc42`) : unit 41/41, api 144/161, e2e 64/64 ; les 17 rouges de l'API relèvent de SPEC-07, 08 et 10. REPRISE-001 à 008 et HEXA-001/002 du manifeste n'existent pas : statut SPEC-09 « incomplete » attendu, non traité. ADR-0002 indiqué comme implémenté dans `docs/adr/README.md`. Fichiers de `main` modifiés : `src/lib/errors.ts` (ajout de `respondRefusal`), `docs/adr/README.md`.
+
+## SPEC-10 — intégration avec `feat/spec-09` et `main`, décision D3 — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-018 | Vérifiée à nouveau sur le schéma à jour ; aucun changement de code ; le seed garde son identification propre (utilisateur et description) | Décision D3 : SPEC-10 n'exige pas la clé de demande (« réparer la même note et le reçu selon état réel ») | [AUD-018](solutions-to-audit/AUD-018-reprise-seed.md#implementation), [SPEC-10](../specs/SPEC-10-seed-recuperable.md) | AUD-018 10/10 sur `80319af` |
+
+Limites documentées, non corrigées : pas de verrou contre deux lancements simultanés ; une note `incomplete` issue d'un seed interrompu n'est pas reprenable depuis l'écran. Suites complètes : unit 41/41, api 152/168, e2e 64/64 ; les 16 rouges relèvent de SPEC-07 et SPEC-08.

@@ -84,3 +84,9 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
 - Entrées IMPLEMENTATION : [AUD-018](../audit/solutions-to-audit/AUD-018-reprise-seed.md#implementation), ajoutée le 2026-10-19 (SHA de départ `1746cdb`).
 - Statut de fin : implémentée et vérifiée sur le périmètre décrit. C1 par SEED-001 et 010 ; C2 par SEED-002, 004, 005, 008, 009 ; C3 par SEED-003, 006, 007 ; C4 par l'exécution du script sous le compte de préparation sur le schéma de SPEC-09, sans UPDATE propriétaire ajouté (politiques inchangées, RLS-013). Limites : pas de verrou contre deux lancements simultanés ; CI GitHub non exécutée. Aucun plan de migration/retour arrière demandé.
+
+## Mise à jour du 20 octobre 2026 — intégration avec `feat/spec-09` et `main`
+
+- `feat/spec-09` (`eabdb41`, qui contient `main` `5dc5024`) est fusionné dans `feat/spec-10` (fusion `80319af`, départ `f08f8a7`). Aucun changement de code ; `scripts/seed.mjs` conserve son identification propre de la note (décision D3 : la spec n'exige pas la clé de demande).
+- Résultats sur `80319af` : unit 41/41, api 152/168, e2e 64/64 ; AUD-018 10/10 ; statut SPEC-10 « passed ». Les 16 rouges de l'API relèvent de SPEC-07 et SPEC-08, non intégrées dans cette branche.
+- Limites : pas de verrou contre deux lancements simultanés ; une note `incomplete` laissée par un seed interrompu n'est pas reprenable depuis l'écran. Relecture croisée : non faite.
