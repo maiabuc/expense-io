@@ -172,6 +172,7 @@ Clôture du dossier documentaire sur le périmètre décrit au fichier 5. Aucun 
 ## SPEC-01 réalisée — personne A — 18 octobre 2026
 
 Branche `feat/spec-01`, départ `7377486` (main actualisé), réalisation `a8411b9`. Snapshot append-only avant travail : `/tmp/arla-spec-01-gf.json` (22 fiches) ; contrôle `check` réussi après ajout, aucun préfixe altéré.
+Branche `feat/spec-01`, départ `7377486` (main actualisé), réalisation `a8411b9` ; voir [la PR](https://github.com/maiabuc/expense-io/pull/new/feat/spec-01), pas encore mergée dans `main` à la rédaction de cette entrée. Snapshot append-only avant travail : `/tmp/arla-spec-01-gf.json` (22 fiches) ; contrôle `check` réussi après ajout, aucun préfixe altéré.
 
 | Issue | Décision et état | Pourquoi | Preuves | Validation |
 | --- | --- | --- | --- | --- |
@@ -205,3 +206,22 @@ Instruction Maia : corriger SPEC-01 sur sa branche, pousser, puis fusionner succ
 | AUD-005 | Corriger valeurs JSON/citées et ajouter PANNE-008/009 avant push/merge | Les motifs s'arrêtaient aux guillemets avant le secret | [Ajout IMPLEMENTATION](solutions-to-audit/AUD-005-public-errors.md#2026-10-20--spec-01-secrets-json-et-valeurs-citées), [checks](evidence/spec01-fix-20261020/checks.json) | SPEC-01 9/9 ; unit 21/21 ; lint/types/build exit 0 ; API 71/122, 51 échecs hors lot, aucune référence en échec |
 
 Les contrôles globaux restent requis et leurs échecs publiés. L'instruction explicite autorise les fusions successives malgré le rouge lié aux lots non intégrés ; aucun contournement du workflow ni changement des assertions. SPEC-03 contient déjà SPEC-04 : son intégration amènera cette dépendance ; vérifier ensuite que SPEC-04 est entièrement ancêtre de main. La réserve de mesures C4 OCR reste ouverte, sans changer le choix pool sans FIFO et 40 s.
+## SPEC-02 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-02`, départ `7377486` (main actualisé, sans `feat/spec-01` encore mergée), réalisation `16cb7ad`. Snapshot append-only avant travail : `/tmp/arla-spec-02-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-016 | Implémentée et vérifiée : les 12 appels fetch des trois écrans libèrent leur état actif en `finally` et affichent un message sûr au `catch` (rejet réseau ou JSON illisible) ; saisie conservée après échec, pas de retry automatique | Rendre les actions utilisables après une panne sans transformer une absence de réponse en certitude d'échec serveur | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation), [SPEC-02](../specs/SPEC-02-recuperation-ui.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-016` 32/32 (NET-001…032) ; e2e 58/60 (AUD-016 0 échec, 2 échecs restants hors périmètre sur AUD-013/017) |
+
+AUD-005 échoue encore sur cette branche (api 61/112) uniquement parce que `feat/spec-01` n'y est pas mergée : ce n'est pas une régression de SPEC-02, les deux branches ne modifient pas les mêmes fichiers. À réévaluer à l'intégration des deux PR.
+
+## SPEC-02 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-02` actualisée avec `main` `651b067`, puis correction du constat P2 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-02-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-016 | Le champ `error` d'une réponse non réussie est affiché s'il est lisible, repli sinon, sur les huit chemins qui l'ignoraient | Un 503 « service occupé » ne doit pas être présenté comme une panne générique | [Entrée du 19 octobre](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation) | `SPEC-02 — tests du lot` vert en local : 33/33 dont NET-033 ; unit 21/21 |
+
+La sûreté du texte affiché suppose le contrat serveur de SPEC-01 : intégrer SPEC-01 avec ou avant SPEC-02.

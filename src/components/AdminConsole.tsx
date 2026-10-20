@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { readErrorMessage } from '@/utils/http'
 
 interface CompanyUser {
   id: string
@@ -41,23 +42,33 @@ export function AdminConsole() {
   const [decidingId, setDecidingId] = useState<string | null>(null)
 
   const loadUsers = useCallback(async () => {
-    const response = await fetch('/api/hr/users')
-    if (response.ok) {
-      setUsers(await response.json())
-    } else {
-      setUsersError("Impossible de charger l'annuaire.")
+    try {
+      const response = await fetch('/api/hr/users')
+      if (response.ok) {
+        setUsers(await response.json())
+      } else {
+        setUsersError(await readErrorMessage(response, "Impossible de charger l'annuaire."))
+      }
+    } catch {
+      setUsersError("Impossible de charger l'annuaire. Vérifie ta connexion et réessaie.")
+    } finally {
+      setUsersLoading(false)
     }
-    setUsersLoading(false)
   }, [])
 
   const loadNotes = useCallback(async () => {
-    const response = await fetch('/api/hr/expense-notes')
-    if (response.ok) {
-      setNotes(await response.json())
-    } else {
-      setNotesError('Impossible de charger les notes en attente.')
+    try {
+      const response = await fetch('/api/hr/expense-notes')
+      if (response.ok) {
+        setNotes(await response.json())
+      } else {
+        setNotesError(await readErrorMessage(response, 'Impossible de charger les notes en attente.'))
+      }
+    } catch {
+      setNotesError('Impossible de charger les notes en attente. Vérifie ta connexion et réessaie.')
+    } finally {
+      setNotesLoading(false)
     }
-    setNotesLoading(false)
   }, [])
 
   useEffect(() => {
@@ -71,51 +82,65 @@ export function AdminConsole() {
   async function handleManagerChange(userId: string, managerId: string) {
     setSavingId(userId)
     setUsersError(null)
-    const response = await fetch(`/api/hr/users/${userId}/manager`, {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ managerId: managerId === '' ? null : managerId }),
-    })
-    setSavingId(null)
+    try {
+      const response = await fetch(`/api/hr/users/${userId}/manager`, {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ managerId: managerId === '' ? null : managerId }),
+      })
 
-    if (response.ok) {
-      await loadUsers()
-    } else {
-      const body = await response.json().catch(() => null)
-      setUsersError(
-        typeof body?.error === 'string' ? body.error : "Échec de l'assignation."
-      )
+      if (response.ok) {
+        await loadUsers()
+      } else {
+        const body = await response.json().catch(() => null)
+        setUsersError(
+          typeof body?.error === 'string' ? body.error : "Échec de l'assignation."
+        )
+      }
+    } catch {
+      setUsersError("Échec de l'assignation. Vérifie ta connexion et réessaie.")
+    } finally {
+      setSavingId(null)
     }
   }
 
   async function handleViewReceipt(id: string) {
     setNotesError(null)
-    const response = await fetch(`/api/hr/expense-notes/${id}/receipt-url`)
-    if (!response.ok) {
-      setNotesError('Impossible de récupérer le reçu.')
-      return
+    try {
+      const response = await fetch(`/api/hr/expense-notes/${id}/receipt-url`)
+      if (!response.ok) {
+        setNotesError(await readErrorMessage(response, 'Impossible de récupérer le reçu.'))
+        return
+      }
+      const { url } = await response.json()
+      window.open(url, '_blank', 'noopener,noreferrer')
+    } catch {
+      setNotesError('Impossible de récupérer le reçu. Vérifie ta connexion et réessaie.')
     }
-    const { url } = await response.json()
-    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   async function handleDecide(id: string, decision: 'approve' | 'reject') {
     setDecidingId(id)
     setNotesError(null)
-    const response = await fetch(`/api/hr/expense-notes/${id}/${decision}`, {
-      method: 'POST',
-    })
-    setDecidingId(null)
+    try {
+      const response = await fetch(`/api/hr/expense-notes/${id}/${decision}`, {
+        method: 'POST',
+      })
 
-    if (response.ok) {
-      await loadNotes()
-    } else {
-      const body = await response.json().catch(() => null)
-      setNotesError(
-        typeof body?.error === 'string'
-          ? body.error
-          : 'Échec de la décision sur cette note de frais.'
-      )
+      if (response.ok) {
+        await loadNotes()
+      } else {
+        const body = await response.json().catch(() => null)
+        setNotesError(
+          typeof body?.error === 'string'
+            ? body.error
+            : 'Échec de la décision sur cette note de frais.'
+        )
+      }
+    } catch {
+      setNotesError('Échec de la décision sur cette note de frais. Vérifie ta connexion et réessaie.')
+    } finally {
+      setDecidingId(null)
     }
   }
 
