@@ -34,6 +34,6 @@ export async function GET() {
       return Response.json(result.rows.map(toExpenseNote))
     })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'hr/expense-notes:GET')
   }
 }

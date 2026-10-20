@@ -169,6 +169,25 @@ Livrables : [1 — contrats](01-contrats-implementation.md), [2 — permissions/
 
 Clôture du dossier documentaire sur le périmètre décrit au fichier 5. Aucun nouveau test runtime, aucune implémentation ni validation de correction ; les résultats de la campagne restent inchangés. Tests du professeur absents, formats formels OCR, navigateur/charge et compte DB utilisateur restent des réserves nommées ou critères de réalisation. Aucune garantie de compatibilité externe ni maîtrise indépendante inférée.
 
+## SPEC-01 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-01`, départ `7377486` (main actualisé), réalisation `a8411b9`. Snapshot append-only avant travail : `/tmp/arla-spec-01-gf.json` (22 fiches) ; contrôle `check` réussi après ajout, aucun préfixe altéré.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Implémentée et vérifiée : réponse publique générique en français + HTTP 500, diagnostic interne structuré (code/opération/statut/message/stack) jamais transmis au client | Séparer feedback utilisateur et diagnostic sans changer les consommateurs UI existants | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-005-public-errors.md#implementation), [SPEC-01](../specs/SPEC-01-erreurs-api.md) | lint/typecheck/build exit 0 ; unit 6/6 ; `test:issue -- AUD-005` 3/3 (PANNE-002, PANNE-003, NOTE-022) ; api 64/112 et e2e 38/60 sans aucune régression sur AUD-005 (échecs restants tous attribués à des specs non encore réalisées) |
+
+Catalogue d'erreurs par type, mapping HTTP fin et corrélation de requête restent non définis (hors périmètre explicite d'AUD-005). CI GitHub non déclenchée pour cette réalisation locale ; à confirmer à l'ouverture de la PR. SPEC-02/03/04/06/07/09 adapteront leurs propres routes au mécanisme commun livré ici.
+
+## SPEC-01 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-01` actualisée avec `main` `651b067` (dispositif CI-002 et nouveaux tests), puis correction du constat P1 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-01-review-gf.json` ; contrôle `check` réussi, entrée du 18 octobre conservée telle quelle.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Diagnostic interne expurgé avant émission (jetons, cookies, identifiants d'URL de connexion, clés sensibles, chaînes de requête d'URL) ; réponse publique inchangée | La validation du 18 octobre couvrait la réponse mais pas le journal : C2 non satisfait, corrigé | [Entrée du 19 octobre](solutions-to-audit/AUD-005-public-errors.md#implementation) | `SPEC-01 — tests du lot` vert en local : 7/7 dont PANNE-004 ; unit 21/21 ; aucune autre spec modifiée par rapport à la référence `main` |
+
+Les cas PANNE-005…007 sont placés dans la suite API : un cas AUD-005 unitaire rendrait le scénario d'outillage CI-SPEC-014 « incomplete » au lieu de « failed ». Le contrôleur AUD-011 n'est pas modifié ; point signalé pour sa revue.
 ## Contre-revue des corrections de Gab — 20 octobre 2026
 
 Demande : revérifier les specs après passage annoncé de la pipeline. [Rapport](revue-pr-g4bi2004-20261020.md) et [preuves épinglées aux six SHA](evidence/review-20261020/ci-and-probe.json). OBSERVATION : contrôles SPEC-01 à 05 verts (7/7, 33/33, 12/12, 44/44, 8/8) ; les six pipelines globales restent rouges. SPEC-12 est documentaire, le job dépendances est informatif.
@@ -176,3 +195,13 @@ Demande : revérifier les specs après passage annoncé de la pipeline. [Rapport
 AUD-005 / SPEC-01 : conserver le refus de clôture, car le module actuel laisse passer les secrets sous forme JSON ou entre guillemets. MESUREMENT : reproduction réelle sur `6e8b268`, deux formats exposés et deux témoins filtrés ; aucune donnée sensible réelle. Compléter le filtrage ou limiter les diagnostics à des champs maîtrisés, puis tester ces frontières. AUD-008 / SPEC-03 : arrêt réel et remplacement désormais couverts ; C4 reste partiel, campagne trop courte et sans tous les indicateurs/provenance du protocole retenu. Compléter les preuves sans changer la décision pool sans FIFO, capacité initiale 1, délai 40 s.
 
 Corrections demandées des SPEC-02/04/05 présentes et contrôles verts sur le périmètre décrit ; nuance documentaire SPEC-12 ajoutée. Pas de nouveau choix métier, correction applicative ou fusion dans cette tâche. Les fiches AUD restent intactes ; la revue est consignée ici, sans fausse section IMPLEMENTATION applicative.
+
+## Correction SPEC-01 avant intégration — 20 octobre 2026
+
+Instruction Maia : corriger SPEC-01 sur sa branche, pousser, puis fusionner successivement SPEC-01 à 05 dans main. Confirmation après interruption : ne pas fusionner SPEC-01 vers main avant correction. Aucune fusion applicative vers main effectuée à ce stade ; seule la contre-revue a été conservée puis récupérée dans feat/spec-01.
+
+| Issue | Décision | Pourquoi | Preuve | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-005 | Corriger valeurs JSON/citées et ajouter PANNE-008/009 avant push/merge | Les motifs s'arrêtaient aux guillemets avant le secret | [Ajout IMPLEMENTATION](solutions-to-audit/AUD-005-public-errors.md#2026-10-20--spec-01-secrets-json-et-valeurs-citées), [checks](evidence/spec01-fix-20261020/checks.json) | SPEC-01 9/9 ; unit 21/21 ; lint/types/build exit 0 ; API 71/122, 51 échecs hors lot, aucune référence en échec |
+
+Les contrôles globaux restent requis et leurs échecs publiés. L'instruction explicite autorise les fusions successives malgré le rouge lié aux lots non intégrés ; aucun contournement du workflow ni changement des assertions. SPEC-03 contient déjà SPEC-04 : son intégration amènera cette dépendance ; vérifier ensuite que SPEC-04 est entièrement ancêtre de main. La réserve de mesures C4 OCR reste ouverte, sans changer le choix pool sans FIFO et 40 s.

@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
       return Response.json(result.rows.map(toExpenseNote))
     })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'expense-notes:GET')
   }
 }
 
@@ -107,6 +107,6 @@ export async function POST(request: NextRequest) {
 
     return Response.json(toExpenseNote(updated.rows[0]), { status: 201 })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'expense-notes:POST')
   }
 }
