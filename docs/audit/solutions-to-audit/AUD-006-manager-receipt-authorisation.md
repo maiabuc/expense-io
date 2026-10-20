@@ -151,3 +151,34 @@ Voir [AUD-021](AUD-021-boucles-managers.md#implementation) pour la séquence com
 #### Écarts et limites
 
 Contrainte NOT VALID : l'existant n'est pas contrôlé. L'aide `donneesHistoriques` exige un compte superuser pour suspendre les clés étrangères ; elle devra être adaptée si le compte de préparation change (SPEC-09).
+
+### 2026-10-20 — SPEC-07 : intégration de `main`, volet affectation (personne C)
+
+Statut : implémentée et vérifiée sur le périmètre décrit (volets reçu et affectation).
+Spec : [SPEC-07](../../specs/SPEC-07-hierarchie-managers.md). Révision de départ : `8b02ca4`. `main` fusionné : `5dc5024`. Réalisation : `aa93ca7` et `f47d5e8`.
+
+#### Ce qui a été implémenté
+
+Le refus d'une affectation interdite (manager d'une autre entreprise, rôle non manager, inexistant ou auto-affectation) répond « Cette affectation de manager n'est pas autorisée. » (décision D1, catalogue de 01-contrats). Le statut 409 et l'absence de mutation sont inchangés. La clé étrangère composite de la migration `1700000000010` n'est pas modifiée.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/app/api/hr/users/[id]/manager/route.ts, refus `MANAGER_AFFECTATION_INTERDITE` | Message public du catalogue | Contrat de réponse |
+| tests/api/hierarchie.spec.ts, AFF-031 | Message pour quatre cas d'affectation interdite, distinct de celui de la boucle | Preuve |
+
+#### Nouveau fonctionnement
+
+Inchangé, voir l'entrée du 2026-10-19 et [AUD-020](AUD-020-validation-affectation.md#implementation).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-006` | AFF-011, 022, 026, 027, 031 et DROIT verts | 36/36 (api 31, e2e 4, unit 1) | sortie locale du 2026-10-20 sur `f47d5e8` |
+| `npm run test:issue -- G10` | cas G10 verts | 11/11 | idem |
+
+#### Écarts et limites
+
+Voir AUD-020 pour les suites complètes et les rouges attendus. Aucune relecture croisée n'a eu lieu.

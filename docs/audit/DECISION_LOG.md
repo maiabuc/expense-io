@@ -307,3 +307,13 @@ Suites complètes SPEC-06 (19 octobre, révision `a62e6c5`, exécution locale) :
 | AUD-006 (affectation) | Implémentée et vérifiée : manager de la même entreprise (API) et clé étrangère composite NOT VALID (base) | Contrôle API et invariant en base se complètent | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-006-manager-receipt-authorisation.md#implementation) | AUD-006 35/35 |
 
 Choix techniques : contraintes créées NOT VALID pour ne pas toucher aux données historiques (VALIDATE à lancer après examen). Le message 409 « Invalid manager » est conservé pour les affectations interdites (compatibilité), seul le refus de boucle a un message français nouveau. Les deux cas DROIT-023 et DROIT-032 de SPEC-06 fabriquent leur donnée historique via `donneesHistoriques` (clés étrangères suspendues en transaction), leurs assertions sont inchangées. AFF-019 est laissé rouge, non modifié : voir l'entrée AUD-020 pour le diagnostic. Migration `1700000000010` : numéro réservé à C ; D prendra des numéros supérieurs. Suites complètes (révision `2421887`) : unit 6/6, api 101/135, e2e 38/60, bilan 145/201, 0 régression par rapport à la base `feat/spec-06`.
+
+## SPEC-07 — intégration avec `main` et décision D1 — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-006 (affectation), AUD-020 | Le 409 d'affectation interdite répond « Cette affectation de manager n'est pas autorisée. » (catalogue de 01-contrats) au lieu de « Invalid manager » ; les refus sont journalisés par `respondRefusal` (`src/lib/errors.ts`) | Décision D1 de l'équipe ; un point commun avec le diagnostic de SPEC-01 évite un second mécanisme de journal | [AUD-020](solutions-to-audit/AUD-020-validation-affectation.md#implementation), [AUD-006](solutions-to-audit/AUD-006-manager-receipt-authorisation.md#implementation), [SPEC-07](../specs/SPEC-07-hierarchie-managers.md) | api 138/147, e2e 62/62, unit 25/25 sur `f47d5e8` ; AFF-030, AFF-031 verts |
+| AUD-020 | AFF-019 reste rouge, non modifié, requis par le manifeste | Le client de test envoie « { » comme chaîne JSON valide ; décision réservée | AUD-020, entrée du 2026-10-19 | 15/16 |
+| AUD-021 | Aucun changement de mécanisme | — | [AUD-021](solutions-to-audit/AUD-021-boucles-managers.md#implementation) | 7/7 |
+
+Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refusé par node-pg-migrate sans `--no-check-order` (vérifié sur une base jetable). Fichier de `main` modifié : `src/lib/errors.ts` (ajout de `respondRefusal`).

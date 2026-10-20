@@ -70,3 +70,41 @@ Action RH → garde de rôle actuel (403 sinon) → lecture du corps (400 sans m
 #### Écarts et limites
 
 AFF-019 reste rouge. Le client Playwright envoie une donnée textuelle non analysable (`{`) sous forme de chaîne JSON valide (`"{"`) : le test n'envoie donc jamais de JSON illisible, et ses entrées `{` et `[]` produisent toutes deux l'erreur « corps non objet », d'où 3 messages distincts au lieu de 4. Le contrat n'a qu'un message pour les corps non objet. Je n'ai pas modifié ce test ; le cas AFF-029 envoie les octets bruts et prouve les quatre messages distincts. Correction possible, à décider : envoyer `Buffer.from('{')` dans AFF-019. Le catalogue prévoit un message 409 « Cette affectation de manager n'est pas autorisée. » ; j'ai conservé « Invalid manager » déjà présent pour compatibilité. Le journal des codes utilise `console.warn` local à la route en attendant l'intégration avec le mécanisme de SPEC-01 (non présent sur cette base).
+
+### 2026-10-20 — SPEC-07 : intégration de `main`, journal des refus par SPEC-01 (personne C)
+
+Statut : implémentée et vérifiée sur le périmètre décrit, sauf AFF-019 resté rouge (voir limites).
+Spec : [SPEC-07](../../specs/SPEC-07-hierarchie-managers.md). Révision de départ : `8b02ca4`. `main` fusionné : `5dc5024` (fusion `7cdf94b`). Réalisation : `aa93ca7` (journal des refus) et `f47d5e8` (message du 409, décision D1).
+
+#### Ce qui a été implémenté
+
+La branche contient désormais SPEC-01 à 06 de `main`. Les refus 400/409 de la route d'affectation ne passent plus par un `console.warn` local : ils sont journalisés par `respondRefusal`, ajouté à `src/lib/errors.ts` à côté de `respondError` (même forme de ligne, code expurgé par `redactDiagnostic`). `respondError` lui-même ne convient pas aux refus : il répond toujours 500. Contrat de réponse inchangé. Le refus d'affectation interdite répond désormais « Cette affectation de manager n'est pas autorisée. » (catalogue de 01-contrats, décision D1) au lieu de « Invalid manager ».
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/lib/errors.ts, `respondRefusal` (fin de fichier) | Journal d'un refus attendu et réponse `{ error }` | Point commun avec le diagnostic de SPEC-01 |
+| src/app/api/hr/users/[id]/manager/route.ts, `refuser` et `OPERATION` | Délègue à `respondRefusal` ; message du 409 d'affectation interdite | Journal interne, message public conforme |
+| tests/api/hierarchie.spec.ts, AFF-030 et AFF-031 | Journal du refus (code, opération, statut, sans secret) ; message D1 pour auto-affectation, autre entreprise, rôle non manager, manager inexistant | Preuves des deux changements |
+| tests/support/database.ts | Liste de triggers de nettoyage : union de `main` et de `ci_assignment_failure` | Résolution du conflit de fusion |
+
+#### Nouveau fonctionnement
+
+Action RH → garde de rôle actuel → lecture du corps → contrôles → en cas de refus, `respondRefusal(code, message, statut, opération)` écrit `{timestamp, code, operation, status}` sur la sortie d'avertissement et répond le seul message public. Le reste du parcours décrit dans l'entrée du 2026-10-19 est inchangé.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun (lint : 1 avertissement préexistant, `e` inutilisé hors périmètre) | Run local 2026-10-20 sur `f47d5e8` |
+| `npm run test:unit` | tous réussis | 25/25 | `reports/unit.json` |
+| `npm run test:api` complète | aucun nouveau rouge | 138/147 ; 9 rouges, tous attendus à ce stade : AFF-019 (SPEC-07, voir limites) et PANNE-001, RLS-001, RLS-002, RLS-005 (SPEC-09), DEC-005 à 007 (SPEC-08), SEED-002 (SPEC-10), dont les branches ne sont pas encore intégrées | `reports/api.json` |
+| `npm run test:e2e` complète | aucune régression | 62/62 | `reports/e2e.json` |
+| `npm run test:report` | bilan agrégé | exit 1 (les 9 rouges ci-dessus) ; 225/234 | `reports/issues.json` |
+| `npm run test:issue -- AUD-006` / `AUD-020` / `AUD-021` / `G10` | cas de l'issue verts | AUD-006 36/36 ; AUD-020 15/16 (AFF-019 rouge) ; AUD-021 7/7 ; G10 11/11 | sorties locales du 2026-10-20 |
+| `AUDIT_BASE_SHA=5dc5024… node scripts/ci/documentation.mjs` | préfixes de `main` conservés | exit 0 | sortie locale |
+
+#### Écarts et limites
+
+AFF-019 reste rouge, non modifié et non traité : il exige quatre messages distincts alors que le client Playwright envoie « { » sous forme de chaîne JSON valide (diagnostic de l'entrée du 2026-10-19 conservé) ; AFF-029 prouve les quatre messages avec des octets bruts. Le cas AFF-019 est requis par `tests/specifications.json` : le contrôle « SPEC-07 » de la CI restera rouge tant que cette décision n'est pas prise. L'entrée du 2026-10-19 indiquait conserver « Invalid manager » : la décision D1 du 2026-10-20 la remplace pour le message public. La relecture de la concurrence par une autre personne n'a pas eu lieu.

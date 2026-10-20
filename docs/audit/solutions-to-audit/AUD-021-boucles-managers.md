@@ -65,3 +65,33 @@ Après validation du corps et de la cible (voir [AUD-020](AUD-020-validation-aff
 #### Écarts et limites
 
 Pas de contrainte ni de trigger interdisant les boucles dans la base : un écrivain qui ne prend pas le verrou (SQL direct, seed) peut en créer. Une boucle déjà présente en base n'est ni détectée ni corrigée automatiquement (AFF-024 vérifie seulement que le contrôle se termine). Verrou par entreprise : toutes les affectations d'une même entreprise sont sérialisées, ce qui est acceptable pour une action RH rare.
+
+### 2026-10-20 — SPEC-07 : intégration de `main` (personne C)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-07](../../specs/SPEC-07-hierarchie-managers.md). Révision de départ : `8b02ca4`. `main` fusionné : `5dc5024`. Réalisation : `aa93ca7` et `f47d5e8` (voir [AUD-020](AUD-020-validation-affectation.md#implementation) pour le détail et les preuves communes).
+
+#### Ce qui a été implémenté
+
+Aucun changement du mécanisme de boucle (verrou de la ligne `companies`, requête récursive, contrainte d'auto-affectation). La fusion avec `main` n'a modifié que le journal des refus de la route ; le refus de boucle garde son message « Cette affectation créerait une boucle entre managers. », aussi journalisé par `respondRefusal` (code `MANAGER_CYCLE`).
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/app/api/hr/users/[id]/manager/route.ts | Refus de boucle via `refuser` → `respondRefusal` | Journal interne unifié |
+
+#### Nouveau fonctionnement
+
+Inchangé par rapport à l'entrée du 2026-10-19.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-021` | AFF-015 à 018, 023 à 025 verts | 7/7 (7 api) | sortie locale du 2026-10-20 sur `f47d5e8` |
+| Suites complètes | aucune régression | api 138/147, e2e 62/62, unit 25/25 ; les 9 rouges sont attendus, voir AUD-020 | `reports/` |
+
+#### Écarts et limites
+
+Les limites du 2026-10-19 restent valables (pas de contrainte ni de trigger contre les boucles en base ; un écrivain sans verrou, comme le seed, peut en créer). L'ordre des migrations compte : une base ayant déjà appliqué `1700000000020` (SPEC-09) refuse `1700000000010` par défaut (« Not run migration … is preceding already run migration … », vérifié sur une base jetable) ; `--no-check-order` l'accepte. Intégrer SPEC-07 avant SPEC-09. Relecture de la concurrence par une autre personne : non faite.
