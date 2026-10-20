@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server'
 import { currentSession } from '@/lib/current-session'
 import { withUserScope } from '@/lib/db'
-import { respondError } from '@/lib/errors'
+import { respondError, respondRefusal } from '@/lib/errors'
 import { dependancesReelles } from '@/modules/soumission/assemblage'
 import { ErreurSoumission, type NoteSoumise, type TypeRecu } from '@/modules/soumission/ports'
 import { soumettre } from '@/modules/soumission/soumettre'
@@ -54,10 +54,7 @@ function fromSubmitted(note: NoteSoumise) {
 
 // Refus de la demande : le code technique reste dans les logs, jamais dans la réponse (AUD-005).
 function refuser(code: string, message: string, status: number) {
-  console.warn(
-    JSON.stringify({ timestamp: new Date().toISOString(), code, operation: 'expense-notes:POST', status })
-  )
-  return Response.json({ error: message }, { status })
+  return respondRefusal(code, message, status, 'expense-notes:POST')
 }
 
 export async function GET(request: NextRequest) {

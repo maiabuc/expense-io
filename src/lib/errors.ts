@@ -71,3 +71,13 @@ export function respondError(error: unknown, operation: string): Response {
     { status }
   )
 }
+
+// Refus métier attendu (400, 409…) : la réponse ne porte que le message public du
+// contrat ; le code technique reste dans le journal interne, après expurgation,
+// avec la même forme que le diagnostic des pannes (AUD-005, AUD-020).
+export function respondRefusal(code: string, message: string, status: number, operation: string): Response {
+  console.warn(
+    JSON.stringify({ timestamp: new Date().toISOString(), code: redactDiagnostic(code), operation, status })
+  )
+  return Response.json({ error: message }, { status })
+}
