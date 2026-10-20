@@ -84,3 +84,10 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
 - Entrées IMPLEMENTATION : [AUD-007](../audit/solutions-to-audit/AUD-007-decision-concurrency.md#implementation), ajoutée le 2026-10-19 (SHA de départ `1746cdb`, réalisation `4153242`, tests `1127b8e`).
 - Statut de fin : implémentée et vérifiée sur le périmètre décrit, y compris l'état `incomplete` et le compte applicatif limité de SPEC-09. C1 par DEC-005 à 007 et 014 ; C2 par DEC-001, 002, 010 ; C3 par DEC-003, 004, 013, 016, 017 ; C4 par DEC-011 et 012. Limite : relation modifiée pendant l'attente du verrou de ligne non réévaluée (voir l'entrée IMPLEMENTATION). CI GitHub non exécutée. Aucun plan de migration/retour arrière demandé.
+
+## Mise à jour du 20 octobre 2026 — intégration avec `feat/spec-09` et `main`
+
+- `feat/spec-09` (`eabdb41`, qui contient `main` `5dc5024`) est fusionné dans `feat/spec-08` (fusion `6069039`, départ `da21c48`). Aucun changement de code : la vérification avec `incomplete` et le compte applicatif limité (DEC-011, DEC-012) est refaite sur la version à jour de SPEC-09.
+- Résultats sur `6069039` : unit 41/41, api 155/169, e2e 64/64 ; AUD-007 21/21. Les 14 rouges de l'API relèvent de SPEC-07 (AFF-001 à 008, 011, 016 à 019) et de SPEC-10 (SEED-002), non intégrées dans cette branche.
+- `DEC-008`, attendu par `tests/specifications.json`, n'existe pas (cas équivalent : DEC-011) : statut « incomplete » attendu, non traité.
+- Limite documentée dans la fiche AUD-007 : une relation modifiée pendant l'attente du verrou de ligne n'est pas réévaluée. Relecture de la concurrence : non faite.

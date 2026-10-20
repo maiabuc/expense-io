@@ -323,3 +323,11 @@ Choix techniques. Le `UPDATE` conditionnel est conservé plutôt qu'un `SELECT .
 | AUD-009 | `docker-compose.yml` non modifié (décision D2) : le compte fourni reste superutilisateur ; le critère C7 est prouvé sur le harnais CI | Les commandes README sont conservées ; le basculement vers `expense_app` relève de l'exploitant | [AUD-009](solutions-to-audit/AUD-009-database-company-isolation.md#implementation) | AUD-009 13/13 |
 
 Suites complètes (`5cccc42`) : unit 41/41, api 144/161, e2e 64/64 ; les 17 rouges de l'API relèvent de SPEC-07, 08 et 10. REPRISE-001 à 008 et HEXA-001/002 du manifeste n'existent pas : statut SPEC-09 « incomplete » attendu, non traité. ADR-0002 indiqué comme implémenté dans `docs/adr/README.md`. Fichiers de `main` modifiés : `src/lib/errors.ts` (ajout de `respondRefusal`), `docs/adr/README.md`.
+
+## SPEC-08 — intégration avec `feat/spec-09` et `main` — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-007 | Vérifiée à nouveau sur le code combiné (`incomplete` non décidable, compte limité) ; aucun changement de code | Les routes utilisaient déjà `respondError(error, operation)` et `currentSession()` | [AUD-007](solutions-to-audit/AUD-007-decision-concurrency.md#implementation), [SPEC-08](../specs/SPEC-08-decisions-atomiques.md) | AUD-007 21/21 sur `6069039` |
+
+Limite documentée, non corrigée : une relation modifiée pendant l'attente du verrou de ligne n'est pas réévaluée par l'`UPDATE` conditionnel. Suites complètes : unit 41/41, api 155/169, e2e 64/64 ; les 14 rouges relèvent de SPEC-07 et SPEC-10. `DEC-008` du manifeste n'existe pas (cas équivalent DEC-011) : statut SPEC-08 « incomplete » attendu, non traité.

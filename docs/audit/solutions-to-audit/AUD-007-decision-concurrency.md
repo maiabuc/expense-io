@@ -72,3 +72,39 @@ Manager ou RH → garde de rôle actuel (401 / 403) → identifiant UUID (404 si
 #### Écarts et limites
 
 Le critère « autorisation réévaluée à l'écriture » est garanti au niveau de l'instruction `UPDATE` ; un changement de rattachement survenu entre la garde de rôle et l'`UPDATE` d'une même requête est vu par l'`UPDATE` (relation relue), mais une relation modifiée pendant que l'`UPDATE` attend le verrou de la ligne n'est pas réévaluée (instantané de l'instruction). DEC-014 vérifie quatre décisions simultanées sans barrière en base ; DEC-005 à 007 utilisent la barrière existante. Les routes de décision ne sont pas passées en transaction `SELECT ... FOR UPDATE` : choix conservé de la fiche. Le contrôle de bout en bout avec des liens de reçu déjà émis n'est pas concerné.
+
+### 2026-10-20 — SPEC-08 : intégration de `feat/spec-09` et de `main` (personne C)
+
+Statut : implémentée et vérifiée sur le périmètre décrit (manager et RH, compte applicatif limité du harnais, état `incomplete`).
+Spec : [SPEC-08](../../specs/SPEC-08-decisions-atomiques.md). Révision de départ : `da21c48`. Fusionné : `feat/spec-09` à `eabdb41` (qui contient `main` `5dc5024`), fusion `6069039`. Réalisation du mécanisme : `4153242` et `1127b8e` (inchangées) ; état mesuré : `6069039`.
+
+#### Ce qui a été implémenté
+
+Aucun changement de code applicatif : les quatre routes de décision faisaient déjà `respondError(error, operation)` (SPEC-01) et `currentSession()` (SPEC-06), et le `UPDATE` conditionnel est compatible avec la version finale de `main` et avec les politiques et droits de la version à jour de SPEC-09. Cette entrée consigne la vérification sur le code combiné : DEC-011 (note `incomplete` non décidable) et DEC-012 (décisions HTTP sous le compte limité) restent verts avec la version corrigée de SPEC-09. Le conflit de fusion de `tests/support/database.ts` est résolu par l'union des triggers de nettoyage de `main` et de `ci_decision_failure`.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| tests/support/database.ts, `resetDatabase` | Liste de triggers : `ci_login_failure`, `ci_diagnostic_failure` (de `main`) et `ci_decision_failure` (SPEC-08) | Nettoyage des pannes simulées |
+| docs/audit/DECISION_LOG.md | Union des sections de SPEC-08 et de SPEC-09 | Aucune ligne perdue (contrôlé) |
+
+#### Nouveau fonctionnement
+
+Inchangé : une seule écriture `UPDATE expense_notes … FROM users … WHERE … AND en.status = 'pending'` porte l'autorisation actuelle (collaborateur direct de même entreprise pour le manager ; manager racine de même entreprise pour le RH) et l'état ; zéro ligne modifiée → une requête de périmètre distingue 404 et 409.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun (lint : 1 avertissement préexistant hors périmètre) | Run local 2026-10-20 sur `6069039` |
+| `npm run test:unit` | tous réussis | 41/41 | `reports/unit.json` |
+| `npm run test:api` complète | aucun nouveau rouge | 155/169 ; 14 rouges, tous attendus à ce stade : SPEC-07 (AFF-001 à 008, 011, 016 à 019) et SPEC-10 (SEED-002), non intégrées dans cette branche. DEC-005 à 007 sont verts | `reports/api.json` |
+| `npm run test:e2e` complète | aucune régression | 64/64 | `reports/e2e.json` |
+| `npm run test:report` | bilan agrégé | exit 1 (les 14 rouges) ; 260/274 ; statut SPEC-08 « incomplete » : `DEC-008` introuvable dans `tests/specifications.json` (attendu, non traité ; le cas équivalent est DEC-011) | `reports/specifications.json` |
+| `npm run test:issue -- AUD-007` | DEC-001 à 007, 010 à 017 verts | 21/21 | sortie locale du 2026-10-20 |
+| `AUDIT_BASE_SHA=5dc5024… node scripts/ci/documentation.mjs` | préfixes de `main` conservés | exit 0 | sortie locale |
+
+#### Écarts et limites
+
+Limite connue, non corrigée : le critère « autorisation réévaluée à l'écriture » est garanti au niveau de l'instruction `UPDATE`. Si le rattachement du collaborateur change pendant que l'`UPDATE` attend le verrou de la ligne de la note (décision concurrente en cours), PostgreSQL ne réévalue en lecture committed que la ligne de `expense_notes` ; la relation `users` reste celle de l'instantané de l'instruction. Une décision pourrait alors aboutir au nom d'un ancien manager. Fenêtre étroite (attente d'un verrou de ligne), non couverte par un test, que seul un verrou explicite sur `users` ou une transaction sérialisable fermerait ; ce choix n'est pas fait ici (la fiche retient l'`UPDATE` conditionnel). Relecture de la concurrence par une autre personne : non faite.
