@@ -225,3 +225,47 @@ AUD-005 échoue encore sur cette branche (api 61/112) uniquement parce que `feat
 | AUD-016 | Le champ `error` d'une réponse non réussie est affiché s'il est lisible, repli sinon, sur les huit chemins qui l'ignoraient | Un 503 « service occupé » ne doit pas être présenté comme une panne générique | [Entrée du 19 octobre](solutions-to-audit/AUD-016-erreurs-reseau-ui.md#implementation) | `SPEC-02 — tests du lot` vert en local : 33/33 dont NET-033 ; unit 21/21 |
 
 La sûreté du texte affiché suppose le contrat serveur de SPEC-01 : intégrer SPEC-01 avec ou avant SPEC-02.
+## SPEC-04 réalisée — personne B — 18 octobre 2026
+
+Branche `feat/spec-04`, départ `7377486` (main actualisé, sans `feat/spec-01`/`feat/spec-02`/`feat/spec-05` encore mergées), réalisation `c445659`. Snapshot append-only avant travail : `/tmp/arla-spec-04-gf.json` (22 fiches) ; contrôle `check` réussi après ajout. Nouveau module pur `src/utils/validators.ts` (montant/date/tri/détection de reçu), indépendant de Next/pg/AWS, prévu pour réutilisation par SPEC-09.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-004 | Implémentée : table de tri nommée fixe, option inconnue refusée en 400 avant requête | Le texte reçu ne doit jamais devenir une expression SQL | [Entrée](solutions-to-audit/AUD-004-sort-input.md#implementation) | `test:issue -- AUD-004` 6/6 |
+| AUD-014 | Implémentée : montant validé par motif complet + borne BigInt après arrondi, chaîne normalisée transmise à PostgreSQL | Rejeter les formats mal formés sans arrondi JS ni dépassement silencieux | [Entrée](solutions-to-audit/AUD-014-validation-montant.md#implementation) | `test:issue -- AUD-014` 12/12 |
+| AUD-015 | Implémentée : format yyyy-mm-dd, existence réelle du jour, refus du futur selon Europe/Paris | L'horloge cliente est modifiable, le format est déjà établi | [Entrée](solutions-to-audit/AUD-015-validation-date.md#implementation) | `test:issue -- AUD-015` 7/7 (dont minuit Paris) |
+| AUD-017 | Implémentée : affichage en `timeZone: 'UTC'` explicite sur les trois écrans | Éliminer le glissement de jour selon le fuseau du lecteur | [Entrée](solutions-to-audit/AUD-017-affichage-date.md#implementation) | `test:issue -- AUD-017` 4/4 (Paris/UTC/Los Angeles/minuit) |
+| G14 | Implémentée : détection du format réel par signature d'octets avant écriture/upload, comparée au type annoncé | Un type annoncé seul n'est pas une preuve du contenu | [Entrée](solutions-to-audit/G14-controle-recus.md#implementation) | `test:issue -- G14` 11/11 |
+
+api 82/112 (0 échec sur les 5 cartes de ce lot) ; e2e 39/60 (0 échec AUD-017). Échecs restants attribués à des specs non réalisées sur cette branche ou à des dépendances (SPEC-01/02/05) non mergées — pas des régressions de SPEC-04.
+
+## SPEC-03 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-03`, départ `7377486`, `feat/spec-04` fusionnée dedans (dépendance de validation de fichiers requise par la coordination de la spec, pas encore dans `main`), réalisation `5393aee`. Snapshot append-only avant travail : `/tmp/arla-spec-03-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-008 | Implémentée, validation incomplète : pool borné (1 moteur), arrêt réel sur panne/délai au lieu de remise en circulation, panne distincte d'un succès vide, `errorHandler` ajouté après qu'une vérification manuelle a reproduit un crash processus sans lui | Ne pas faire croire qu'un reçu a été analysé quand le moteur n'a pas pu travailler ; ne pas laisser une seule image corrompue planter le serveur pour tous | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation), [SPEC-03](../specs/SPEC-03-ocr-borne.md) | `test:issue -- AUD-008` 8/8 ; api 84/112, e2e 39/60 sans régression ; vérification manuelle de saturation/panne/réutilisation ; **mesures CPU/RAM, concurrence 2/4 et arrêt réel à 40s en conditions réelles non exécutées** (campagne manuelle dédiée, cf. `tests/deferred-coverage.json`) |
+
+La découverte du crash processus (tesseract.js relance l'erreur dans son gestionnaire de messages en plus de rejeter la promesse du job) vient d'une vérification manuelle allant au-delà de la suite automatisée existante, qui ne l'exerçait pas. Corrigée par un `errorHandler` no-op fourni à `createWorker`, sans effet sur le rejet normal déjà traité par le code.
+
+## SPEC-04 corrigée après revue — personne B — 19 octobre 2026
+
+`feat/spec-04` actualisée avec `main` `651b067`, puis correction des constats P1/P2 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-04-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-014 | Positivité contrôlée sur la saisie avant arrondi, borne contrôlée après arrondi | `0.001` est une valeur positive admise par le contrat C3 | [Entrée du 19 octobre](solutions-to-audit/AUD-014-validation-montant.md#implementation) | ENTREE-001/003/004 réussis |
+| AUD-004 | Options de tri dans une `Map` | Une propriété héritée ne doit jamais devenir un fragment SQL | [Entrée du 19 octobre](solutions-to-audit/AUD-004-sort-input.md#implementation) | ENTREE-002 réussi |
+
+`SPEC-04 — tests du lot` vert en local : 44/44 ; unit 21/21. SPEC-03, qui embarque SPEC-04, doit récupérer cette correction.
+
+## SPEC-03 corrigée après revue — personne A — 19 octobre 2026
+
+`feat/spec-03` actualisée avec `main` `651b067` puis avec `feat/spec-04` corrigée (SPEC-03 embarque SPEC-04 et en héritait les défauts). Correction du constat P1 de la [revue du 19 octobre](revue-pr-g4bi2004-20261019.md). Snapshot avant travail : `/tmp/arla-spec-03-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-008 | Pool en fabrique testable ; place rendue seulement après l'événement `exit` du thread ; arrêt non confirmé : place conservée et échec journalisé | `terminate()` de tesseract.js n'attend pas l'arrêt : il ne prouvait rien, et un remplaçant pouvait tourner en parallèle de l'ancien thread | [Entrée du 19 octobre](solutions-to-audit/AUD-008-ocr-resource-bounds.md#implementation), [mesures](evidence/ocr-pool-20261019/README.md) | OCR-POOL-001…004 réussis, et le défaut réintroduit volontairement est détecté ; `SPEC-03 — tests du lot` vert en local (12/12) ; délai de production de 40 s mesuré sur thread bloqué |
+
+Les mesures sont uniques et faites sur une machine de développement. Le délai de 40 s est vérifié sur un thread bloqué synthétique, pas sur une reconnaissance Tesseract longue. La capacité reste à 1.

@@ -4,7 +4,7 @@
 
 - Responsable : personne B. Branche : `feat/spec-04`.
 - IDs : AUD-004, AUD-014, AUD-015, AUD-017, G14. Fiches : [AUD-004](../audit/solutions-to-audit/AUD-004-sort-input.md), [AUD-014](../audit/solutions-to-audit/AUD-014-validation-montant.md), [AUD-015](../audit/solutions-to-audit/AUD-015-validation-date.md), [AUD-017](../audit/solutions-to-audit/AUD-017-affichage-date.md), [G14](../audit/solutions-to-audit/G14-controle-recus.md).
-- Statut : préparée pour l’équipe le 17 octobre 2026 ; aucune correction réalisée par cette rédaction.
+- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée le 18 octobre 2026 ; corrigée après revue le 19 octobre 2026 (petits montants, tri sans propriétés héritées, voir Traçabilité et fin).
 - Autorisation : répartition et préparation demandées par Maia ; directions déjà retenues dans l’audit. Les conditions propres aux sujets 11/12 restent applicables.
 - Source d’audit : `265924bc7274047989e708ab635c2854d376230f`.
 - Départ documentaire : `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, fusion CI dans main. Le développeur enregistrera son vrai SHA de départ actualisé avant réalisation.
@@ -71,10 +71,11 @@ Cas ciblés :
 
 | Commande / scénario | Prévu | Réel | Preuve / limite |
 | --- | --- | --- | --- |
-| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | Non exécuté pour cette spec | Ajouter comptes, environnement et SHA |
-| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | Non exécuté pour cette spec | Commandes existantes |
-| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | Non exécuté pour cette spec | Rouge historique distingué des régressions ; aucun merge final tant que requis rouge |
-| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Non exécuté pour l’implémentation | Snapshot propre à cette intervention |
+| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | `test:issue` AUD-004 6/6, AUD-014 12/12, AUD-015 7/7, G14 11/11, AUD-017 4/4 | `reports/issues.json`, run local 2026-10-18 |
+| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | exit 0 chacun (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-18 |
+| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | unit 6/6 ; api 82/112 (0 échec sur AUD-004/014/015/G14 ; 30 échecs hors périmètre : specs C/D non réalisées, AUD-005 partiellement dépendant de SPEC-01 non mergée) ; e2e 39/60 (0 échec AUD-017 ; 21 échecs hors périmètre : AUD-016/013, dépendances SPEC-02/05 non mergées sur cette branche) | `reports/issues.json` |
+| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Vérifié : `check-append-only.mjs check --snapshot /tmp/arla-spec-04-gf.json` | Sortie locale 2026-10-18 |
+| Correction 19 octobre : suites complètes + `test:spec:report -- SPEC-04` | Contrôle par spec vert, ENTREE-001…004 compris | unit 21/21 ; api 86/117 ; e2e 40/62 ; SPEC-04 `passed` 44/44 ; autres specs inchangées ou améliorées (NOTE-022 de SPEC-01 réussit grâce à la validation de date) | `reports/SPEC-04.json`, run local 2026-10-19 |
 
 Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI existants sont un point de départ : ils ne couvrent pas automatiquement tous les mécanismes futurs. Aucun test du professeur fourni ; aucune réussite inférée d’un fichier listé.
 
@@ -84,5 +85,5 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Chaque fiche concernée reçoit un ajout daté sous `## IMPLEMENTATION` ; conserver absolument tout le texte et les ajouts antérieurs. Indiquer quoi/où/nouveau fonctionnement, tests réels et limites. Pour AUD-019, documenter seulement la convention conservée ; pour 11/12, ne pas inventer de correction.
 - Vérifier : `node docs/audit/tools/check-append-only.mjs check --snapshot /tmp/arla-spec-04-<identifiant-unique>.json`.
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
-- Entrées IMPLEMENTATION : aucune par cette préparation ; à ajouter lors de la réalisation réelle.
-- Statut de fin : préparée, pas implémentée. Relire les critères et joindre les preuves avant clôture ; aucun plan de migration/retour arrière demandé.
+- Entrées IMPLEMENTATION : [AUD-004](../audit/solutions-to-audit/AUD-004-sort-input.md#implementation), [AUD-014](../audit/solutions-to-audit/AUD-014-validation-montant.md#implementation), [AUD-015](../audit/solutions-to-audit/AUD-015-validation-date.md#implementation), [AUD-017](../audit/solutions-to-audit/AUD-017-affichage-date.md#implementation), [G14](../audit/solutions-to-audit/G14-controle-recus.md#implementation), ajoutées le 2026-10-18 (SHA de départ `7377486`, réalisation `c445659`). Entrées de correction ajoutées le 2026-10-19 dans AUD-004 et AUD-014 après la revue.
+- Statut de fin : implémentée et vérifiée sur le périmètre décrit. Le 18 octobre, C3 (positivité contrôlée après arrondi, `0.001` refusé) et C1 (propriétés héritées acceptées comme tri) n'étaient pas satisfaits, relevé par la revue du 19 octobre ; corrigés le 19 octobre. Contrôle `SPEC-04 — tests du lot` vert en local (44/44). Aucun plan de migration/retour arrière demandé.

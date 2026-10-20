@@ -33,3 +33,66 @@ API : refuser `12abc`, `1.2.3`, `1,2,3` et `1,2.3` ; vérifier l'équivalence de
 ## Actualisation des preuves — campagne du 14–15 octobre
 
 POST réel : 12abc accepté 201 ; 1,2 retourne montant 1. Validation stricte et arrondi compatible de la cible restent à tester. [Rapport et résultats bruts](../mesures-et-preuves.md). Les mentions de non-exécution précédentes décrivent la preuve initiale ; aucune validation de correction n’est acquise.
+
+## IMPLEMENTATION
+
+### 2026-10-18 — SPEC-04, personne B
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-04](../../specs/SPEC-04-entrees-et-affichage.md). Révision de départ : `7377486`. Réalisation : `c445659`.
+
+#### Ce qui a été implémenté
+
+`parseStrictAmount` (src/utils/validators.ts) valide la chaîne complète par motif (`^\+?(?:\d+(?:[.,]\d*)?|[.,]\d+)$`) avant toute conversion : un seul séparateur point ou virgule, jamais les deux, signe `+` facultatif, formes `.5` et `1.` admises ; `12abc`, `1.2.3`, `1,2,3`, `1,2.3`, `NaN`, `Infinity`, `-1` sont rejetés par construction (pas de `-` dans le motif). La borne (montant strictement positif et dépassement `numeric(10,2)`) est vérifiée via une arithmétique entière sur les centimes (`BigInt`), en reproduisant l'arrondi au centime à partir du troisième chiffre décimal — sans jamais utiliser `parseFloat` ni un arrondi flottant JS. La fonction renvoie la chaîne normalisée (virgule convertie en point, signe `+` retiré) **non arrondie**, transmise telle quelle à PostgreSQL : c'est la colonne `numeric(10,2)` qui applique l'arrondi au stockage, inchangé.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/validators.ts : `AMOUNT_PATTERN`, `AMOUNT_MAX_CENTS`, `parseStrictAmount` | Validation syntaxique + borne après arrondi | Refus avant toute écriture, sans arrondi JS |
+| src/app/api/expense-notes/route.ts : `POST` | Remplace `Number.parseFloat`/vérifications ad hoc par `parseStrictAmount` | Le paramètre SQL devient la chaîne normalisée, pas un nombre JS |
+
+#### Nouveau fonctionnement
+
+POST avec `amount` → `parseStrictAmount(amountRaw)` : motif complet vérifié → normalisation (virgule→point, `+` retiré) → calcul des centimes en `BigInt` avec arrondi au chiffre suivant → rejet si ≤ 0 ou > 9999999999 centimes (99 999 999,99) → HTTP 400 "Montant invalide" si `null`, sinon la chaîne normalisée est liée au paramètre `$2` de l'`INSERT` → PostgreSQL stocke avec son propre arrondi `numeric(10,2)` → la réponse relit la valeur déjà arrondie en base (`Number.parseFloat(row.amount)`, inchangé).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-014` | NOTE-006…015, NOTE-029/030 réussis | 12/12 réussis (dont `1.235`→1.24, `99999999.99` accepté, `100000000` refusé sans écriture) | `reports/issues.json`, run local 2026-10-18 |
+| `npm run test:api` (suite complète) | Aucune régression | 82/112 (AUD-014 0 échec) | `reports/issues.json` |
+
+#### Écarts et limites
+
+L'arrondi JS interne ne regarde que le troisième chiffre décimal pour décider d'un report de centime (standard pour un arrondi au centime) ; au-delà de la troisième décimale, seule PostgreSQL applique l'arrondi définitif de stockage — cohérent avec la chaîne non arrondie transmise. Espaces internes à la chaîne non testés spécifiquement (le motif les rejette déjà, aucun cas CI ne les couvre explicitement).
+
+### 2026-10-19 — SPEC-04, correction après revue (personne B)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-04](../../specs/SPEC-04-entrees-et-affichage.md). Révision de départ : `feat/spec-04` actualisée avec `main` `651b067`. Réalisation : commit de cette entrée sur `feat/spec-04`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P1, C3) que l'entrée du 18 octobre contrôlait la positivité *après* l'arrondi au centime : `0.001` donnait 0 centime et était refusé, alors que le contrat admet les petites valeurs positives avant l'arrondi de PostgreSQL. `parseStrictAmount` contrôle désormais la positivité sur la chaîne saisie (au moins un chiffre non nul) et la borne `numeric(10,2)` sur la valeur arrondie au centime. `0.001` et `0.004` sont admis (stockés 0.00 par PostgreSQL), `0`, `0.00` et `.0` restent refusés, `99999999.994` est admis et `99999999.995` (arrondi à 100 000 000,00) refusé.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/validators.ts : `parseStrictAmount` | Positivité testée sur les chiffres saisis avant arrondi ; seule la borne haute reste testée après arrondi | Conforme à C3 |
+
+#### Nouveau fonctionnement
+
+Motif complet vérifié (inchangé) → normalisation → au moins un chiffre non nul dans la partie entière ou décimale saisie, sinon refus → centimes calculés en `BigInt` avec arrondi au chiffre suivant → refus si supérieur à 9 999 999 999 centimes → chaîne normalisée non arrondie transmise à PostgreSQL (inchangé).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:api` (suite complète) | ENTREE-001/003/004 et NOTE-006…015/029/030 réussis | Tous réussis, dont ENTREE-001 (`0.001`, `0.004` → 201, montant 0) et ENTREE-004 (borne après arrondi) | `reports/api.json` |
+| `npm run test:spec:report -- SPEC-04` | Contrôle par spec vert | `passed`, 44/44 | `reports/SPEC-04.json` |
+
+#### Écarts et limites
+
+Un montant positif inférieur à un demi-centime est accepté puis stocké à 0,00 : c'est le comportement demandé par le contrat (C3) et vérifié par ENTREE-001, pas une nouvelle règle métier.

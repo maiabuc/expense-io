@@ -20,7 +20,10 @@ const currencyFormatter = new Intl.NumberFormat('fr-FR', {
   currency: 'EUR',
 })
 
-const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' })
+// timeZone: 'UTC' évite un glissement de jour calendaire selon le fuseau
+// du lecteur : expenseDate est une date seule (yyyy-mm-dd), sans heure ni
+// fuseau propre (AUD-017).
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeZone: 'UTC' })
 
 const STATUS_STYLES: Record<string, string> = {
   pending: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',

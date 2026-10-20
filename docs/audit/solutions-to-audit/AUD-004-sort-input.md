@@ -53,3 +53,61 @@ Inventorier les consommateurs ; vérifier toutes les options en minuscules, maju
 ## Actualisation des preuves — campagne du 14–15 octobre
 
 Paramètre de tri inexistant : HTTP 500, au lieu du rejet contrôlé 400 retenu. Cela confirme une validation absente, sans démontrer une injection destructive. [Rapport et résultats bruts](../mesures-et-preuves.md). Les mentions de non-exécution précédentes décrivent la preuve initiale ; aucune validation de correction n’est acquise.
+
+## IMPLEMENTATION
+
+### 2026-10-18 — SPEC-04, personne B
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-04](../../specs/SPEC-04-entrees-et-affichage.md). Révision de départ : `7377486`. Réalisation : `c445659`.
+
+#### Ce qui a été implémenté
+
+`resolveSortOption` (src/utils/validators.ts) traduit le paramètre `sort` (insensible à la casse) vers l'un des trois fragments SQL fixes `newest`/`amount_asc`/`amount_desc`, ou renvoie le défaut `created_at DESC` si absent, ou `null` si inconnu. La route GET refuse `null` en HTTP 400 avant toute requête SQL ; le texte reçu ne traverse plus `ORDER BY`.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/validators.ts : `SORT_OPTIONS`, `resolveSortOption` | Table d'options nommées fixes | Le serveur choisit le fragment SQL, jamais le client |
+| src/app/api/expense-notes/route.ts : `GET` | Appel `resolveSortOption` + 400 si `null` | Refus avant exécution de la requête de liste |
+
+#### Nouveau fonctionnement
+
+Requête GET avec `?sort=...` → `resolveSortOption(raw)` met en minuscules et cherche dans la table fixe → option connue : fragment SQL correspondant (jamais construit depuis le texte reçu) → option absente : défaut `created_at DESC` conservé → option inconnue (y compris une expression SQL comme `created_at DESC, (SELECT 1)`) : HTTP 400 immédiat, aucune requête de liste exécutée → sinon, lecture bornée au propriétaire (`withUserScope`) inchangée.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-004` | LIST-001…006 réussis | 6/6 réussis | `reports/issues.json`, run local 2026-10-18 |
+| `npm run test:api` (suite complète) | Aucune régression | 82/112 (AUD-004 0 échec ; 30 échecs restants tous hors périmètre de SPEC-04) | `reports/issues.json` |
+
+Comptes réels : exécution locale macOS, Postgres 16 + LocalStack isolés, aucun service utilisateur arrêté.
+
+#### Écarts et limites
+
+Seules les trois options demandées sont exposées ; un besoin de tri plus riche nécessiterait de réexaminer la table fixe, conformément à l'alternative écartée dans la fiche. Exploitabilité de l'ancienne concaténation non caractérisée davantage (hors périmètre).
+
+### 2026-10-19 — SPEC-04, correction après revue (personne B)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-04](../../specs/SPEC-04-entrees-et-affichage.md). Révision de départ : `feat/spec-04` actualisée avec `main` `651b067`. Réalisation : commit de cette entrée sur `feat/spec-04`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P2, C1) que la table d'options était un objet littéral : `sort=constructor` ou `sort=__proto__` atteignaient des propriétés héritées et renvoyaient une fonction ou un objet au lieu d'un refus, la route pouvant alors construire un fragment SQL invalide (500) au lieu de 400 avant SQL. La table est désormais une `Map` : seules les trois clés déclarées existent, toute autre valeur donne `null` puis HTTP 400 avant la requête.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/validators.ts : `SORT_OPTIONS`, `resolveSortOption` | Objet littéral remplacé par une `Map` | Aucune propriété héritée ne devient une option |
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:api` (suite complète) | LIST-001…006 et ENTREE-002 réussis | Tous réussis (`constructor`, `__proto__` → 400) | `reports/api.json` |
+| Vérification directe du module | Propriétés héritées refusées | `constructor`, `__proto__`, `toString`, `hasOwnProperty` → `null` ; options nommées inchangées | Sortie locale 2026-10-19 |
+| `npm run test:spec:report -- SPEC-04` | Contrôle par spec vert | `passed`, 44/44 | `reports/SPEC-04.json` |
