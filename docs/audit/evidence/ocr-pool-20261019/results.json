@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-19T12:34:34.729Z",
+  "node": "v26.8.2",
+  "platform": "darwin/arm64",
+  "defaultTimeoutMs": 40000,
+  "before": {
+    "rssMiB": 76.9,
+    "cpuUserMs": 100.4,
+    "cpuSystemMs": 70.1
+  },
+  "lifecycle": {
+    "enginesCreated": 1,
+    "coldInitAndFirstRecognitionMs": 241,
+    "coldOutcome": "ok",
+    "warmRecognitionMs": [
+      43.1,
+      42.5,
+      42.8,
+      42.9,
+      43.5
+    ],
+    "blankRecognitionMs": 0.4,
+    "stopConfirmedMs": 3.2,
+    "statsAfterClose": {
+      "reserved": 0,
+      "idle": 0,
+      "stopping": 0,
+      "unconfirmedStops": 0
+    },
+    "memoryAfterCold": {
+      "rssMiB": 133.8,
+      "cpuUserMs": 524.1,
+      "cpuSystemMs": 89.7
+    },
+    "memoryAfterWarm": {
+      "rssMiB": 138.9,
+      "cpuUserMs": 769.4,
+      "cpuSystemMs": 92.9
+    }
+  },
+  "concurrency": {
+    "1": {
+      "wallMs": 43.3,
+      "succeeded": 1,
+      "refusedBusy": 0,
+      "other": [],
+      "perRequestMs": [
+        43.3
+      ],
+      "enginesCreated": 1,
+      "memory": {
+        "rssMiB": 139.7,
+        "cpuUserMs": 1232.6,
+        "cpuSystemMs": 101.8
+      }
+    },
+    "2": {
+      "wallMs": 42.8,
+      "succeeded": 1,
+      "refusedBusy": 1,
+      "other": [],
+      "perRequestMs": [
+        42.7,
+        0.1
+      ],
+      "enginesCreated": 1,
+      "memory": {
+        "rssMiB": 140.3,
+        "cpuUserMs": 1690.5,
+        "cpuSystemMs": 109
+      }
+    },
+    "4": {
+      "wallMs": 43.1,
+      "succeeded": 1,
+      "refusedBusy": 3,
+      "other": [],
+      "perRequestMs": [
+        43.1,
+        0.1,
+        0.1,
+        0.1
+      ],
+      "enginesCreated": 1,
+      "memory": {
+        "rssMiB": 140.4,
+        "cpuUserMs": 2155.1,
+        "cpuSystemMs": 115.8
+      }
+    }
+  },
+  "productionTimeout": {
+    "outcome": "RecognitionTimeoutError",
+    "expected": "RecognitionTimeoutError",
+    "timeoutToRejectionMs": 40012.1,
+    "exitObservedAfterStartMs": 40011.9,
+    "threadIdAfter": -1,
+    "stats": {
+      "reserved": 0,
+      "idle": 0,
+      "stopping": 0,
+      "unconfirmedStops": 0
+    }
+  },
+  "after": {
+    "rssMiB": 53.4,
+    "cpuUserMs": 40256.3,
+    "cpuSystemMs": 492.1
+  }
+}

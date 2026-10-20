@@ -25,14 +25,15 @@ const AMOUNT_PATTERN = /^\+?(?:\d+(?:[.,]\d*)?|[.,]\d+)$/
 const AMOUNT_MAX_CENTS = BigInt('9999999999')
 const CENTS_PER_UNIT = BigInt(100)
 const ONE_CENT = BigInt(1)
-const ZERO_CENTS = BigInt(0)
 
 /**
- * Valide la syntaxe complète d'un montant et son dépassement de borne
- * après arrondi, sans jamais passer par un `parseFloat`/arrondi JS. Rend
- * la chaîne décimale normalisée (virgule convertie en point, signe +
- * retiré) à transmettre telle quelle à PostgreSQL, qui applique son
- * propre arrondi numeric(10,2) au stockage ; ou `null` si invalide.
+ * Valide la syntaxe complète d'un montant, sa positivité *avant* arrondi
+ * (0.001 est une valeur positive admise, même si PostgreSQL la stocke
+ * 0.00) et son dépassement de borne *après* arrondi au centime, sans
+ * jamais passer par un `parseFloat`/arrondi JS. Rend la chaîne décimale
+ * normalisée (virgule convertie en point, signe + retiré) à transmettre
+ * telle quelle à PostgreSQL, qui applique son propre arrondi
+ * numeric(10,2) au stockage ; ou `null` si invalide.
  */
 export function parseStrictAmount(raw: string): string | null {
   const trimmed = raw.trim()
@@ -41,6 +42,7 @@ export function parseStrictAmount(raw: string): string | null {
   const normalized = trimmed.replace(/^\+/, '').replace(',', '.')
   const [wholeRaw, fractionRaw = ''] = normalized.split('.')
   const whole = wholeRaw || '0'
+  if (!/[1-9]/.test(whole + fractionRaw)) return null
   // Trois chiffres après la virgule suffisent pour reproduire l'arrondi
   // au centime le plus proche (chiffre immédiatement après le centime).
   const fraction = (fractionRaw + '000').slice(0, 3)
@@ -48,7 +50,7 @@ export function parseStrictAmount(raw: string): string | null {
   let cents = BigInt(whole) * CENTS_PER_UNIT + BigInt(fraction.slice(0, 2))
   if (fraction[2] >= '5') cents += ONE_CENT
 
-  if (cents <= ZERO_CENTS || cents > AMOUNT_MAX_CENTS) return null
+  if (cents > AMOUNT_MAX_CENTS) return null
   return normalized
 }
 
@@ -87,12 +89,15 @@ export function parseStrictExpenseDate(raw: string, today = todayInParis()): str
 
 // --- AUD-004 : tri nommé -------------------------------------------------
 
-const SORT_OPTIONS: Record<string, string> = {
-  newest: 'created_at DESC',
-  amount_asc: 'amount ASC',
-  amount_desc: 'amount DESC',
-}
-export const DEFAULT_SORT_OPTION = SORT_OPTIONS.newest
+// Map plutôt qu'objet littéral : une recherche dans un objet atteint aussi
+// les propriétés héritées (`constructor`, `__proto__`…), qui renverraient
+// une fonction ou un objet au lieu d'un refus.
+const SORT_OPTIONS = new Map<string, string>([
+  ['newest', 'created_at DESC'],
+  ['amount_asc', 'amount ASC'],
+  ['amount_desc', 'amount DESC'],
+])
+export const DEFAULT_SORT_OPTION = 'created_at DESC'
 
 /**
  * Traduit une option de tri nommée (insensible à la casse) vers son
@@ -102,7 +107,7 @@ export const DEFAULT_SORT_OPTION = SORT_OPTIONS.newest
  */
 export function resolveSortOption(raw: string | null): string | null {
   if (!raw) return DEFAULT_SORT_OPTION
-  return SORT_OPTIONS[raw.toLowerCase()] ?? null
+  return SORT_OPTIONS.get(raw.toLowerCase()) ?? null
 }
 
 // --- G14 : détection du format de reçu par les octets -------------------

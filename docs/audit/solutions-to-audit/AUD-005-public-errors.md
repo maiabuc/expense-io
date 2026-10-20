@@ -70,3 +70,76 @@ Comptes réels : exécution locale macOS (Docker Desktop, Postgres 16 + LocalSta
 #### Écarts et limites
 
 Catalogue d'erreurs, mapping HTTP par type et corrélation (identifiant de requête) restent non définis, conformément à AUD-005 ("aucun standard nommé ni refonte API sélectionné") : seul le traitement générique des pannes inattendues (HTTP 500 + message contrôlé) est couvert par ce lot. Playwright e2e non réexécuté avec navigateurs additionnels (seul chromium installé). SPEC-02/03/04/06/07/09 adapteront leurs propres routes à ce mécanisme commun, hors périmètre de cette entrée.
+
+### 2026-10-19 — SPEC-01, correction après revue (personne A)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-01](../../specs/SPEC-01-erreurs-api.md). Révision de départ : `ef32e97` (`feat/spec-01` actualisée avec `main` `651b067`). Réalisation : commit de cette entrée sur `feat/spec-01`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève à juste titre (P1, critère C2) que l'entrée du 18 octobre protégeait la réponse publique mais journalisait encore le message et la stack bruts : une exception contenant un jeton ou une URL signée les recopiait dans le journal interne. Cette affirmation antérieure (« sans secrets ») était donc inexacte pour ce cas ; elle est conservée telle quelle ci-dessus et corrigée ici. `redactDiagnostic` expurge désormais le message, la stack et le code avant émission du diagnostic : en-têtes `authorization` et jetons `bearer`, cookies, identifiants intégrés à une URL de connexion (`postgres://utilisateur:motdepasse@`), paires clé=valeur sensibles (mot de passe, jeton, clés d'accès, jeton de session), paramètres `X-Amz-*`, et toute chaîne de requête d'URL (hôte et chemin conservés pour le diagnostic). Le motif entier est remplacé par `[expurgé]`, nom de clé compris.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/lib/errors.ts : `SENSITIVE_PATTERNS`, `URL_QUERY_PATTERN`, `redactDiagnostic` | Nouvelle expurgation | Diagnostic sûr par construction avant émission |
+| src/lib/errors.ts : `logInternalError` | Applique `redactDiagnostic` au code, au message et à la stack | Aucun secret recopié dans le journal |
+| tests/api/diagnostics.spec.ts | PANNE-005/006/007 | Autres formes de secrets, diagnostic utile conservé, journal + réponse sur le module réel |
+
+#### Nouveau fonctionnement
+
+Exception non prévue dans une route → `respondError(error, operation)` → `logInternalError` calcule code, message et stack puis les passe dans `redactDiagnostic` (chaîne de requête d'URL remplacée d'abord, puis chaque motif sensible) → une seule ligne JSON est émise sur `console.error` → la réponse HTTP reste `{ error: "Une erreur inattendue est survenue. Réessaie plus tard." }` avec 500, inchangée. Un message sans donnée sensible (ex. `relation "expense_notes" does not exist`) reste intact.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-19 |
+| `npm run test:unit` | Tous réussis | 21/21 (dont les 15 tests CI-SPEC du contrôleur) | `reports/unit.json` |
+| `npm run test:api` (suite complète) | PANNE-002…007 et NOTE-022 réussis | 69/120 ; les 7 cas AUD-005 réussis, dont PANNE-004 (exception SQL réelle avec jeton et signature fictifs : absents de la réponse et du journal) | `reports/api.json` |
+| `npm run test:e2e` (suite complète) | Aucune régression | 39/62 ; échecs restants hors SPEC-01 | `reports/e2e.json` |
+| `npm run test:report` puis `npm run test:spec:report -- SPEC-01` | Contrôle par spec vert | `passed`, 7/7, aucune couverture manquante ; SPEC-02 à 12 identiques à la référence `main` du 19 octobre | `reports/SPEC-01.json`, `reports/specifications.md` |
+| Garde append-only | Préfixes conservés | `check` réussi avec `/tmp/arla-spec-01-review-gf.json` | Sortie locale 2026-10-19 |
+
+#### Écarts et limites
+
+L'expurgation est une liste de motifs : un secret sous une forme non prévue (ex. valeur isolée sans clé ni préfixe reconnaissable) passerait encore. Elle s'applique au seul diagnostic émis par `respondError` ; les autres `console.error` du dépôt (ex. OCR) ne sont pas couverts par ce lot. PANNE-005/006/007 sont placés dans la suite API et non unitaire : le scénario d'outillage CI-SPEC-014 ne fournit qu'un rapport API pour SPEC-01, et un cas AUD-005 unitaire y apparaîtrait « non exécuté » (statut `incomplete` au lieu de `failed`). Le contrôleur AUD-011 n'est pas modifié par ce lot ; la remarque est transmise pour sa propre revue.
+
+### 2026-10-20 — SPEC-01, secrets JSON et valeurs citées
+
+Statut : implémentée et vérifiée sur les frontières décrites ; CI distante à confirmer après push.
+Spec : [SPEC-01](../../specs/SPEC-01-erreurs-api.md). Départ : `3a343b5c42fca2e92074fd865702318dae869aa7`, après récupération des notes de main dans la branche SPEC-01. Réalisation : diff local du 20 octobre, empreintes des deux fichiers applicatif/test dans les [preuves](../evidence/spec01-fix-20261020/checks.json).
+
+#### Ce qui a été implémenté
+
+La contre-revue a reproduit une fuite avec `password="<fictif>"`, une clé JSON `token` et un cookie cité. Les motifs précédents s'arrêtaient aux guillemets avant de consommer la valeur. Les motifs traitent maintenant les clés JSON et valeurs entre guillemets simples/doubles, y compris caractères échappés, virgules et espaces internes. La même protection couvre Authorization, Cookie et paramètres AWS. Les constats historiques restent conservés ci-dessus.
+
+#### Où
+
+| Fichier et repère | Modification | Rôle |
+| --- | --- | --- |
+| src/lib/errors.ts, SENSITIVE_PATTERNS | Consommation complète des valeurs citées et des cookies | Filtrer avant journalisation |
+| tests/api/diagnostics.spec.ts, PANNE-008/009 | Deux cas supplémentaires, neuf formes sensibles et journal réellement émis | Protéger le filtre et son utilisation |
+
+#### Nouveau fonctionnement
+
+Exception serveur → respondError → code/message/stack soumis à redactDiagnostic → clé et valeur sensibles remplacées ensemble → diagnostic JSON interne → réponse publique 500 générique inchangée. Aucun changement des réponses métier, succès, permissions, données ou UI. Les messages techniques sans secret reconnaissable restent utilisables.
+
+#### Validation et preuves
+
+| Commande/scénario | Résultat réel | Preuve |
+| --- | --- | --- |
+| Reproduction JSON avant correction | Assertion en échec, exit 1 | Contre-revue et reproduction du 20 octobre |
+| Reproduction après correction | 5 frontières réussies ; deux axes de revue sans nouveau blocage | [Contre-revue](../revue-pr-g4bi2004-20261020.md) et module courant |
+| npm ci ; npm run lint ; npm run typecheck ; npm run build | Exit 0 chacun ; un avertissement lint historique | [Dossier de checks](../evidence/spec01-fix-20261020/) |
+| npm run test:unit | 21/21, exit 0 | [checks.json](../evidence/spec01-fix-20261020/checks.json) |
+| npm run test:api | 122 exécutés, 71 réussis, 51 échecs de corrections hors lot, 0 absent, aucune erreur globale ni échec de référence ; exit 1 conservé | Même preuve, état de chaque cas conservé |
+| npm run test:spec:report -- SPEC-01, SOURCE_SHA=3a343b5 | passed, 9/9, 0 échec/absent/couverture manquante, exit 0 | Même preuve |
+
+Essais Linux/Node 24.6.0/npm 11.5.1, copie isolée /tmp, PostgreSQL et LocalStack jetables ; aucun service utilisateur modifié. Snapshot append-only capturé avant correction : `/tmp/arla-spec01-correction-oct20.json`.
+
+#### Écarts et limites
+
+Cette correction ferme les formats cités reproduits ; une liste de motifs ne prouve pas la confidentialité d'une chaîne arbitraire sans clé ou préfixe. Les autres producteurs de logs restent hors de cette correction. E2E non rejoués localement pour ce correctif ; la CI sera relancée après push. Les 51 échecs API des autres lots restent visibles, sans assertion modifiée, suppression ou skip. La demande explicite de Maia autorise ensuite l'intégration successive des SPEC-01 à 05 ; elle ne transforme pas le rouge global restant en réussite.

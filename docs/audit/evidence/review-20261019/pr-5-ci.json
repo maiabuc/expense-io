@@ -1,0 +1,132 @@
+{
+  "pr": 5,
+  "run": 39163361011,
+  "issues": [
+    "AUD-013",
+    "AUD-019"
+  ],
+  "sourceSha": "4773980fa9d7123ecaf8133d0f7ec199772bba01",
+  "suites": {
+    "Tests api": {
+      "planned": 112,
+      "passed": 61,
+      "failed": 51,
+      "notRun": 0
+    },
+    "Tests e2e": {
+      "planned": 60,
+      "passed": 39,
+      "failed": 21,
+      "notRun": 0
+    }
+  },
+  "selected": [
+    {
+      "caseId": "INS-001",
+      "title": "[AUD-013,AUD-019][INS-001][reference] nouvelle entreprise avec premier RH et connexion",
+      "suite": "e2e",
+      "issues": [
+        "AUD-013",
+        "AUD-019"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "INS-002",
+      "title": "[AUD-013,AUD-019][INS-002][reference] domaine existant rejoint comme employé",
+      "suite": "e2e",
+      "issues": [
+        "AUD-013",
+        "AUD-019"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "INS-003",
+      "title": "[AUD-013][INS-003][reference] email déjà utilisé refusé sans doublon",
+      "suite": "e2e",
+      "issues": [
+        "AUD-013"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "INS-004",
+      "title": "[AUD-013][INS-004][reference] nom vide côté serveur refusé",
+      "suite": "e2e",
+      "issues": [
+        "AUD-013"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "INS-005",
+      "title": "[AUD-013][INS-005][reference] mot de passe trop court empêche la création",
+      "suite": "e2e",
+      "issues": [
+        "AUD-013"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "INS-006",
+      "title": "[AUD-013][INS-006][correction] panne de création du compte ne laisse pas une entreprise orpheline",
+      "suite": "e2e",
+      "issues": [
+        "AUD-013"
+      ],
+      "status": "passed"
+    },
+    {
+      "caseId": "INS-007",
+      "title": "[AUD-013][INS-007][reference] inscriptions simultanées donnent un seul premier RH",
+      "suite": "e2e",
+      "issues": [
+        "AUD-013"
+      ],
+      "status": "passed"
+    }
+  ],
+  "checks": [
+    {
+      "name": "Installation reproductible",
+      "conclusion": "success"
+    },
+    {
+      "name": "Build de production",
+      "conclusion": "success"
+    },
+    {
+      "name": "AUD-023 — Dépendances (informatif)",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests unitaires",
+      "conclusion": "success"
+    },
+    {
+      "name": "Documentation et IDs des tests",
+      "conclusion": "success"
+    },
+    {
+      "name": "Types TypeScript",
+      "conclusion": "success"
+    },
+    {
+      "name": "Lint",
+      "conclusion": "success"
+    },
+    {
+      "name": "Tests e2e",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Tests api",
+      "conclusion": "failure"
+    },
+    {
+      "name": "Résultat CI requis",
+      "conclusion": "failure"
+    }
+  ]
+}

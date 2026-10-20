@@ -88,3 +88,26 @@ Comptes réels : exécution locale macOS, Postgres 16 + LocalStack isolés, aucu
 #### Écarts et limites
 
 Seules les trois options demandées sont exposées ; un besoin de tri plus riche nécessiterait de réexaminer la table fixe, conformément à l'alternative écartée dans la fiche. Exploitabilité de l'ancienne concaténation non caractérisée davantage (hors périmètre).
+
+### 2026-10-19 — SPEC-04, correction après revue (personne B)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-04](../../specs/SPEC-04-entrees-et-affichage.md). Révision de départ : `feat/spec-04` actualisée avec `main` `651b067`. Réalisation : commit de cette entrée sur `feat/spec-04`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P2, C1) que la table d'options était un objet littéral : `sort=constructor` ou `sort=__proto__` atteignaient des propriétés héritées et renvoyaient une fonction ou un objet au lieu d'un refus, la route pouvant alors construire un fragment SQL invalide (500) au lieu de 400 avant SQL. La table est désormais une `Map` : seules les trois clés déclarées existent, toute autre valeur donne `null` puis HTTP 400 avant la requête.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/validators.ts : `SORT_OPTIONS`, `resolveSortOption` | Objet littéral remplacé par une `Map` | Aucune propriété héritée ne devient une option |
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:api` (suite complète) | LIST-001…006 et ENTREE-002 réussis | Tous réussis (`constructor`, `__proto__` → 400) | `reports/api.json` |
+| Vérification directe du module | Propriétés héritées refusées | `constructor`, `__proto__`, `toString`, `hasOwnProperty` → `null` ; options nommées inchangées | Sortie locale 2026-10-19 |
+| `npm run test:spec:report -- SPEC-04` | Contrôle par spec vert | `passed`, 44/44 | `reports/SPEC-04.json` |

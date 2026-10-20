@@ -65,3 +65,39 @@ Comptes réels : exécution locale macOS, Postgres 16 + LocalStack isolés sur p
 #### Écarts et limites
 
 Branche créée depuis `main` actualisé (sans la branche `feat/spec-01`, pas encore mergée) : les 3 tests AUD-005 échouent sur cette branche uniquement parce que le mécanisme commun de SPEC-01 n'y est pas présent, pas à cause d'une régression introduite ici — ils redeviennent verts à l'intégration des deux branches. Aucun nouveau helper de fetch ni mécanisme d'attente global ajouté, conformément à la solution retenue. Tests navigateur limités à Chromium (seul navigateur installé) ; comportement Firefox/Safari non vérifié.
+
+### 2026-10-19 — SPEC-02, correction après revue (personne A)
+
+Statut : implémentée et vérifiée sur le périmètre décrit.
+Spec : [SPEC-02](../../specs/SPEC-02-recuperation-ui.md). Révision de départ : `feat/spec-02` actualisée avec `main` `651b067`. Réalisation : commit de cette entrée sur `feat/spec-02`.
+
+#### Ce qui a été implémenté
+
+La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P2) que plusieurs chemins remplaçaient le champ `error` d'une réponse HTTP d'erreur par un texte générique : une réponse OCR 503 « service occupé » devenait indiscernable d'une panne moteur. L'entrée du 18 octobre traitait les rejets réseau et JSON illisibles, mais pas ce cas. `readErrorMessage` (src/utils/http.ts) lit désormais `error` s'il s'agit d'une chaîne non vide, sinon renvoie le message de repli existant. Il est appliqué aux huit chemins qui ignoraient ce champ : chargement des notes (propriétaire, manager, RH), annuaire RH, analyse OCR et les trois lectures de reçu. Les trois chemins qui lisaient déjà `error` (soumission, décisions, affectation) sont inchangés.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/utils/http.ts : `readErrorMessage` | Nouveau | Champ `error` lisible ou repli |
+| src/app/expenses/page.tsx : `loadNotes`, `handleSuggestFields`, `handleViewReceipt` | Branche `!response.ok` lit `error` | Message 503 OCR et erreurs serveur affichés |
+| src/components/PendingApprovalsPanel.tsx : `loadPending`, `handleViewReceipt` | idem | idem |
+| src/components/AdminConsole.tsx : `loadUsers`, `loadNotes`, `handleViewReceipt` | idem | idem |
+
+#### Nouveau fonctionnement
+
+Réponse HTTP non réussie → `readErrorMessage(response, repli)` lit le corps JSON → `error` chaîne non vide : affiché dans l'emplacement d'erreur standard ; corps illisible, absent ou sans `error` : message de repli → `finally` libère toujours l'indicateur actif (inchangé). Rejet réseau : message de repli du `catch` (inchangé). Aucune répétition automatique.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 (1 avertissement lint préexistant hors périmètre) | Sortie locale 2026-10-19 |
+| `npm run test:unit` | Tous réussis | 21/21 | `reports/unit.json` |
+| `npm run test:e2e` (suite complète) | NET-001…033 réussis | NET-033 réussi (message 503 affiché, bouton réactivé) ; 33/33 cas AUD-016 | `reports/e2e.json` |
+| `npm run test:report` puis `npm run test:spec:report -- SPEC-02` | Contrôle par spec vert | `passed`, 33/33, aucune couverture manquante ; autres specs identiques à la référence `main` du 19 octobre | `reports/SPEC-02.json` |
+| Garde append-only | Préfixes conservés | `check` réussi avec `/tmp/arla-spec-02-review-gf.json` | Sortie locale 2026-10-19 |
+
+#### Écarts et limites
+
+La sûreté du texte affiché repose sur le contrat serveur : sans SPEC-01 (non intégrée à cette branche), `respondError` renvoie encore le message brut, que l'UI afficherait sur une erreur 500. Ce comportement préexistait pour la soumission ; il s'étend ici aux huit chemins corrigés. Intégrer SPEC-01 avec ou avant SPEC-02. Erreurs API standard en anglais (`Unauthorized`, `Not found`) affichées telles quelles, conformément à AUD-005.

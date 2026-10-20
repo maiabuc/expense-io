@@ -1,0 +1,875 @@
+{
+  "provenance": {
+    "revision": "73774862cb4f1b172d2b15bdbcb00c75b7cff6c6",
+    "sourceState": "diff local CI par spec du19octobre",
+    "generatedAt": "2026-10-19T08:05:27.995Z",
+    "runId": "59fdcd99-631e-462d-afa5-97dac617c89b",
+    "node": "v24.21.0",
+    "platform": "linux/x64",
+    "issue": null,
+    "database": "postgres://127.0.0.1:15446/expense_io_ci_e2e",
+    "storage": "http://127.0.0.1:14586/",
+    "bucket": "ci-e2e-receipts"
+  },
+  "suite": "e2e",
+  "status": "failed",
+  "planned": 62,
+  "results": [
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-001",
+      "kind": "correction",
+      "title": "[AUD-016][NET-001][correction] liste propriétaire : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 5456,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-002",
+      "kind": "reference",
+      "title": "[AUD-016][NET-002][reference] liste propriétaire : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 675,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-003",
+      "kind": "correction",
+      "title": "[AUD-016][NET-003][correction] liste propriétaire : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4571,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-004",
+      "kind": "correction",
+      "title": "[AUD-016][NET-004][correction] soumission : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4983,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeEnabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Soumettre', exact: true })\nExpected: enabled\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeEnabled\" getByRole('button', { name: 'Soumettre', exact: true }) with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Soumettre', exact: true })\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-005",
+      "kind": "reference",
+      "title": "[AUD-016][NET-005][reference] soumission : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 921,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-006",
+      "kind": "correction",
+      "title": "[AUD-016][NET-006][correction] OCR : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4716,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeEnabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('button', { name: 'Pré-remplir depuis le reçu', exact: true })\nExpected: enabled\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeEnabled\" getByRole('button', { name: 'Pré-remplir depuis le reçu', exact: true }) with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('button', { name: 'Pré-remplir depuis le reçu', exact: true })\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-007",
+      "kind": "reference",
+      "title": "[AUD-016][NET-007][reference] OCR : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 861,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-008",
+      "kind": "correction",
+      "title": "[AUD-016][NET-008][correction] OCR : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4845,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-009",
+      "kind": "correction",
+      "title": "[AUD-016][NET-009][correction] reçu propriétaire : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4607,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-010",
+      "kind": "reference",
+      "title": "[AUD-016][NET-010][reference] reçu propriétaire : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 826,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-011",
+      "kind": "correction",
+      "title": "[AUD-016][NET-011][correction] reçu propriétaire : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4617,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-012",
+      "kind": "correction",
+      "title": "[AUD-016][NET-012][correction] liste manager : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4654,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-013",
+      "kind": "reference",
+      "title": "[AUD-016][NET-013][reference] liste manager : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 599,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-014",
+      "kind": "correction",
+      "title": "[AUD-016][NET-014][correction] liste manager : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4418,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-015",
+      "kind": "correction",
+      "title": "[AUD-016][NET-015][correction] décision manager : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4535,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeEnabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('row').filter({ hasText: 'Taxi employé A' }).getByRole('button', { name: 'Approuver', exact: true })\nExpected: enabled\nReceived: disabled\nTimeout:  4000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeEnabled\" getByRole('row').filter({ hasText: 'Taxi employé A' }).getByRole('button', { name: 'Approuver', exact: true }) with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('row').filter({ hasText: 'Taxi employé A' }).getByRole('button', { name: 'Approuver', exact: true })\u001b[22m\n\u001b[2m    12 × locator resolved to <button disabled type=\"button\" class=\"mr-3 text-sm font-medium text-green-600 hover:underline disabled:cursor-not-allowed disabled:opacity-60\">Approuver</button>\u001b[22m\n\u001b[2m       - unexpected value \"disabled\"\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-016",
+      "kind": "reference",
+      "title": "[AUD-016][NET-016][reference] décision manager : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 590,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-017",
+      "kind": "correction",
+      "title": "[AUD-016][NET-017][correction] reçu manager : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4496,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-018",
+      "kind": "reference",
+      "title": "[AUD-016][NET-018][reference] reçu manager : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 608,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-019",
+      "kind": "correction",
+      "title": "[AUD-016][NET-019][correction] reçu manager : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4481,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-020",
+      "kind": "correction",
+      "title": "[AUD-016][NET-020][correction] annuaire RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4480,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-021",
+      "kind": "reference",
+      "title": "[AUD-016][NET-021][reference] annuaire RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 519,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-022",
+      "kind": "correction",
+      "title": "[AUD-016][NET-022][correction] annuaire RH : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4431,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-023",
+      "kind": "correction",
+      "title": "[AUD-016][NET-023][correction] liste RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4530,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-024",
+      "kind": "reference",
+      "title": "[AUD-016][NET-024][reference] liste RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 557,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-025",
+      "kind": "correction",
+      "title": "[AUD-016][NET-025][correction] liste RH : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4444,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-026",
+      "kind": "correction",
+      "title": "[AUD-016][NET-026][correction] affectation RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4540,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeEnabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('row').filter({ hasText: 'employe@ci-a.invalid' }).getByRole('combobox')\nExpected: enabled\nReceived: disabled\nTimeout:  4000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeEnabled\" getByRole('row').filter({ hasText: 'employe@ci-a.invalid' }).getByRole('combobox') with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('row').filter({ hasText: 'employe@ci-a.invalid' }).getByRole('combobox')\u001b[22m\n\u001b[2m    12 × locator resolved to <select disabled class=\"rounded-md border border-gray-300 px-2 py-1.5 text-sm shadow-sm outline-none focus:border-brand-500 focus:ring-2 focus:ring-brand-100 dark:border-gray-700 dark:bg-gray-900 dark:focus:ring-brand-900\">…</select>\u001b[22m\n\u001b[2m       - unexpected value \"disabled\"\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-027",
+      "kind": "reference",
+      "title": "[AUD-016][NET-027][reference] affectation RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 549,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-028",
+      "kind": "correction",
+      "title": "[AUD-016][NET-028][correction] décision RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4480,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeEnabled\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('row').filter({ hasText: 'Taxi manager racine A' }).getByRole('button', { name: 'Approuver', exact: true })\nExpected: enabled\nReceived: disabled\nTimeout:  4000ms\n\nCall log:\n\u001b[2m  - Expect \"toBeEnabled\" getByRole('row').filter({ hasText: 'Taxi manager racine A' }).getByRole('button', { name: 'Approuver', exact: true }) with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('row').filter({ hasText: 'Taxi manager racine A' }).getByRole('button', { name: 'Approuver', exact: true })\u001b[22m\n\u001b[2m    12 × locator resolved to <button disabled type=\"button\" class=\"mr-3 text-sm font-medium text-green-600 hover:underline disabled:cursor-not-allowed disabled:opacity-60\">Approuver</button>\u001b[22m\n\u001b[2m       - unexpected value \"disabled\"\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-029",
+      "kind": "reference",
+      "title": "[AUD-016][NET-029][reference] décision RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 570,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-030",
+      "kind": "correction",
+      "title": "[AUD-016][NET-030][correction] reçu RH : échec réseau visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4505,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-031",
+      "kind": "reference",
+      "title": "[AUD-016][NET-031][reference] reçu RH : échec HTTP visible et récupérable",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 801,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-032",
+      "kind": "correction",
+      "title": "[AUD-016][NET-032][correction] reçu RH : échec JSON illisible visible et récupérable",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4563,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: /\\S/ }).first()\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: /\\S/ }).first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: /\\S/ }).first()\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-016"
+      ],
+      "caseId": "NET-033",
+      "kind": "correction",
+      "title": "[AUD-016][NET-033][correction] le message sûr du service OCR occupé est affiché",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4530,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('alert').filter({ hasText: 'Service temporairement occupé, veuillez réessayer.' })\nExpected: visible\nTimeout: 4000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" getByRole('alert').filter({ hasText: 'Service temporairement occupé, veuillez réessayer.' }) with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('alert').filter({ hasText: 'Service temporairement occupé, veuillez réessayer.' })\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "NAV-001",
+      "kind": "reference",
+      "title": "[AUD-011][NAV-001][reference] connexion et déconnexion dans le navigateur",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 599,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "NAV-002",
+      "kind": "reference",
+      "title": "[AUD-011][NAV-002][reference] identifiants incorrects affichent un refus",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 375,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "NAV-003",
+      "kind": "reference",
+      "title": "[AUD-011][NAV-003][reference] page /expenses protégée sans session",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 268,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "NAV-004",
+      "kind": "reference",
+      "title": "[AUD-011][NAV-004][reference] page /manager protégée sans session",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 248,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "NAV-005",
+      "kind": "reference",
+      "title": "[AUD-011][NAV-005][reference] page /hr protégée sans session",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 227,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "NAV-006",
+      "kind": "reference",
+      "title": "[AUD-006][NAV-006][reference] employé sans accès à la page manager",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 424,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "NAV-007",
+      "kind": "reference",
+      "title": "[AUD-006][NAV-007][reference] manager sans accès à la page RH",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 465,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-003"
+      ],
+      "caseId": "NAV-008",
+      "kind": "reference",
+      "title": "[AUD-003][NAV-008][reference] création via formulaire visible après rechargement",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 623,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-011"
+      ],
+      "caseId": "NAV-009",
+      "kind": "reference",
+      "title": "[AUD-011][NAV-009][reference] historique et total propriétaire affichés",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 360,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006"
+      ],
+      "caseId": "NAV-010",
+      "kind": "reference",
+      "title": "[AUD-006][NAV-010][reference] reçu ouvert depuis son historique",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 529,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "NAV-011",
+      "kind": "reference",
+      "title": "[AUD-007][NAV-011][reference] a_root décide par le navigateur : Approuver",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 523,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "NAV-012",
+      "kind": "reference",
+      "title": "[AUD-007][NAV-012][reference] a_root décide par le navigateur : Rejeter",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 514,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "NAV-013",
+      "kind": "reference",
+      "title": "[AUD-007][NAV-013][reference] a_hr décide par le navigateur : Approuver",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 526,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-007"
+      ],
+      "caseId": "NAV-014",
+      "kind": "reference",
+      "title": "[AUD-007][NAV-014][reference] a_hr décide par le navigateur : Rejeter",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 510,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-006",
+        "AUD-020"
+      ],
+      "caseId": "NAV-015",
+      "kind": "reference",
+      "title": "[AUD-006,AUD-020][NAV-015][reference] RH affecte puis retire explicitement un manager",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 533,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "NAV-016",
+      "kind": "reference",
+      "title": "[AUD-008][NAV-016][reference] OCR réel préremplit le montant et la date",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 1227,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-008"
+      ],
+      "caseId": "NAV-017",
+      "kind": "reference",
+      "title": "[AUD-008][NAV-017][reference] absence de texte OCR permet la saisie manuelle",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 622,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-017"
+      ],
+      "caseId": "NAV-018",
+      "kind": "reference",
+      "title": "[AUD-017][NAV-018][reference] date calendaire préservée en Europe/Paris",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 423,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-017"
+      ],
+      "caseId": "NAV-019",
+      "kind": "reference",
+      "title": "[AUD-017][NAV-019][reference] date calendaire préservée en UTC",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 473,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-017"
+      ],
+      "caseId": "NAV-020",
+      "kind": "correction",
+      "title": "[AUD-017][NAV-020][correction] date calendaire préservée en America/Los_Angeles",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 4456,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoHaveText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator:  getByRole('row').filter({ hasText: 'Taxi employé A' }).getByRole('cell').first()\nExpected: \u001b[32m\"\u001b[7m1 oc\u001b[27mt. 2026\"\u001b[39m\nReceived: \u001b[31m\"\u001b[7m30 sep\u001b[27mt. 2026\"\u001b[39m\nTimeout:  4000ms\n\nCall log:\n\u001b[2m  - Expect \"toHaveText\" getByRole('row').filter({ hasText: 'Taxi employé A' }).getByRole('cell').first() with timeout 4000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('row').filter({ hasText: 'Taxi employé A' }).getByRole('cell').first()\u001b[22m\n\u001b[2m    11 × locator resolved to <td class=\"px-6 py-3 whitespace-nowrap text-gray-500 dark:text-gray-400\">30 sept. 2026</td>\u001b[22m\n\u001b[2m       - unexpected value \"30 sept. 2026\"\u001b[22m\n"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-017"
+      ],
+      "caseId": "NAV-021",
+      "kind": "reference",
+      "title": "[AUD-017][NAV-021][reference] minuit Paris conserve le jour calendaire du reçu",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 533,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013",
+        "AUD-019"
+      ],
+      "caseId": "INS-001",
+      "kind": "reference",
+      "title": "[AUD-013,AUD-019][INS-001][reference] nouvelle entreprise avec premier RH et connexion",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 1128,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013",
+        "AUD-019"
+      ],
+      "caseId": "INS-002",
+      "kind": "reference",
+      "title": "[AUD-013,AUD-019][INS-002][reference] domaine existant rejoint comme employé",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 1125,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-003",
+      "kind": "reference",
+      "title": "[AUD-013][INS-003][reference] email déjà utilisé refusé sans doublon",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 310,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-004",
+      "kind": "reference",
+      "title": "[AUD-013][INS-004][reference] nom vide côté serveur refusé",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 344,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-005",
+      "kind": "reference",
+      "title": "[AUD-013][INS-005][reference] mot de passe trop court empêche la création",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 446,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-006",
+      "kind": "correction",
+      "title": "[AUD-013][INS-006][correction] panne de création du compte ne laisse pas une entreprise orpheline",
+      "suite": "e2e",
+      "status": "failed",
+      "duration": 717,
+      "errors": [
+        "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m1\u001b[39m"
+      ],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-007",
+      "kind": "reference",
+      "title": "[AUD-013][INS-007][reference] inscriptions simultanées donnent un seul premier RH",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 2006,
+      "errors": [],
+      "retry": 0
+    },
+    {
+      "issues": [
+        "AUD-013"
+      ],
+      "caseId": "INS-008",
+      "kind": "reference",
+      "title": "[AUD-013][INS-008][reference] un échec de connexion automatique ne supprime pas le compte validé",
+      "suite": "e2e",
+      "status": "passed",
+      "duration": 692,
+      "errors": [],
+      "retry": 0
+    }
+  ],
+  "invalid": []
+}
