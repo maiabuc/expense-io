@@ -122,3 +122,5 @@ Le commit `4b88226` contenait les repères suivants dans le tableau du 19 octobr
 #### Limites
 
 Deux seeds simultanés ne sont toujours pas garantis sans doublon ; la spec vise les relances successives. Une note de seed incomplète se répare par la commande seed, sans clé de demande pour une reprise UI. Aucun changement du périmètre fonctionnel ni des commandes documentées.
+
+Précision du bilan ci-dessus : le rapport intégré `7c7703c` compte SPEC-09 **60/60**, et non 59/59 (DEC-012 de SPEC-08 porte également AUD-009). Le total distinct reste 302/302 ; les lots peuvent partager un même scénario.
