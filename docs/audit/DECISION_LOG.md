@@ -328,6 +328,13 @@ Suites complètes SPEC-06 (19 octobre, révision `a62e6c5`, exécution locale) :
 
 Choix techniques. Les colonnes de demande sont portées par `expense_notes` (pas de table séparée) : une seule table, mêmes politiques. Le jeton et l'expiration de la réservation empêchent un ancien exécuteur de finaliser après reprise ; la réservation (120 s) dépasse le délai maximal d'un appel S3 (30 s). Le compte limité est un rôle de groupe `expense_app` ; l'application n'ajoute pas de nouvelle variable d'environnement : `DATABASE_URL` désigne le compte que l'exploitant donne au serveur, et les migrations restent lancées avec un compte propriétaire (`DATABASE_URL=<préparation> npm run migrate:up`). Dans le harnais, `DATABASE_URL` reste le compte de préparation et `CI_APP_DATABASE_URL` celui du serveur. RLS-001 vérifie désormais le compte applicatif (`appDb`) au lieu du compte de préparation, ce qui rend l'assertion significative sans la modifier. Les `receipt_key` sont fixées à la réservation (clé prévue) ; une note `incomplete` n'a pas de reçu confirmé et n'ouvre pas d'URL signée. Migration `1700000000020` après celle de SPEC-07 (`1700000000010`). Les décisions concurrentes (DEC-005 à 007) et l'état `incomplete` côté routes manager/RH sont à revérifier dans SPEC-08. Suites complètes (révision `036b0d5`) : unit 22/22, api 131/150, e2e 61/62, bilan 214/234, 0 régression sur la base `eaa7fbf`.
 
+## SPEC-10 — seed complet et relançable — 19 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-018 | Implémentée et vérifiée : relecture de la note, de la référence et de l'objet, réparation de la même note, décisions conservées, vérification finale avec code de sortie en erreur si incomplet | Un script relançable sans doublon doit aussi terminer une préparation interrompue, sans faux succès | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-018-reprise-seed.md#implementation), [SPEC-10](../specs/SPEC-10-seed-recuperable.md) | AUD-018 10/10 |
+
+Choix techniques. La note de démonstration est créée `incomplete` avec sa clé de reçu prévue dans une transaction, puis passée `pending` après vérification du reçu : même état intermédiaire que la soumission de SPEC-09. Le seed garde le compte de préparation et n'ouvre aucun droit de modification supplémentaire. Aucune exécution du seed sur les services de l'utilisateur ; les essais lancent le vrai script sur base et bucket CI jetables. Suites complètes : unit 22/22, api 139/157, e2e 61/62, bilan 222/241, 0 régression sur la base `feat/spec-09`.
 ## SPEC-08 — décisions atomiques manager et RH — 19 octobre 2026
 
 | Issue | Décision et état | Pourquoi | Preuves | Validation |
@@ -345,6 +352,13 @@ Choix techniques. Le `UPDATE` conditionnel est conservé plutôt qu'un `SELECT .
 
 Suites complètes (`5cccc42`) : unit 41/41, api 144/161, e2e 64/64 ; les 17 rouges de l'API relèvent de SPEC-07, 08 et 10. REPRISE-001 à 008 et HEXA-001/002 du manifeste n'existent pas : statut SPEC-09 « incomplete » attendu, non traité. ADR-0002 indiqué comme implémenté dans `docs/adr/README.md`. Fichiers de `main` modifiés : `src/lib/errors.ts` (ajout de `respondRefusal`), `docs/adr/README.md`.
 
+## SPEC-10 — intégration avec `feat/spec-09` et `main`, décision D3 — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-018 | Vérifiée à nouveau sur le schéma à jour ; aucun changement de code ; le seed garde son identification propre (utilisateur et description) | Décision D3 : SPEC-10 n'exige pas la clé de demande (« réparer la même note et le reçu selon état réel ») | [AUD-018](solutions-to-audit/AUD-018-reprise-seed.md#implementation), [SPEC-10](../specs/SPEC-10-seed-recuperable.md) | AUD-018 10/10 sur `80319af` |
+
+Limites documentées, non corrigées : pas de verrou contre deux lancements simultanés ; une note `incomplete` issue d'un seed interrompu n'est pas reprenable depuis l'écran. Suites complètes : unit 41/41, api 152/168, e2e 64/64 ; les 16 rouges relèvent de SPEC-07 et SPEC-08.
 ## SPEC-08 — intégration avec `feat/spec-09` et `main` — 20 octobre 2026
 
 | Issue | Décision et état | Pourquoi | Preuves | Validation |
@@ -377,3 +391,5 @@ Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refus
 22 octobre — SPEC-09 : l'expiration seule ne prouve pas l'arrêt d'un écrivain ; correction par exclusion de session et versions S3. Montant initial persistant pour la reprise sans stockage navigateur ; INSERT/UPDATE de reçu bornés (RLS-014/015). Tests SOUM-017/124/125 et NAV-032/033 ajoutés, anciennes assertions conservées ; manifeste relié aux cas réels. Compte utilisateur local inchangé : validation RLS sous compte limité du harnais uniquement.
 
 22 octobre — SPEC-08 : attente du verrou d’entreprise avant lecture de l’affectation et décision ; exceptions asynchrones traitées par le contrat API. DEC-018/019 prouvent le refus après changement de relation pendant attente ; SPEC-08 23/23, E2E 66/66. Seul SEED-002 reste rouge dans l’API complète (186/187), dépendance SPEC-10.
+
+22 octobre — SPEC-10 : seed relu et testé sur main combinée à `7c7703c` ; 10/10 scénarios seed, 302/302 tests complets et SPEC-01 à 10 passed. Les quatre anciens repères remplacés par f08f8a7 sont restitués en ajout dans AUD-018, sans réécrire le texte reçu. Le seed concurrent et sa reprise UI restent hors périmètre.
