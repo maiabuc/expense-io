@@ -116,56 +116,56 @@ test("[G10][DROIT-021][correction] compte supprimé ne garde pas son accès prop
 
 test("[AUD-020][AFF-001][correction] corps invalide sans changement : {", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "{" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("{") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
 
 test("[AUD-020][AFF-002][correction] corps invalide sans changement : null", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "null" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("null") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
 
 test("[AUD-020][AFF-003][correction] corps invalide sans changement : []", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "[]" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("[]") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
 
 test("[AUD-020][AFF-004][correction] corps invalide sans changement : 42", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "42" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("42") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
 
 test("[AUD-020][AFF-005][correction] corps invalide sans changement : \"texte\"", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "\"texte\"" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("\"texte\"") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
 
 test("[AUD-020][AFF-006][correction] corps invalide sans changement : {}", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "{}" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("{}") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
 
 test("[AUD-020][AFF-007][correction] corps invalide sans changement : {\"managerId\":42}", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "{\"managerId\":42}" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("{\"managerId\":42}") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
 
 test("[AUD-020][AFF-008][correction] corps invalide sans changement : {\"managerId\":\"invalide\"}", async ({ request }) => {
   await authenticate(request, 'a_hr')
-  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: "{\"managerId\":\"invalide\"}" })
+  const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from("{\"managerId\":\"invalide\"}") })
   expect.soft(response.status()).toBe(400)
   expect((await db().query('SELECT manager_id FROM users WHERE id=$1', [users.a_employee.id])).rows[0].manager_id).toBe(users.a_root.id)
 })
@@ -234,7 +234,7 @@ test('[AUD-020][AFF-019][correction] erreurs JSON, structure, champ absent et id
   await authenticate(request, 'a_hr')
   const errors: string[] = []
   for (const data of ['{', '[]', '{}', '{"managerId":"invalide"}']) {
-    const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data })
+    const response = await request.put(`/api/hr/users/${users.a_employee.id}/manager`, { headers: { 'Content-Type': 'application/json' }, data: Buffer.from(data) })
     expect.soft(response.status()).toBe(400)
     const body = await response.json()
     expect(typeof body.error).toBe('string')
