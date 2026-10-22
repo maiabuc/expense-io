@@ -98,3 +98,27 @@ Inchangé : voir l'entrée du 2026-10-19.
 #### Écarts et limites
 
 Pas de verrou contre deux lancements simultanés du seed : deux processus qui trouvent la note absente en même temps peuvent créer chacun une note ; le script avertit ensuite d'une note en double et conserve la plus ancienne. SPEC-10 n'exige pas ce verrou et le seed n'est pas une commande concurrente. Une note `incomplete` laissée par un seed interrompu n'a pas de `request_key` : l'écran ne peut pas la reprendre avec « Reprendre » (le serveur ne renvoie pas de `requestId` exploitable), seule la relance du seed la répare (analyse du code de la route et de la page, non exécutée). Le défaut d'historique du commit `f08f8a7`, qui a modifié quatre lignes de l'entrée du 2026-10-19 déjà commitée au lieu d'ajouter une correction, n'est pas réécrit : l'historique n'est pas modifié ; le texte actuel de l'entrée du 2026-10-19 est celui de `f08f8a7`. Relecture croisée par une autre personne : non faite.
+
+### 2026-10-22 — SPEC-10 : vérification finale et restitution de l'ancien repérage
+
+Statut : implémentée et vérifiée sur le périmètre décrit. Spec : [SPEC-10](../../specs/SPEC-10-seed-recuperable.md). Départ de revue : `c11fa0c` ; code intégré et mesuré : `7c7703c` (main avec SPEC-07/08/09). Aucun seed sur les services utilisateur.
+
+#### Ce qui a été vérifié et où
+
+Le mécanisme de `scripts/seed.mjs` est inchangé depuis la réalisation de SPEC-10 : `readReceipt` l. 80 distingue l'objet absent d'une panne ; `ensureReceipt` l. 91 vérifie puis répare l'objet ; `seedExpenseNote` l. 116 reprend la même note ; `verifySeed` l. 157 refuse un succès incomplet. Les tests réels SEED-001 à 010 vérifient les mêmes lignes et objets après répétition et panne, ainsi que la conservation des décisions. Le nouveau garde de reçu de SPEC-09 laisse le compte de préparation effectuer ces réparations sans élargir les droits du compte applicatif.
+
+#### Nouveau fonctionnement
+
+Inchangé : commande seed → relire note/référence/objet → réparer ce qui manque sur la même note → finaliser seulement incomplete → vérifier toutes les notes attendues → succès seulement si complètes. Un échec S3 sort en erreur ; la relance répare et conserve approved/rejected. La fusion conserve le nettoyage des triggers de test des autres lots.
+
+#### Validation et preuves
+
+Node 24.6.0, PostgreSQL et LocalStack de test isolés. `npm run lint`, `typecheck`, `build`, `ci:docs` : exit 0 (un avertissement lint historique). `SOURCE_SHA=7c7703c npm run test:unit` : 42/42 ; `test:api` : 194/194 ; `test:e2e` : 66/66 ; `test:report` : 302/302, zéro échec, zéro non exécuté. SPEC-01 à 10 : passed, dont SPEC-10 10/10 et SPEC-09 59/59. Preuves : `reports/{unit,api,e2e,specifications}.json`, sorties locales `/tmp/spec10-{build,lint,types,unit,api,e2e,docs}.log`. Tests de référence et assertions conservés.
+
+#### Correction historique en ajout uniquement
+
+Le commit `4b88226` contenait les repères suivants dans le tableau du 19 octobre : `readReceipt` l. 90, `ensureReceipt` l. 102, `seedExpenseNote` l. 134, `verifySeed` l. 181. Le commit `f08f8a7` a remplacé ces quatre mentions par 80, 91, 116 et 157, au lieu d'ajouter une correction. Ces quatre valeurs anciennes sont restituées ici pour rendre cet écart visible ; elles ne sont pas les emplacements du code actuel. Le contenu reçu au début de cette revue reste exactement conservé, y compris les deux entrées précédentes. Aucun historique Git ni manifeste de protection n'est réécrit.
+
+#### Limites
+
+Deux seeds simultanés ne sont toujours pas garantis sans doublon ; la spec vise les relances successives. Une note de seed incomplète se répare par la commande seed, sans clé de demande pour une reprise UI. Aucun changement du périmètre fonctionnel ni des commandes documentées.

@@ -90,3 +90,7 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - `feat/spec-09` (`eabdb41`, qui contient `main` `5dc5024`) est fusionné dans `feat/spec-10` (fusion `80319af`, départ `f08f8a7`). Aucun changement de code ; `scripts/seed.mjs` conserve son identification propre de la note (décision D3 : la spec n'exige pas la clé de demande).
 - Résultats sur `80319af` : unit 41/41, api 152/168, e2e 64/64 ; AUD-018 10/10 ; statut SPEC-10 « passed ». Les 16 rouges de l'API relèvent de SPEC-07 et SPEC-08, non intégrées dans cette branche.
 - Limites : pas de verrou contre deux lancements simultanés ; une note `incomplete` laissée par un seed interrompu n'est pas reprenable depuis l'écran. Relecture croisée : non faite.
+
+## Vérification du 22 octobre 2026
+
+Code combiné `7c7703c` : unit 42/42, API 194/194, E2E 66/66, bilan 302/302 ; SPEC-01 à SPEC-10 passed, SPEC-10 10/10. Lint/types/build/ci:docs réussis. Le seed est conservé ; ajout dans AUD-018 des résultats et des quatre repères historiques altérés par f08f8a7, sans nouvelle modification du texte reçu. Limites de concurrence et de reprise UI du seed inchangées.
