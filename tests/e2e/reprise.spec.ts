@@ -63,3 +63,33 @@ test("[AUD-003][NAV-031][correction] la même clé est réutilisée après un é
   expect(await nombreDeCles()).toBe(0)
   expect((await db().query("SELECT id FROM expense_notes WHERE description='Clé conservée CI'")).rowCount).toBe(1)
 })
+
+async function repriseSansStockage(page: import('@playwright/test').Page, request: import('@playwright/test').APIRequestContext, montant: string) {
+  await authenticate(request, 'a_employee')
+  await withMissingBucket(async base => {
+    const response = await request.post(`${base}/api/expense-notes`, { headers: { 'Idempotency-Key': CLE }, multipart: {
+      amount: montant, expenseDate: '2026-10-02', description: 'Précision conservée CI',
+      receipt: { name: 'receipt.png', mimeType: 'image/png', buffer: await readFile('tests/fixtures/receipt.png') } } })
+    expect(response.status()).toBe(500)
+  })
+  await loginPage(page, 'a_employee')
+  await page.evaluate(() => sessionStorage.clear())
+  await page.reload()
+  const ligne = page.getByRole('row').filter({ hasText: 'Précision conservée CI' })
+  await ligne.getByRole('button', { name: 'Reprendre', exact: true }).click()
+  await expect(page.getByLabel('Montant (€)', { exact: true })).toHaveValue(montant)
+  await page.getByLabel('Reçu (image ou PDF)', { exact: true }).setInputFiles('tests/fixtures/receipt.png')
+  const reponse = page.waitForResponse(r => r.url().endsWith('/api/expense-notes') && r.request().method() === 'POST')
+  await page.getByRole('button', { name: 'Soumettre', exact: true }).click()
+  expect((await reponse).status()).toBe(201)
+  await expect(ligne.getByText('en attente', { exact: true })).toBeVisible()
+  expect((await db().query('SELECT id FROM expense_notes WHERE request_key=$1', [CLE])).rowCount).toBe(1)
+}
+
+test('[AUD-003][NAV-032][correction] stockage navigateur perdu : reprise du montant original avant arrondi', async ({ page, request }) => {
+  await repriseSansStockage(page, request, '12.345')
+})
+
+test('[AUD-003][NAV-033][correction] stockage navigateur perdu : reprise d’un montant positif inférieur au centime', async ({ page, request }) => {
+  await repriseSansStockage(page, request, '0.001')
+})

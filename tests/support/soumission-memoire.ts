@@ -1,6 +1,7 @@
 // Adaptateurs de test du module de soumission : mêmes contrats que PostgreSQL et S3,
 // avec injection de pannes. Ils ne remplacent pas les essais d'intégration réels.
 import { empreinteRecu } from '../../src/modules/soumission/empreinte'
+import { ErreurSoumission } from '../../src/modules/soumission/ports'
 import type {
   DemandeStore, EtatRecuStocke, NoteSoumise, RecuStore, TypeRecu,
 } from '../../src/modules/soumission/ports'
@@ -17,7 +18,14 @@ export function creerMemoire() {
   }
   const cle = (acteur: string, demande: string) => `${acteur}:${demande}`
 
+  const actifs = new Set<string>()
   const demandes: DemandeStore = {
+    async executer(acteur, demande, operation) {
+      const id = cle(acteur, demande)
+      if (actifs.has(id)) throw new ErreurSoumission('DEMANDE_EN_COURS')
+      actifs.add(id)
+      try { return await operation(demandes) } finally { actifs.delete(id) }
+    },
     async reserver(demande) {
       const existante = lignes.get(cle(demande.acteurId, demande.cle))
       if (existante) return { note: { ...existante.note }, creee: false }

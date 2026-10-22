@@ -174,3 +174,23 @@ Inchangé : voir l'entrée du 2026-10-19.
 
 **Décision D2 (critère C7).** `docker-compose.yml` n'est pas modifié : le compte fourni (`expense`) reste superutilisateur et PostgreSQL n'y applique pas la RLS. La preuve d'un compte non superuser et sans `BYPASSRLS` est apportée par le harnais CI (RLS-001 et RLS-006 à 013 sous `ci_app_login`) et par la documentation de `.env.example` ; l'application réelle n'est protégée que si l'exploitant utilise un rôle membre de `expense_app` comme `DATABASE_URL`. Les commandes README sont conservées.
 Droits de colonne : `UPDATE (receipt_key, status, claim_token, claim_expires_at)` est accordé au rôle, pas à une politique ; une requête SQL émise sous l'identité d'un manager ou du RH pour une note de son périmètre en `pending` pourrait donc aussi modifier `receipt_key` (analyse de la migration, non exécutée ; les routes de l'application ne le font pas). À soumettre à la relecture croisée de C. Une ancienne limite de l'entrée du 2026-10-19 (« décisions manager/RH non atomiques ») est levée par la branche `feat/spec-08`, pas par celle-ci. Ordre des migrations : `0020` ne doit pas être appliquée avant `0010` (SPEC-07) sur une base partagée : node-pg-migrate refuse sinon `0010` sans `--no-check-order` (vérifié sur une base jetable). Relecture croisée de chaque politique et de chaque `GRANT` par une autre personne : non faite.
+
+### 2026-10-22 — SPEC-09, opérations SQL de reçu bornées
+
+Statut : implémentée et vérifiée sous le compte applicatif limité du harnais. Départ : `eabdb41`, intégration `56157a0` ; correction de branche du 22 octobre.
+
+#### Ce qui a été implémenté / où
+
+Migration `1700000000030_reprise-montant-et-integrite-recu.sql` : INSERT applicatif limité aux colonnes utiles (compteur de reçu exclu), clé initiale vide obligatoire ; le déclencheur autorise uniquement l'attribution initiale de la clé dérivée de ce compteur. Une décision manager/RH ne peut changer simultanément statut et reçu, ni toucher une réservation. Le compte de préparation superuser est explicitement exempté pour les fixtures, migrations et réparations du seed. Le montant original est stocké sans privilège UPDATE applicatif.
+
+#### Nouveau fonctionnement
+
+Compte applicatif + identité serveur → RLS vérifie rôle/entreprise/relation → privilèges de colonnes et déclencheur bornent l'écriture → aucun rattachement d'un reçu étranger par INSERT ni UPDATE ; décisions légitimes conservées. La soumission garde la même note et finalise sans droit UPDATE général sur montant ou propriétaire.
+
+#### Validation et preuves
+
+RLS-014 : substitutions de reçu et de jeton refusées avec 42501, décision normale permise. RLS-015 : clé étrangère et compteur injecté refusés, réservation vide autorisée. PostgreSQL réel sous `ci_app_login`, sans superuser/BYPASSRLS ; tests API complets et E2E exécutés en copie isolée. Résultats et contrôles SPEC-09 dans `reports/` ; snapshot `/tmp/arla-spec09-20261022.json`.
+
+#### Écarts et limites
+
+Le compte DB des services utilisateur n'a pas été modifié : comme indiqué précédemment, RLS effective exige que l'exploitant utilise un compte membre de expense_app sans superuser/BYPASSRLS. La preuve du harnais ne vaut pas une configuration de production validée. Les textes antérieurs et leurs limites sont conservés.

@@ -78,3 +78,42 @@ test('[AUD-003][SOUM-123][correction] adaptateur S3 : absent, conforme, taille o
   await recus.deposer('receipts/777.png', new Uint8Array([0x89, 0x50, 0x4e, 0x47, 9]), 'image/png')
   expect(await recus.verifier('receipts/777.png', attendu)).toBe('different')
 })
+
+test('[AUD-003][SOUM-124][correction] exclusion PostgreSQL conservée pendant un dépôt, sans transaction longue', async () => {
+  const { demandes } = await reels()
+  let fin!: () => void
+  const attente = new Promise<void>(resolve => { fin = resolve })
+  let signal!: () => void
+  const debut = new Promise<void>(resolve => { signal = resolve })
+  const premiere = demandes.executer(users.a_employee.id, CLE, async store => {
+    const note = (await store.reserver(reservation(CLE)))!.note
+    await store.prendre(note, '00000000-0000-4000-8000-000000000001', 1)
+    signal()
+    await attente
+  })
+  try {
+    await debut
+    await db().query("UPDATE expense_notes SET claim_expires_at=now()-interval '1 second' WHERE request_key=$1", [CLE])
+    await expect(demandes.executer(users.a_employee.id, CLE, async () => 'interdit')).rejects.toMatchObject({ code: 'DEMANDE_EN_COURS' })
+    const activite = await db().query("SELECT state FROM pg_stat_activity WHERE query LIKE 'SELECT pg_try_advisory_lock(hashtextextended%' AND pid <> pg_backend_pid()")
+    expect(activite.rows.some(row => row.state === 'idle in transaction')).toBe(false)
+  } finally { fin(); await premiere }
+  await expect(demandes.executer(users.a_employee.id, CLE, async () => 'reprise')).resolves.toBe('reprise')
+})
+
+test('[AUD-003][SOUM-125][correction] une ancienne version S3 ne peut écraser le reçu d’un traitement plus récent', async () => {
+  const { creerRecuStoreS3 } = await import('../../src/modules/soumission/adaptateurs/s3')
+  const ancien = creerRecuStoreS3(), recent = creerRecuStoreS3()
+  const cle = 'receipts/778.png'
+  const attendu = { sha256: empreinteRecu(OCTETS), taille: OCTETS.byteLength }
+  expect(await ancien.verifier(cle, attendu)).toBe('absent')
+  await recent.deposer(cle, OCTETS, 'image/png')
+  await expect(ancien.deposer(cle, new Uint8Array([9]), 'image/png'), 'Création conditionnelle').rejects.toMatchObject({ $metadata: { httpStatusCode: 412 } })
+  expect(await recent.verifier(cle, attendu)).toBe('conforme')
+  // Réparation d'une version différente, puis autre réparation concurrente : comparaison d'ETag.
+  await recent.deposer(cle, new Uint8Array([1, 2]), 'image/png')
+  expect(await ancien.verifier(cle, attendu)).toBe('different')
+  await recent.deposer(cle, OCTETS, 'image/png')
+  await expect(ancien.deposer(cle, new Uint8Array([3]), 'image/png'), 'Remplacement conditionnel').rejects.toMatchObject({ $metadata: { httpStatusCode: 412 } })
+  expect(await recent.verifier(cle, attendu)).toBe('conforme')
+})

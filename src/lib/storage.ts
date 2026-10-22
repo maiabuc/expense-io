@@ -20,8 +20,8 @@ function getClient(): S3Client {
 
 const BUCKET = process.env.S3_BUCKET ?? 'receipts'
 
-// Borne chaque appel S3 : une réservation de soumission est plus longue que ce délai,
-// donc un dépôt abandonné ne peut plus écrire quand une autre exécution reprend.
+// Borne les appels côté client ; ce délai ne prouve pas l'arrêt d'une écriture
+// côté S3. La soumission utilise également des écritures conditionnelles.
 const OPERATION_TIMEOUT_MS = 30_000
 
 // Nom de fichier lisible, dérivé du compteur de reçu de la note plutôt que
@@ -38,16 +38,28 @@ export async function uploadReceipt(key: string, body: Buffer, contentType: stri
 }
 
 /** Octets d'un reçu stocké, ou null si l'objet n'existe pas. Toute autre panne est propagée. */
-export async function readReceipt(key: string): Promise<Buffer | null> {
+export async function readReceiptVersion(key: string): Promise<{ body: Buffer; etag: string } | null> {
   try {
     const result = await getClient().send(new GetObjectCommand({ Bucket: BUCKET, Key: key }), {
       abortSignal: AbortSignal.timeout(OPERATION_TIMEOUT_MS),
     })
-    return Buffer.from(await result.Body!.transformToByteArray())
+    if (!result.ETag) throw new Error('Version du reçu indisponible.')
+    return { body: Buffer.from(await result.Body!.transformToByteArray()), etag: result.ETag }
   } catch (error) {
     if ((error as { name?: string }).name === 'NoSuchKey') return null
     throw error
   }
+}
+
+export async function readReceipt(key: string): Promise<Buffer | null> {
+  return (await readReceiptVersion(key))?.body ?? null
+}
+
+/** Remplace seulement la version observée ; null signifie une création si l'objet est absent. */
+export async function uploadReceiptVersion(key: string, body: Buffer, contentType: string, etag: string | null): Promise<void> {
+  await getClient().send(new PutObjectCommand({ Bucket: BUCKET, Key: key, Body: body, ContentType: contentType,
+    ...(etag === null ? { IfNoneMatch: '*' } : { IfMatch: etag }) }),
+    { abortSignal: AbortSignal.timeout(OPERATION_TIMEOUT_MS) })
 }
 
 export async function getReceiptUrl(key: string, expiresInSeconds = 300): Promise<string> {
