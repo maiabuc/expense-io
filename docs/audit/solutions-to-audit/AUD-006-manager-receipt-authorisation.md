@@ -114,3 +114,71 @@ Spec : [SPEC-06](../../specs/SPEC-06-droits-actuels.md). Révision exécutée : 
 | `npm run test:api` et `npm run test:e2e` (suites complètes), puis `test:report` | Aucune régression ; seul AFF-011 reste rouge pour cette fiche | AUD-006 : 31 réussis, 1 échoué (AFF-011). Bilan global : 123 réussis, 68 échoués sur 191, sans aucun cas vert sur `main` devenu rouge | `reports/issues.json`, 2026-10-19 |
 
 Détail du classement des 68 échecs et de la comparaison avec `main` : voir l'entrée du même jour de [G10](G10-droits-role-actuel.md#implementation). AFF-011 (affectation d'un manager d'une autre entreprise → 409) était rouge sur `main` et reste à réaliser dans SPEC-07.
+
+### 2026-10-19 — SPEC-07 : volet affectation (personne C)
+
+Statut : implémentée et vérifiée sur le périmètre décrit (volets reçu et affectation).
+Spec : [SPEC-07](../../specs/SPEC-07-hierarchie-managers.md). Révision de départ : `bb16e63`. Réalisation : `09ca108` (correction) et `2421887` (tests), branche `feat/spec-07`.
+
+#### Ce qui a été implémenté
+
+Le manager choisi doit être un manager actuel de la même entreprise que la cible (409 sinon). La base refuse en plus toute nouvelle écriture reliant un collaborateur à un manager d'une autre entreprise, quel que soit le chemin : clé étrangère composite `(manager_id, company_id)` vers `users(id, company_id)`, créée NOT VALID. Une relation interentreprises déjà présente est conservée telle quelle ; `VALIDATE CONSTRAINT` reste à lancer après examen de ces données.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/app/api/hr/users/[id]/manager/route.ts, l. 64–80 | Manager cherché avec `company_id` et `role = 'manager'` | Refus API |
+| migrations/1700000000010_users-hierarchie-integrite.sql | `UNIQUE (id, company_id)` et clé étrangère composite NOT VALID | Invariant en base |
+| tests/support/database.ts, `donneesHistoriques` | Aide de test pour fabriquer une relation que les contraintes refusent | Les cas DROIT-023 et DROIT-032 de SPEC-06 l'utilisent, assertions inchangées |
+
+#### Nouveau fonctionnement
+
+Voir [AUD-021](AUD-021-boucles-managers.md#implementation) pour la séquence complète. Pour le périmètre : la cible hors entreprise ou de rôle RH répond 404, un manager d'une autre entreprise, inexistant ou non manager répond 409, sans mutation. La clé étrangère composite refuse aussi un changement d'entreprise d'un manager qui a des collaborateurs.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| Suite complète, issue AUD-006 | AFF-011 vert | AUD-006 : 35/35 réussis (AFF-011 vert ; AFF-022, 026, 027 ajoutés) | `reports/issues.json`, 2026-10-19 |
+| AFF-022, 026, 027 sur le code de départ (`bb16e63`, clone jetable) | Échouent | 3 échecs sur 3 | Sortie locale 2026-10-19 |
+| `npm run lint` ; `npm run typecheck` ; `npm run build` | exit 0 | exit 0 chacun | Sortie locale 2026-10-19 |
+| `npm run test:unit` | 6/6 | 6/6 réussis | `reports/unit.json` |
+| `npm run test:api` (complète) | Aucune régression ; AFF verts | exit 1 ; 101 réussis, 34 échoués sur 135 (SPEC-06 : 79/125 ; main : 61/112) | `reports/issues.json` |
+| `npm run test:e2e` (complète) | Aucune régression | exit 1 ; 38 réussis, 22 échoués sur 60 (identique à main) | `reports/issues.json` |
+| `npm run test:report` | Bilan agrégé | exit 1 ; 145 réussis, 56 échoués sur 201 | `reports/issues.json` |
+
+#### Écarts et limites
+
+Contrainte NOT VALID : l'existant n'est pas contrôlé. L'aide `donneesHistoriques` exige un compte superuser pour suspendre les clés étrangères ; elle devra être adaptée si le compte de préparation change (SPEC-09).
+
+### 2026-10-20 — SPEC-07 : intégration de `main`, volet affectation (personne C)
+
+Statut : implémentée et vérifiée sur le périmètre décrit (volets reçu et affectation).
+Spec : [SPEC-07](../../specs/SPEC-07-hierarchie-managers.md). Révision de départ : `8b02ca4`. `main` fusionné : `5dc5024`. Réalisation : `aa93ca7` et `f47d5e8`.
+
+#### Ce qui a été implémenté
+
+Le refus d'une affectation interdite (manager d'une autre entreprise, rôle non manager, inexistant ou auto-affectation) répond « Cette affectation de manager n'est pas autorisée. » (décision D1, catalogue de 01-contrats). Le statut 409 et l'absence de mutation sont inchangés. La clé étrangère composite de la migration `1700000000010` n'est pas modifiée.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/app/api/hr/users/[id]/manager/route.ts, refus `MANAGER_AFFECTATION_INTERDITE` | Message public du catalogue | Contrat de réponse |
+| tests/api/hierarchie.spec.ts, AFF-031 | Message pour quatre cas d'affectation interdite, distinct de celui de la boucle | Preuve |
+
+#### Nouveau fonctionnement
+
+Inchangé, voir l'entrée du 2026-10-19 et [AUD-020](AUD-020-validation-affectation.md#implementation).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npm run test:issue -- AUD-006` | AFF-011, 022, 026, 027, 031 et DROIT verts | 36/36 (api 31, e2e 4, unit 1) | sortie locale du 2026-10-20 sur `f47d5e8` |
+| `npm run test:issue -- G10` | cas G10 verts | 11/11 | idem |
+
+#### Écarts et limites
+
+Voir AUD-020 pour les suites complètes et les rouges attendus. Aucune relecture croisée n'a eu lieu.

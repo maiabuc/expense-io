@@ -4,7 +4,7 @@
 
 - Responsable : personne C. Branche : `feat/spec-07`.
 - IDs : AUD-006, AUD-020, AUD-021. Fiches : [AUD-006](../audit/solutions-to-audit/AUD-006-manager-receipt-authorisation.md), [AUD-020](../audit/solutions-to-audit/AUD-020-validation-affectation.md), [AUD-021](../audit/solutions-to-audit/AUD-021-boucles-managers.md).
-- Statut : préparée pour l’équipe le 17 octobre 2026 ; aucune correction réalisée par cette rédaction.
+- Statut : préparée pour l’équipe le 17 octobre 2026 ; implémentée et vérifiée sur le périmètre décrit le 19 octobre 2026, AFF-019 restant rouge (voir Traçabilité et fin).
 - Autorisation : répartition et préparation demandées par Maia ; directions déjà retenues dans l’audit. Les conditions propres aux sujets 11/12 restent applicables.
 - Source d’audit : `265924bc7274047989e708ab635c2854d376230f`.
 - Départ documentaire : `f8c3af75abc785d6195cf4fb7fee0d7c57356d24`, fusion CI dans main. Le développeur enregistrera son vrai SHA de départ actualisé avant réalisation.
@@ -70,10 +70,10 @@ Cas ciblés :
 
 | Commande / scénario | Prévu | Réel | Preuve / limite |
 | --- | --- | --- | --- |
-| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | Non exécuté pour cette spec | Ajouter comptes, environnement et SHA |
-| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | Non exécuté pour cette spec | Commandes existantes |
-| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | Non exécuté pour cette spec | Rouge historique distingué des régressions ; aucun merge final tant que requis rouge |
-| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Non exécuté pour l’implémentation | Snapshot propre à cette intervention |
+| Tests par issue + nouveaux critères | Tous les cas du lot réussissent | AUD-020 : 14/15 (AFF-019 rouge, voir limites). AUD-021 : 7/7. AUD-006 : 35/35. G10 : 11/11. 12 cas rouges de départ passés au vert (AFF-001 à 008, 011, 016 à 018) ; 10 cas ajoutés (AFF-020 à 029), tous verts, dont 7 échouent sur le code de départ | Run local 2026-10-19 sur `2421887`, DB et S3 jetables, Node 24.13.0 |
+| npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | exit 0 chacun | Run local 2026-10-19 |
+| npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | unit 6/6 ; api 101/135 ; e2e 38/60 ; bilan 145/201. Aucun cas vert sur la base `feat/spec-06` devenu rouge ; les 56 échecs restants étaient rouges sur `main` (autres lots) ou sont AFF-019 | `reports/issues.json` ; référence : run local de `bb16e63` (123/191) et CI de `main` |
+| Garde append-only avec snapshot avant travail | Préfixes strictement conservés | `check-append-only.mjs check --snapshot …` : succès, 22 fiches | Snapshot capturé sur `bb16e63` avant modification |
 
 Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI existants sont un point de départ : ils ne couvrent pas automatiquement tous les mécanismes futurs. Aucun test du professeur fourni ; aucune réussite inférée d’un fichier listé.
 
@@ -83,5 +83,15 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Chaque fiche concernée reçoit un ajout daté sous `## IMPLEMENTATION` ; conserver absolument tout le texte et les ajouts antérieurs. Indiquer quoi/où/nouveau fonctionnement, tests réels et limites. Pour AUD-019, documenter seulement la convention conservée ; pour 11/12, ne pas inventer de correction.
 - Vérifier : `node docs/audit/tools/check-append-only.mjs check --snapshot /tmp/arla-spec-07-<identifiant-unique>.json`.
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
-- Entrées IMPLEMENTATION : aucune par cette préparation ; à ajouter lors de la réalisation réelle.
-- Statut de fin : préparée, pas implémentée. Relire les critères et joindre les preuves avant clôture ; aucun plan de migration/retour arrière demandé.
+- Entrées IMPLEMENTATION : [AUD-020](../audit/solutions-to-audit/AUD-020-validation-affectation.md#implementation), [AUD-021](../audit/solutions-to-audit/AUD-021-boucles-managers.md#implementation) et [AUD-006, volet affectation](../audit/solutions-to-audit/AUD-006-manager-receipt-authorisation.md#implementation), ajoutées le 2026-10-19 (SHA de départ `bb16e63`, réalisation `09ca108` et tests `2421887`).
+- Statut de fin : implémentée et vérifiée sur le périmètre décrit. C1 à C4 couverts (C1 par AFF-001 à 008, 020, 021, 029 ; C2 par AFF-009, 010, 021 ; C3 par AFF-015 à 018, 023 à 025 ; C4 par AFF-011 à 014, 022, 026, 027). AFF-019 reste rouge : le client de test sérialise « { » en chaîne JSON valide, donc l'entrée n'est jamais illisible et deux de ses quatre entrées donnent le même message ; AFF-029 prouve les quatre messages distincts. Correction du test à décider (envoyer les octets bruts). CI GitHub non exécutée pour la branche. Aucun plan de migration/retour arrière demandé.
+
+## Mise à jour du 20 octobre 2026 — intégration avec `main`
+
+- `main` (`5dc5024`, SPEC-01 à 06) est fusionné dans `feat/spec-07` (fusion `7cdf94b`, départ `8b02ca4`). Le journal des refus passe par `respondRefusal` de `src/lib/errors.ts` (`aa93ca7`) ; le message du 409 d'affectation interdite suit le catalogue de 01-contrats (`f47d5e8`, décision D1 du journal).
+- Résultats sur `f47d5e8` (DB et S3 jetables, Node 24.13.0) : unit 25/25, api 138/147, e2e 62/62. AUD-006 36/36, AUD-020 15/16, AUD-021 7/7, G10 11/11. Les 9 rouges de l'API sont attendus à ce stade : AFF-019 (cette spec) et PANNE-001, RLS-001, 002, 005 (SPEC-09), DEC-005 à 007 (SPEC-08), SEED-002 (SPEC-10).
+- AFF-019 reste rouge et est requis par `tests/specifications.json` : la décision (corriger l'envoi du test ou distinguer chaîne JSON et tableau) revient à Maia ; rien n'est modifié ici.
+- Ordre des migrations : `1700000000010` doit être appliquée avant `1700000000020` (SPEC-09). Sur une base jetable ayant déjà `0020`, node-pg-migrate refuse `0010` (« Not run migration … is preceding already run migration … ») sans `--no-check-order`.
+- Relecture croisée de la concurrence : non faite.
+
+Validation du 22 octobre : corps JSON de tests envoyé brut, assertions conservées ; lint/types/build et 25 unitaires réussis, API 139/147 avec huit défauts des lots suivants, E2E 62/62. Correction et limites ajoutées à AUD-020.

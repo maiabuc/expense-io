@@ -13,7 +13,7 @@ const hash = bcrypt.hashSync(password, 4) // Coût réduit des seules fixtures f
 export async function resetDatabase() {
   const client = await db().connect()
   try {
-    await client.query('DROP TRIGGER IF EXISTS ci_signup_failure ON users; DROP TRIGGER IF EXISTS ci_login_failure ON users; DROP TRIGGER IF EXISTS ci_diagnostic_failure ON expense_notes; DROP TRIGGER IF EXISTS ci_decision_barrier ON expense_notes; DROP TRIGGER IF EXISTS ci_manager_barrier ON users')
+    await client.query('DROP TRIGGER IF EXISTS ci_signup_failure ON users; DROP TRIGGER IF EXISTS ci_login_failure ON users; DROP TRIGGER IF EXISTS ci_diagnostic_failure ON expense_notes; DROP TRIGGER IF EXISTS ci_decision_barrier ON expense_notes; DROP TRIGGER IF EXISTS ci_manager_barrier ON users; DROP TRIGGER IF EXISTS ci_assignment_failure ON users')
     await client.query('BEGIN')
     await client.query('TRUNCATE expense_notes, users, companies RESTART IDENTITY CASCADE')
     for (const [key, id] of Object.entries(companies)) {
@@ -37,6 +37,20 @@ export async function resetDatabase() {
       await client.query(`INSERT INTO expense_notes(id,user_id,amount,description,status,expense_date,receipt_key,created_at)
         VALUES($1,$2,$3,$4,$5,'2026-10-01','ci-fixtures/receipt.png',$6)`, [...row, new Date(Date.UTC(2026, 9, 1, 12, index))])
     }
+    await client.query('COMMIT')
+  } catch (error) { await client.query('ROLLBACK'); throw error }
+  finally { client.release() }
+}
+
+// Reproduit une donnée historique que les contraintes de hiérarchie actuelles
+// refusent (AUD-006) : session_replication_role=replica suspend les clés
+// étrangères le temps de la transaction. Exige le compte superuser du harnais.
+export async function donneesHistoriques(sql: string, params: unknown[]) {
+  const client = await db().connect()
+  try {
+    await client.query('BEGIN')
+    await client.query('SET LOCAL session_replication_role = replica')
+    await client.query(sql, params)
     await client.query('COMMIT')
   } catch (error) { await client.query('ROLLBACK'); throw error }
   finally { client.release() }
