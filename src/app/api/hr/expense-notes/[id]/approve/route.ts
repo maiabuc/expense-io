@@ -15,7 +15,10 @@ export async function POST(_request: Request, { params }: { params: Promise<{ id
       return Response.json({ error: 'Not found' }, { status: 404 })
     }
 
-    return withUserScope(session.user.id, async (client) => {
+    return await withUserScope(session.user.id, async (client) => {
+      // Même ordre que l'affectation : entreprise, puis note. Après l'attente,
+      // l'UPDATE relit la relation dans un nouveau snapshot PostgreSQL.
+      await client.query('SELECT id FROM companies WHERE id=$1 FOR UPDATE', [session.user.companyId])
       // Une seule écriture porte à la fois l'autorisation actuelle (manager racine de même entreprise) et
       // l'état pending : deux décisions simultanées ne peuvent pas toutes deux réussir (AUD-007).
       const updated = await client.query(

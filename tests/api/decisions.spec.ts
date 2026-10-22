@@ -1,6 +1,6 @@
 import { test, expect, authenticate } from '../support/fixtures'
 import { users, notes, absent } from '../support/data'
-import { db } from '../support/database'
+import { db, waitFor } from '../support/database'
 
 const statut = async (id: string) => (await db().query('SELECT status FROM expense_notes WHERE id=$1', [id])).rows[0].status as string
 
@@ -64,7 +64,9 @@ test('[AUD-007][DEC-015][reference] panne pendant l’écriture : 500, note touj
     BEGIN RAISE EXCEPTION 'panne CI'; END $$`)
   await db().query('CREATE TRIGGER ci_decision_failure BEFORE UPDATE ON expense_notes FOR EACH ROW EXECUTE FUNCTION ci_fail_decision()')
   try {
-    expect((await request.post(`/api/manager/expense-notes/${notes.employee}/approve`)).status()).toBe(500)
+    const response = await request.post(`/api/manager/expense-notes/${notes.employee}/approve`)
+    expect(response.status()).toBe(500)
+    expect(typeof (await response.json()).error).toBe('string')
     expect(await statut(notes.employee)).toBe('pending')
   } finally { await db().query('DROP TRIGGER IF EXISTS ci_decision_failure ON expense_notes') }
   expect((await request.post(`/api/manager/expense-notes/${notes.employee}/approve`)).status()).toBe(200)
@@ -95,4 +97,35 @@ test('[AUD-007][DEC-017][reference] mauvais rôle et anonyme : gardes conservée
   expect((await request.post(`/api/hr/expense-notes/${notes.root}/approve`)).status()).toBe(403)
   expect(await statut(notes.employee)).toBe('pending')
   expect(await statut(notes.root)).toBe('pending')
+})
+
+async function decisionApresAttente(request: import('@playwright/test').APIRequestContext, acteur: 'a_root' | 'a_hr', note: string, cible: string, nouveauManager: string) {
+  await authenticate(request, acteur)
+  const client = await db().connect()
+  let pending: Promise<import('@playwright/test').APIResponse> | undefined
+  try {
+    await client.query('BEGIN')
+    await client.query('SELECT id FROM companies WHERE id=$1 FOR UPDATE', [users[acteur].company])
+    pending = request.post(`/api/${acteur === 'a_hr' ? 'hr' : 'manager'}/expense-notes/${note}/approve`)
+    void pending.catch(() => {})
+    await waitFor(async () => Number((await db().query(`SELECT count(*) FROM pg_stat_activity WHERE datname=current_database()
+      AND application_name <> 'arla-tests' AND wait_event_type='Lock'`)).rows[0].count) >= 1, 'La décision doit attendre le verrou d’entreprise.')
+    await client.query('UPDATE users SET manager_id=$1 WHERE id=$2', [nouveauManager, cible])
+    await client.query('COMMIT')
+    const response = await pending
+    expect(response.status()).toBe(404)
+    expect(await statut(note)).toBe('pending')
+  } finally {
+    await client.query('ROLLBACK')
+    client.release()
+    await pending?.catch(() => {})
+  }
+}
+
+test('[AUD-007][DEC-018][correction] manager : rattachement modifié pendant l’attente, décision refusée sans ancienne permission', async ({ request }) => {
+  await decisionApresAttente(request, 'a_root', notes.employee, users.a_employee.id, users.a_sub.id)
+})
+
+test('[AUD-007][DEC-019][correction] RH : manager devenu subordonné pendant l’attente, décision refusée', async ({ request }) => {
+  await decisionApresAttente(request, 'a_hr', notes.root, users.a_root.id, users.a_sub.id)
 })
