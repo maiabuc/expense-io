@@ -354,3 +354,5 @@ Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refus
 22 octobre — SPEC-07 : correction des requêtes JSON des tests (octets bruts, aucune assertion changée), lint/types/build/unitaires et contrôles du lot réussis ; E2E 62/62. Ajout explicatif dans AUD-020 ; huit échecs API des lots suivants conservés.
 
 22 octobre — SPEC-09 : l'expiration seule ne prouve pas l'arrêt d'un écrivain ; correction par exclusion de session et versions S3. Montant initial persistant pour la reprise sans stockage navigateur ; INSERT/UPDATE de reçu bornés (RLS-014/015). Tests SOUM-017/124/125 et NAV-032/033 ajoutés, anciennes assertions conservées ; manifeste relié aux cas réels. Compte utilisateur local inchangé : validation RLS sous compte limité du harnais uniquement.
+
+22 octobre — SPEC-08 : attente du verrou d’entreprise avant lecture de l’affectation et décision ; exceptions asynchrones traitées par le contrat API. DEC-018/019 prouvent le refus après changement de relation pendant attente ; SPEC-08 23/23, E2E 66/66. Seul SEED-002 reste rouge dans l’API complète (186/187), dépendance SPEC-10.

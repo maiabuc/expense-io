@@ -127,5 +127,6 @@ test('[AUD-007][DEC-018][correction] manager : rattachement modifié pendant l�
 })
 
 test('[AUD-007][DEC-019][correction] RH : manager devenu subordonné pendant l’attente, décision refusée', async ({ request }) => {
+  await db().query('UPDATE users SET manager_id=NULL WHERE id=$1', [users.a_sub.id])
   await decisionApresAttente(request, 'a_hr', notes.root, users.a_root.id, users.a_sub.id)
 })

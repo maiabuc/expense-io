@@ -91,3 +91,7 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Résultats sur `6069039` : unit 41/41, api 155/169, e2e 64/64 ; AUD-007 21/21. Les 14 rouges de l'API relèvent de SPEC-07 (AFF-001 à 008, 011, 016 à 019) et de SPEC-10 (SEED-002), non intégrées dans cette branche.
 - `DEC-008`, attendu par `tests/specifications.json`, n'existe pas (cas équivalent : DEC-011) : statut « incomplete » attendu, non traité.
 - Limite documentée dans la fiche AUD-007 : une relation modifiée pendant l'attente du verrou de ligne n'est pas réévaluée. Relecture de la concurrence : non faite.
+
+## Vérification du 22 octobre 2026
+
+Corrections `11f45f7` puis intégration `79c8e3f` : verrou entreprise avant décision, erreurs asynchrones attendues ; tests DEC-018/019 ajoutés et manifeste relié aux cas existants. SPEC-08 : 23/23 ; unit 42/42, API 186/187 (SEED-002 seul rouge, SPEC-10), E2E 66/66 ; lint/types/build réussis. Détails et limites ajoutés à AUD-007 sans modifier les entrées historiques.

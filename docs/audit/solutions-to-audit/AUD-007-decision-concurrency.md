@@ -108,3 +108,32 @@ Inchangé : une seule écriture `UPDATE expense_notes … FROM users … WHERE �
 #### Écarts et limites
 
 Limite connue, non corrigée : le critère « autorisation réévaluée à l'écriture » est garanti au niveau de l'instruction `UPDATE`. Si le rattachement du collaborateur change pendant que l'`UPDATE` attend le verrou de la ligne de la note (décision concurrente en cours), PostgreSQL ne réévalue en lecture committed que la ligne de `expense_notes` ; la relation `users` reste celle de l'instantané de l'instruction. Une décision pourrait alors aboutir au nom d'un ancien manager. Fenêtre étroite (attente d'un verrou de ligne), non couverte par un test, que seul un verrou explicite sur `users` ou une transaction sérialisable fermerait ; ce choix n'est pas fait ici (la fiche retient l'`UPDATE` conditionnel). Relecture de la concurrence par une autre personne : non faite.
+
+### 2026-10-22 — SPEC-08 : décisions après une affectation concurrente
+
+Statut : implémentée et vérifiée sur le périmètre décrit. Spec : [SPEC-08](../../specs/SPEC-08-decisions-atomiques.md). Départ : `77edcb7` ; correction `11f45f7`, intégration `79c8e3f` et ajustement local de fixture du 22 octobre.
+
+#### Ce qui a été implémenté
+
+Les quatre routes attendent la transaction dans leur `try` (`return await`), ce qui permet de produire l'erreur API structurée lors d'une panne asynchrone. Elles prennent le verrou de l'entreprise avant l'UPDATE conditionnel, comme l'affectation de SPEC-07 : la relation est relue après l'attente, dans une nouvelle instruction. L'ancienne limite décrite le 20 octobre est ainsi corrigée pour les affectations effectuées par l'application.
+
+#### Où
+
+| Fichier et repère | Modification | Rôle |
+| --- | --- | --- |
+| src/app/api/manager/expense-notes/[id]/approve/route.ts et reject/route.ts, POST | await et verrou companies avant UPDATE | Permission manager actuelle, transition pending unique |
+| src/app/api/hr/expense-notes/[id]/approve/route.ts et reject/route.ts, POST | Même ordre de verrouillage, périmètre RH distinct | Permission sur le manager racine actuel |
+| tests/api/decisions.spec.ts, DEC-015/018/019 | Erreur JSON et changement de relation pendant attente | Refus 404, note pending conservée, panne 500 structurée |
+| tests/specifications.json, SPEC-08 | DEC-011 réel remplace le repère inexistant DEC-008 ; nouveaux cas requis | Pas de couverture fictive |
+
+#### Nouveau fonctionnement
+
+Action manager ou RH → identité actuelle → transaction et verrou d'entreprise → lecture de l'affectation actuelle par UPDATE → une seule transition pending vers approved/rejected → succès 200. Si une affectation a changé pendant l'attente, la nouvelle relation prévaut : 404 sans mutation hors périmètre ; 409 si la note reste dans le périmètre mais a déjà été décidée. Panne → rollback → erreur API structurée.
+
+#### Validation et preuves
+
+Mesure locale sur `79c8e3f` avec diff de fixture daté ; Node 24.6.0, DB/S3 isolés et compte applicatif limité. `npm run lint`, `typecheck`, `build` : exit 0 (un avertissement lint historique). Unitaires : 42/42. Suite API : 186/187, seul SEED-002 de SPEC-10 échoue. E2E : 66/66. `SOURCE_SHA=79c8e3f npm run test:spec:report -- SPEC-08` : exit 0, 23/23, aucune couverture manquante. Preuves : rapports générés `reports/{unit,api,e2e,SPEC-08}.json` et sorties locales `/tmp/spec08-*-final.log`. Une première exécution avec ports voisins était invalide par collision entre serveur de panne et navigateur ; les suites ont été rejouées avec ports réservés distincts. Assertions de référence conservées.
+
+#### Écarts et limites
+
+Le verrou d'entreprise sérialise les décisions d'une même entreprise, compromis simple cohérent avec SPEC-07. Une modification SQL externe qui contourne ce protocole n'est pas couverte ; aucun nouveau circuit d'administration n'est ajouté. Les assertions et contrats 200/404/409 restent identiques.
