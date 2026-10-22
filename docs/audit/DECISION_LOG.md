@@ -307,6 +307,14 @@ Suites complètes SPEC-06 (19 octobre, révision `a62e6c5`, exécution locale) :
 
 Choix techniques. Les colonnes de demande sont portées par `expense_notes` (pas de table séparée) : une seule table, mêmes politiques. Le jeton et l'expiration de la réservation empêchent un ancien exécuteur de finaliser après reprise ; la réservation (120 s) dépasse le délai maximal d'un appel S3 (30 s). Le compte limité est un rôle de groupe `expense_app` ; l'application n'ajoute pas de nouvelle variable d'environnement : `DATABASE_URL` désigne le compte que l'exploitant donne au serveur, et les migrations restent lancées avec un compte propriétaire (`DATABASE_URL=<préparation> npm run migrate:up`). Dans le harnais, `DATABASE_URL` reste le compte de préparation et `CI_APP_DATABASE_URL` celui du serveur. RLS-001 vérifie désormais le compte applicatif (`appDb`) au lieu du compte de préparation, ce qui rend l'assertion significative sans la modifier. Les `receipt_key` sont fixées à la réservation (clé prévue) ; une note `incomplete` n'a pas de reçu confirmé et n'ouvre pas d'URL signée. Migration `1700000000020` après celle de SPEC-07 (`1700000000010`). Les décisions concurrentes (DEC-005 à 007) et l'état `incomplete` côté routes manager/RH sont à revérifier dans SPEC-08. Suites complètes (révision `036b0d5`) : unit 22/22, api 131/150, e2e 61/62, bilan 214/234, 0 régression sur la base `eaa7fbf`.
 
+## SPEC-08 — décisions atomiques manager et RH — 19 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-007 | Implémentée et vérifiée : un `UPDATE` conditionnel porte l'état pending et l'autorisation actuelle ; zéro ligne → 404 hors périmètre, 409 dans le périmètre | Lire puis écrire séparément laissait deux décisions s'écraser ; la vérification décisive doit se faire à l'écriture | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-007-decision-concurrency.md#implementation), [SPEC-08](../specs/SPEC-08-decisions-atomiques.md) | AUD-007 21/21 |
+
+Choix techniques. Le `UPDATE` conditionnel est conservé plutôt qu'un `SELECT ... FOR UPDATE` (décision de la fiche). Les quatre routes restent séparées pour garder des SQL distincts et ne pas élargir les droits en partageant du code. Un identifiant non UUID répond 404 (note absente) au lieu d'une erreur de base. Le périmètre est évalué dans l'écriture avec le rôle et la relation relus en base ; les politiques RLS de SPEC-09 imposent la même règle sous le compte applicatif, et DEC-012 prouve que les essais HTTP tournent sous ce compte. Suites complètes (révision `1127b8e`) : unit 22/22, api 142/158, e2e 61/62, bilan 225/242, 0 régression sur la base `1746cdb`.
+
 ## SPEC-09 — intégration avec `main` et décision D2 — 20 octobre 2026
 
 | Issue | Décision et état | Pourquoi | Preuves | Validation |
@@ -315,6 +323,14 @@ Choix techniques. Les colonnes de demande sont portées par `expense_notes` (pas
 | AUD-009 | `docker-compose.yml` non modifié (décision D2) : le compte fourni reste superutilisateur ; le critère C7 est prouvé sur le harnais CI | Les commandes README sont conservées ; le basculement vers `expense_app` relève de l'exploitant | [AUD-009](solutions-to-audit/AUD-009-database-company-isolation.md#implementation) | AUD-009 13/13 |
 
 Suites complètes (`5cccc42`) : unit 41/41, api 144/161, e2e 64/64 ; les 17 rouges de l'API relèvent de SPEC-07, 08 et 10. REPRISE-001 à 008 et HEXA-001/002 du manifeste n'existent pas : statut SPEC-09 « incomplete » attendu, non traité. ADR-0002 indiqué comme implémenté dans `docs/adr/README.md`. Fichiers de `main` modifiés : `src/lib/errors.ts` (ajout de `respondRefusal`), `docs/adr/README.md`.
+
+## SPEC-08 — intégration avec `feat/spec-09` et `main` — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-007 | Vérifiée à nouveau sur le code combiné (`incomplete` non décidable, compte limité) ; aucun changement de code | Les routes utilisaient déjà `respondError(error, operation)` et `currentSession()` | [AUD-007](solutions-to-audit/AUD-007-decision-concurrency.md#implementation), [SPEC-08](../specs/SPEC-08-decisions-atomiques.md) | AUD-007 21/21 sur `6069039` |
+
+Limite documentée, non corrigée : une relation modifiée pendant l'attente du verrou de ligne n'est pas réévaluée par l'`UPDATE` conditionnel. Suites complètes : unit 41/41, api 155/169, e2e 64/64 ; les 14 rouges relèvent de SPEC-07 et SPEC-10. `DEC-008` du manifeste n'existe pas (cas équivalent DEC-011) : statut SPEC-08 « incomplete » attendu, non traité.
 ## SPEC-07 — affectations valides et hiérarchie sans boucle — 19 octobre 2026
 
 | Issue | Décision et état | Pourquoi | Preuves | Validation |
@@ -338,3 +354,5 @@ Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refus
 22 octobre — SPEC-07 : correction des requêtes JSON des tests (octets bruts, aucune assertion changée), lint/types/build/unitaires et contrôles du lot réussis ; E2E 62/62. Ajout explicatif dans AUD-020 ; huit échecs API des lots suivants conservés.
 
 22 octobre — SPEC-09 : l'expiration seule ne prouve pas l'arrêt d'un écrivain ; correction par exclusion de session et versions S3. Montant initial persistant pour la reprise sans stockage navigateur ; INSERT/UPDATE de reçu bornés (RLS-014/015). Tests SOUM-017/124/125 et NAV-032/033 ajoutés, anciennes assertions conservées ; manifeste relié aux cas réels. Compte utilisateur local inchangé : validation RLS sous compte limité du harnais uniquement.
+
+22 octobre — SPEC-08 : attente du verrou d’entreprise avant lecture de l’affectation et décision ; exceptions asynchrones traitées par le contrat API. DEC-018/019 prouvent le refus après changement de relation pendant attente ; SPEC-08 23/23, E2E 66/66. Seul SEED-002 reste rouge dans l’API complète (186/187), dépendance SPEC-10.
