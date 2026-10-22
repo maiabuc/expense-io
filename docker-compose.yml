@@ -21,7 +21,7 @@ services:
     # (édition communautaire, S3 uniquement) est le remplaçant retenu.
     # Épinglé sur la branche 3.x : `:latest`/`:stable` exigent désormais un
     # `LOCALSTACK_AUTH_TOKEN` (licence).
-    image: localstack/localstack:3.8.1
+    image: localstack/localstack:4.0.3
     restart: unless-stopped
     environment:
       SERVICES: s3

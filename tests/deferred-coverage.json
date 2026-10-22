@@ -1,8 +1,4 @@
 {
-  "AUD-003": [
-    "Reprise incomplete, clé stable, réponse perdue et concurrence : mécanisme à implémenter",
-    "Module hexagonal : contrats des adaptateurs après extraction"
-  ],
   "AUD-008": [
     "Charge CPU/RAM : campagne manuelle dédiée"
   ],

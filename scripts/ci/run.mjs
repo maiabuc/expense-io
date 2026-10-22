@@ -10,6 +10,8 @@ if (!['api', 'e2e'].includes(suite)) throw new Error('Suite api ou e2e requise.'
 const project = `expense-io-ci-${suite}-${process.pid}`
 const env = { ...process.env, CI_SUITE: suite, ARLA_TEST_RUN: '1', CI_RUN_ID: randomUUID(),
   DATABASE_URL: `postgres://expense:expense-ci-only@127.0.0.1:${process.env.CI_DB_PORT ?? '15434'}/expense_io_ci_${suite}`,
+  // Compte applicatif limité (non superuser, RLS appliquée) ; DATABASE_URL reste le compte de préparation.
+  CI_APP_DATABASE_URL: `postgres://ci_app_login:ci-app-only@127.0.0.1:${process.env.CI_DB_PORT ?? '15434'}/expense_io_ci_${suite}`,
   S3_ENDPOINT: `http://127.0.0.1:${process.env.CI_S3_PORT ?? '14568'}`, S3_BUCKET: `ci-${suite}-receipts`,
   S3_REGION: 'us-east-1', S3_ACCESS_KEY_ID: 'test', S3_SECRET_ACCESS_KEY: 'test', S3_FORCE_PATH_STYLE: 'true',
   AUTH_SECRET: 'ci-only-dummy-not-production', AUTH_TRUST_HOST: 'true', NEXT_TELEMETRY_DISABLED: '1',
@@ -42,10 +44,11 @@ try {
   if (await execute('docker', [...compose, 'up', '-d', '--wait', '--wait-timeout', '120'])) throw new Error('Services CI indisponibles.')
   if (interrupted) throw new Error('Exécution CI interrompue.')
   if (await execute('npm', ['run', 'migrate:up'])) throw new Error('Préparation du schéma CI échouée.')
+  if (await execute('node', ['scripts/ci/prepare-app-role.mjs'])) throw new Error('Préparation du compte applicatif CI échouée.')
   if (await execute('npm', ['run', 'ensure-bucket'])) throw new Error('Préparation du bucket CI échouée.')
   const stream = createWriteStream(`reports/server-${suite}.log`)
   server = spawn(process.execPath, [resolve('node_modules/next/dist/bin/next'), 'start', '--port', new URL(env.TEST_BASE_URL).port, '--hostname', '127.0.0.1'],
-    { env, stdio: ['ignore', 'pipe', 'pipe'], shell: false })
+    { env: { ...env, DATABASE_URL: env.CI_APP_DATABASE_URL }, stdio: ['ignore', 'pipe', 'pipe'], shell: false })
   server.stdout.pipe(stream); server.stderr.pipe(stream)
   let ready = false
   for (let i = 0; i < 150; i++) {

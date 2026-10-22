@@ -298,6 +298,23 @@ Choix technique : `currentSession()` est un remplacement direct de `auth()` qui 
 
 Suites complètes SPEC-06 (19 octobre, révision `a62e6c5`, exécution locale) : unit 6/6, api 79/125, e2e 38/60, bilan 123/191. Comparées à la CI de `main` au même SHA de départ : aucun cas vert devenu rouge, 5 cas rouge→vert (DROIT-013, 014, 019, 020, 021), 13 cas ajoutés verts, 68 échecs restants déjà rouges sur `main` (autres lots, dont AFF-011 pour SPEC-07). G10 passe à « implémentée et vérifiée sur le périmètre décrit » ; AUD-006 reste partielle jusqu'à SPEC-07. CI GitHub non exécutée pour la branche.
 
+## SPEC-09 — soumission récupérable, RLS et module hexagonal — 19 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-003 | Implémentée et vérifiée : demande stable par clé UUID optionnelle liée en base, état `incomplete`, réservation d'exécution à jeton et expiration, reçu réutilisé seulement après vérification de taille et d'empreinte, module hexagonal sans Next/pg/AWS | Une panne entre insertion, envoi S3 et finalisation ne doit plus laisser une note sans reçu ni créer de doublon | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-003-receipt-consistency.md#implementation), [ADR-0002](../adr/0002-hexagonal-soumission.md), [SPEC-09](../specs/SPEC-09-soumission-isolee.md) | AUD-003 38/38 |
+| AUD-009 | Implémentée et vérifiée sur le harnais : politiques par entreprise, rôle et relation, finalisation propriétaire bornée, compte applicatif `expense_app` à privilèges de colonne | RLS n'a d'effet que sous un compte qui l'applique ; une fixture superuser ne prouve rien | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-009-database-company-isolation.md#implementation) | AUD-009 13/13 |
+
+Choix techniques. Les colonnes de demande sont portées par `expense_notes` (pas de table séparée) : une seule table, mêmes politiques. Le jeton et l'expiration de la réservation empêchent un ancien exécuteur de finaliser après reprise ; la réservation (120 s) dépasse le délai maximal d'un appel S3 (30 s). Le compte limité est un rôle de groupe `expense_app` ; l'application n'ajoute pas de nouvelle variable d'environnement : `DATABASE_URL` désigne le compte que l'exploitant donne au serveur, et les migrations restent lancées avec un compte propriétaire (`DATABASE_URL=<préparation> npm run migrate:up`). Dans le harnais, `DATABASE_URL` reste le compte de préparation et `CI_APP_DATABASE_URL` celui du serveur. RLS-001 vérifie désormais le compte applicatif (`appDb`) au lieu du compte de préparation, ce qui rend l'assertion significative sans la modifier. Les `receipt_key` sont fixées à la réservation (clé prévue) ; une note `incomplete` n'a pas de reçu confirmé et n'ouvre pas d'URL signée. Migration `1700000000020` après celle de SPEC-07 (`1700000000010`). Les décisions concurrentes (DEC-005 à 007) et l'état `incomplete` côté routes manager/RH sont à revérifier dans SPEC-08. Suites complètes (révision `036b0d5`) : unit 22/22, api 131/150, e2e 61/62, bilan 214/234, 0 régression sur la base `eaa7fbf`.
+
+## SPEC-09 — intégration avec `main` et décision D2 — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-003 | Intégrée avec `main` ; refus de la route journalisés par `respondRefusal` (`src/lib/errors.ts`, texte identique à `feat/spec-07`) ; SOUM-113 ajouté pour la règle de montant de SPEC-04 | Un seul mécanisme de diagnostic (SPEC-01) ; la règle finale de SPEC-04 ne change pas le comportement attendu | [AUD-003](solutions-to-audit/AUD-003-receipt-consistency.md#implementation), [SPEC-09](../specs/SPEC-09-soumission-isolee.md) | AUD-003 39/39 sur `5cccc42` |
+| AUD-009 | `docker-compose.yml` non modifié (décision D2) : le compte fourni reste superutilisateur ; le critère C7 est prouvé sur le harnais CI | Les commandes README sont conservées ; le basculement vers `expense_app` relève de l'exploitant | [AUD-009](solutions-to-audit/AUD-009-database-company-isolation.md#implementation) | AUD-009 13/13 |
+
+Suites complètes (`5cccc42`) : unit 41/41, api 144/161, e2e 64/64 ; les 17 rouges de l'API relèvent de SPEC-07, 08 et 10. REPRISE-001 à 008 et HEXA-001/002 du manifeste n'existent pas : statut SPEC-09 « incomplete » attendu, non traité. ADR-0002 indiqué comme implémenté dans `docs/adr/README.md`. Fichiers de `main` modifiés : `src/lib/errors.ts` (ajout de `respondRefusal`), `docs/adr/README.md`.
 ## SPEC-07 — affectations valides et hiérarchie sans boucle — 19 octobre 2026
 
 | Issue | Décision et état | Pourquoi | Preuves | Validation |
@@ -319,3 +336,5 @@ Choix techniques : contraintes créées NOT VALID pour ne pas toucher aux donné
 Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refusé par node-pg-migrate sans `--no-check-order` (vérifié sur une base jetable). Fichier de `main` modifié : `src/lib/errors.ts` (ajout de `respondRefusal`).
 
 22 octobre — SPEC-07 : correction des requêtes JSON des tests (octets bruts, aucune assertion changée), lint/types/build/unitaires et contrôles du lot réussis ; E2E 62/62. Ajout explicatif dans AUD-020 ; huit échecs API des lots suivants conservés.
+
+22 octobre — SPEC-09 : l'expiration seule ne prouve pas l'arrêt d'un écrivain ; correction par exclusion de session et versions S3. Montant initial persistant pour la reprise sans stockage navigateur ; INSERT/UPDATE de reçu bornés (RLS-014/015). Tests SOUM-017/124/125 et NAV-032/033 ajoutés, anciennes assertions conservées ; manifeste relié aux cas réels. Compte utilisateur local inchangé : validation RLS sous compte limité du harnais uniquement.
