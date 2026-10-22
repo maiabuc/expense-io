@@ -138,3 +138,25 @@ Inchangé par rapport à l'entrée du 2026-10-19 : route → `soumettre` → ada
 #### Écarts et limites
 
 Extraction (route vers module) et correction restent dans les mêmes commits de la livraison du 2026-10-19 (`5898c42`, `873f56c`) : défaut d'historique connu, non corrigé car l'historique n'est pas réécrit. Les REPRISE-001 à 008 et HEXA-001/002 attendus par le manifeste correspondent à des cas existants sous d'autres identifiants (SOUM-100 à 111 ; SOUM-015 ; SOUM-120 à 123) ; rien n'est renommé ici, la décision revient à Maia. Autres limites de l'entrée du 2026-10-19 inchangées (durées de réservation de 120 s et de délai S3 de 30 s non éprouvées en charge, pas de nettoyage des soumissions abandonnées). Relecture croisée par une autre personne : non faite.
+
+### 2026-10-22 — SPEC-09, exclusion réelle et reprise du montant original
+
+Statut : implémentée et vérifiée sur le périmètre décrit. Départ : `eabdb41`, main/SPEC-07 intégrée par `56157a0`. Réalisation : correction de branche du 22 octobre avant fusion.
+
+#### Ce qui a été implémenté / où
+
+`DemandeStore.executer`, `adaptateurs/postgres.ts` et `lib/db.ts` : verrou de session PostgreSQL par acteur/demande ; la même connexion sert aux transactions courtes de réservation/finalisation, sans transaction pendant S3. Un ancien traitement vivant ne perd plus son exclusion uniquement parce que 120 secondes passent. Si la connexion disparaît, les écritures S3 conditionnelles de `lib/storage.ts` et `adaptateurs/s3.ts` comparent la version observée : création seulement si absente, réparation seulement sur le même ETag. Le jeton reste requis à la finalisation. Connexion détruite si son déverrouillage ne peut être confirmé.
+
+Migration `0030`, route propriétaire et `expenses/page.tsx` : montant original canonique conservé en `request_amount`, rendu uniquement sur une note propriétaire incomplète comme `requestAmount`. Après disparition du stockage navigateur, « Reprendre » conserve 12.345 ou 0.001, au lieu du montant DB arrondi. Le contrôle HTML accepte cette précision pendant la reprise ; disposition et styles inchangés. Le montant public `amount` reste numérique et arrondi par PostgreSQL.
+
+#### Nouveau fonctionnement
+
+Soumission → verrou de demande → réservation DB courte avec montant initial → vérification/écriture S3 conditionnelle hors transaction → finalisation par jeton → libération du verrou. Reprise après rechargement → clé et montant original lus côté propriétaire → même demande, même note, aucune perte de précision ni décision réinitialisée.
+
+#### Validation et preuves
+
+Lint/types/build réussis, unitaires 42/42 ; nouvelles frontières SOUM-017/124/125 et NAV-032/033, dont S3 et PostgreSQL réels sur services jetables. E2E 66/66. Contrôle SPEC-09 : consulter `reports/SPEC-09.json` de la copie isolée ; les échecs DEC-005…007 et SEED-002 restent attribués aux lots 08/10. Les identifiants futurs du manifeste sont reliés aux cas réels dans `docs/testing/README.md`. Préfixes protégés par `/tmp/arla-spec09-20261022.json`.
+
+#### Écarts et limites
+
+Une connexion du pool reste réservée pendant le traitement, sans transaction ouverte. Le délai client S3 ne prouve pas l'arrêt du serveur ; la sécurité repose sur l'exclusion et les conditions de version, pas sur une comparaison de délais. LocalStack 4.0.3 remplace 3.8.1 dans les fichiers Compose car cette dernière ignore If-Match ; aucun service existant n'est redémarré et aucune commande README n'est changée. Les anciennes affirmations fondées sur 120 s contre 30 s sont corrigées par cet ajout, sans réécriture.

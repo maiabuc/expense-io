@@ -50,6 +50,8 @@ export interface ReservationDemande {
 
 /** Persistance : opérations métier atomiques, jamais de SQL fourni par l'appelant. */
 export interface DemandeStore {
+  /** Exclusion de la demande jusqu'à la fin du traitement, sans transaction ouverte pendant S3. */
+  executer<T>(acteurId: string, cle: string, operation: (store: DemandeStore) => Promise<T>): Promise<T>
   /**
    * Crée la note incomplete liée à (acteur, clé) ou retrouve celle qui existe déjà.
    * Sans note existante et sans reçu, rend null (rien n'est créé).

@@ -35,7 +35,7 @@ function toExpenseNote(row: Record<string, unknown>) {
     status: row.status,
     createdAt: new Date(row.created_at as string).toISOString(),
     // Clé de reprise, uniquement pour les soumissions inachevées du propriétaire (AUD-003).
-    ...(row.status === 'incomplete' ? { requestId: row.request_key } : {}),
+    ...(row.status === 'incomplete' ? { requestId: row.request_key, requestAmount: row.request_amount ?? String(row.amount) } : {}),
   }
 }
 
@@ -74,7 +74,7 @@ export async function GET(request: NextRequest) {
       return Response.json({ error: 'Option de tri inconnue' }, { status: 400 })
     }
 
-    return withUserScope(session.user.id, async (client) => {
+    return await withUserScope(session.user.id, async (client) => {
       const result = await client.query(
         `SELECT * FROM expense_notes WHERE user_id = $1 ORDER BY ${sort}`,
         [session.user.id]

@@ -1,4 +1,7 @@
-import { withUserScope } from '../../../lib/db'
+import type { PoolClient } from 'pg'
+import { getPool, withUserScope, withClientUserScope } from '../../../lib/db'
+import { ErreurSoumission } from '../ports'
+import { montantCanonique } from '../empreinte'
 import type { DemandeStore, NoteSoumise, StatutNote } from '../ports'
 
 type Ligne = Record<string, unknown>
@@ -25,10 +28,32 @@ function enNote(ligne: Ligne): NoteSoumise {
  * l'identité du propriétaire (RLS) ; aucune transaction ne reste ouverte pendant
  * un envoi vers le stockage.
  */
-export function creerDemandeStorePostgres(): DemandeStore {
+export function creerDemandeStorePostgres(connexion?: PoolClient): DemandeStore {
+  const scope = <T>(acteur: string, fn: (client: PoolClient) => Promise<T>) =>
+    connexion ? withClientUserScope(acteur, connexion, fn) : withUserScope(acteur, fn)
   return {
+    async executer(acteurId, cle, operation) {
+      const client = await getPool().connect()
+      const verrou = `${acteurId}:${cle}`
+      let pris = false
+      try {
+        const result = await client.query('SELECT pg_try_advisory_lock(hashtextextended($1, 0)) AS pris', [verrou])
+        pris = result.rows[0].pris
+        if (!pris) throw new ErreurSoumission('DEMANDE_EN_COURS')
+        return await operation(creerDemandeStorePostgres(client))
+      } finally {
+        // Une connexion qui ne peut confirmer le déverrouillage est détruite,
+        // jamais rendue au pool avec un verrou de session encore actif.
+        let detruire = false
+        if (pris) {
+          try { await client.query('SELECT pg_advisory_unlock(hashtextextended($1, 0))', [verrou]) }
+          catch { detruire = true }
+        }
+        client.release(detruire)
+      }
+    },
     async reserver(demande) {
-      return withUserScope(demande.acteurId, async (client) => {
+      return scope(demande.acteurId, async (client) => {
         const existante = await client.query(
           'SELECT * FROM expense_notes WHERE user_id = $1 AND request_key = $2',
           [demande.acteurId, demande.cle]
@@ -39,8 +64,8 @@ export function creerDemandeStorePostgres(): DemandeStore {
         const inseree = await client.query(
           `INSERT INTO expense_notes
              (user_id, amount, expense_date, description, receipt_key, status,
-              request_key, request_fingerprint, receipt_sha256, receipt_size)
-           VALUES ($1, $2, $3, $4, '', 'incomplete', $5, $6, $7, $8)
+              request_key, request_fingerprint, receipt_sha256, receipt_size, request_amount)
+           VALUES ($1, $2, $3, $4, '', 'incomplete', $5, $6, $7, $8, $9)
            ON CONFLICT (user_id, request_key) DO NOTHING
            RETURNING *`,
           [
@@ -52,6 +77,7 @@ export function creerDemandeStorePostgres(): DemandeStore {
             demande.empreinte,
             demande.recu.sha256,
             demande.recu.taille,
+            montantCanonique(demande.champs.montant),
           ]
         )
         if (!inseree.rows[0]) {
@@ -73,7 +99,7 @@ export function creerDemandeStorePostgres(): DemandeStore {
     },
 
     async prendre(note, jeton, dureeSecondes) {
-      return withUserScope(note.userId, async (client) => {
+      return scope(note.userId, async (client) => {
         const result = await client.query(
           `UPDATE expense_notes
               SET claim_token = $3, claim_expires_at = now() + make_interval(secs => $4)
@@ -87,7 +113,7 @@ export function creerDemandeStorePostgres(): DemandeStore {
     },
 
     async finaliser(note, jeton) {
-      return withUserScope(note.userId, async (client) => {
+      return scope(note.userId, async (client) => {
         const result = await client.query(
           `UPDATE expense_notes
               SET status = 'pending', claim_token = NULL, claim_expires_at = NULL
@@ -100,7 +126,7 @@ export function creerDemandeStorePostgres(): DemandeStore {
     },
 
     async liberer(note, jeton) {
-      await withUserScope(note.userId, async (client) => {
+      await scope(note.userId, async (client) => {
         await client.query(
           `UPDATE expense_notes SET claim_token = NULL, claim_expires_at = NULL
             WHERE id = $1 AND user_id = $2 AND status = 'incomplete' AND claim_token = $3`,
@@ -110,7 +136,7 @@ export function creerDemandeStorePostgres(): DemandeStore {
     },
 
     async relire(acteurId, cle) {
-      return withUserScope(acteurId, async (client) => {
+      return scope(acteurId, async (client) => {
         const result = await client.query(
           'SELECT * FROM expense_notes WHERE user_id = $1 AND request_key = $2',
           [acteurId, cle]

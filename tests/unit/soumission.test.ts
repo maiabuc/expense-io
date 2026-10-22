@@ -174,3 +174,18 @@ test('[AUD-003][SOUM-015][correction] le module de soumission n’importe ni Nex
   // Contrôle positif : l'interdit détecte bien les adaptateurs réels.
   expect(readFileSync(join(dossier, 'adaptateurs/postgres.ts'), 'utf8')).toMatch(interdit)
 })
+
+test('[AUD-003][SOUM-017][correction] une exécution vivante conserve l’exclusion même après expiration de son jeton', async () => {
+  const m = creerMemoire()
+  let fin!: () => void
+  m.etat.attenteDepot = new Promise<void>(resolve => { fin = resolve })
+  const debut = new Promise<void>(resolve => { m.etat.depotCommence = resolve })
+  const premier = soumettre(m.deps, demande())
+  await debut
+  m.etat.maintenant = 1000
+  expect(await code(soumettre(m.deps, demande()))).toBe('DEMANDE_EN_COURS')
+  expect(m.etat.depots).toBe(1)
+  fin()
+  expect((await premier).note.status).toBe('pending')
+  expect((await soumettre(m.deps, demande())).type).toBe('existante')
+})

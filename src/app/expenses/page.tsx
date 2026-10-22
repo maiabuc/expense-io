@@ -12,6 +12,7 @@ interface ExpenseNote {
   createdAt: string
   // Clé de reprise, présente seulement pour une soumission incomplète (AUD-003).
   requestId?: string
+  requestAmount?: string
 }
 
 // Tentative d'envoi en cours : la même clé est réutilisée tant que la soumission n'a pas abouti,
@@ -269,7 +270,7 @@ export default function ExpensesPage() {
     const fields = stored && stored.key === note.requestId ? stored.fields : undefined
     setResuming(note)
     setError(null)
-    setAmount(fields?.amount ?? String(note.amount))
+    setAmount(fields?.amount ?? note.requestAmount ?? String(note.amount))
     setExpenseDate(fields?.expenseDate ?? note.expenseDate)
     setDescription(fields?.description ?? note.description)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -304,8 +305,8 @@ export default function ExpensesPage() {
                 id="amount"
                 name="amount"
                 type="number"
-                step="0.01"
-                min="0.01"
+                step={resuming ? "any" : "0.01"}
+                min={resuming ? "0" : "0.01"}
                 required
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
