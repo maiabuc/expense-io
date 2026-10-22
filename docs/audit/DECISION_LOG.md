@@ -169,6 +169,27 @@ Livrables : [1 — contrats](01-contrats-implementation.md), [2 — permissions/
 
 Clôture du dossier documentaire sur le périmètre décrit au fichier 5. Aucun nouveau test runtime, aucune implémentation ni validation de correction ; les résultats de la campagne restent inchangés. Tests du professeur absents, formats formels OCR, navigateur/charge et compte DB utilisateur restent des réserves nommées ou critères de réalisation. Aucune garantie de compatibilité externe ni maîtrise indépendante inférée.
 
+## SPEC-12 réalisée — personne A — 18 octobre 2026
+
+Branche `feat/spec-12`, départ `7377486`. Qualification documentaire uniquement, aucun commit de code applicatif ni de dépendance. Snapshot append-only avant travail : `/tmp/arla-spec-12-gf.json` (22 fiches) ; contrôle `check` réussi après ajout.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-023 | Qualification réalisée pour les 8 lignes du rapport `npm audit` (7 avis `next` regroupés + ESLint/sharp/source-map-js) : aucun applicable au code/config réels, sauf un strictement limité à `next dev` | Distinguer version signalée et chemin effectivement exposé, sans suivre aveuglément le correctif automatique (retour majeur incompatible pour eslint-config-next) | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-023-dependances.md#implementation), [qualification complète](evidence/dependances-20261018/qualification.md) | `npm audit --json` relancé (identique au 14 octobre) ; 12 avis relus à leur source primaire (API GitHub Advisory) ; recherche de code et configuration vérifiées ; `package.json`/`package-lock.json` inchangés |
+
+Aucune mise à jour de dépendance effectuée (C4). Propositions pour un lot distinct : `next@16.4.2` (non majeure, défense en profondeur), `sharp@>=0.35.5` et `source-map-js@>=1.2.2` (patchs à faible risque, chemins non exercés) ; `eslint-config-next` conservé en l'état (le correctif automatique serait un retour majeur incohérent avec Next 16.x).
+
+## SPEC-12 : qualification révisée après revue — personne A — 19 octobre 2026
+
+`feat/spec-12` actualisée avec `main` `651b067`. Révision documentaire seulement, aucune dépendance modifiée. Snapshot : `/tmp/arla-spec-12-review-gf.json` ; contrôle `check` réussi.
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-023 | Production, CI et développement local séparés. L'avis MCP de `next dev` est applicable aux postes de développement. `braces`/`source-map-js` sont des expositions conditionnelles en CI. La production reste sans exposition observée, avec une incertitude sur les chemins internes | Les formulations « hors exécution » et « risque nul » du 18 octobre étaient trop absolues | [Entrée du 19 octobre](solutions-to-audit/AUD-023-dependances.md#implementation), [révision de la qualification](evidence/dependances-20261018/qualification.md#révision-du-19-octobre-2026--après-revue) | Revue humaine requise (`manual-review`) |
+
+Proposition révisée pour un lot distinct : `next@16.4.2` en P2 (exposition en développement), patchs `sharp`/`source-map-js` en P3. `eslint-config-next` reste inchangé.
+
+22 octobre — SPEC-12 : relecture manuelle, correction du décompte par ajout (10 GHSA distincts, huit entrées npm) et précision des limites de la protection des secrets en CI ; aucune mise à jour de dépendance sélectionnée.
 ## SPEC-01 réalisée — personne A — 18 octobre 2026
 
 Branche `feat/spec-01`, départ `7377486` (main actualisé), réalisation `a8411b9`. Snapshot append-only avant travail : `/tmp/arla-spec-01-gf.json` (22 fiches) ; contrôle `check` réussi après ajout, aucun préfixe altéré.
