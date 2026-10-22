@@ -70,7 +70,7 @@ Cas ciblés :
 
 | Commande / scénario | Prévu | Réel | Preuve / limite |
 | --- | --- | --- | --- |
-| npm audit --json et qualification des avis | Compte réel, applicabilité argumentée et versions proposées | 8 avis qualifiés individuellement avec source primaire (API GitHub Advisory) et recherche de code effective ; aucun applicable sauf un, limité à `next dev` | [qualification.md](../audit/evidence/dependances-20261018/qualification.md), [audit.json](../audit/evidence/dependances-20261018/audit.json) |
+| npm audit --json et qualification des avis | Compte réel, applicabilité argumentée et versions proposées | 8 entrées de paquets dans le rapport, couvrant 10 identifiants GHSA distincts ; qualification révisée le 19 octobre : exposition en développement, expositions conditionnelles CI et incertitudes de production | [qualification.md](../audit/evidence/dependances-20261018/qualification.md), [audit.json](../audit/evidence/dependances-20261018/audit.json) |
 | npm run lint ; npm run typecheck ; npm run build | exit 0 chacun | exit 0 chacun (1 avertissement lint préexistant hors périmètre) ; build confirme 0 page SSG/ISR | Sortie locale 2026-10-18 |
 | npm run test:unit ; test:api ; test:e2e puis test:report | Suite complète exécutée, aucun test masqué | Non ré-exécuté : aucun code applicatif modifié par ce lot de qualification, rien à vérifier en régression | `package.json`/`package-lock.json` inchangés (`git status`) |
 | Garde append-only avec snapshot avant travail | Préfixes strictement conservés | Vérifié : `check-append-only.mjs check --snapshot /tmp/arla-spec-12-gf.json` | Sortie locale 2026-10-18 |

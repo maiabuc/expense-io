@@ -99,3 +99,9 @@ Aucun avis n'a d'exploitation démontrée dans ce dépôt, mais plusieurs ne son
 - **Production** : aucune exposition observée dans la configuration actuelle. Incertitude résiduelle sur les chemins internes du framework (`/_next/image` et `sharp`), déduits de la configuration et non vérifiés par exécution.
 
 La priorité proposée évolue : la mise à jour `next@16.4.2` devient P2 pour l'exposition en développement (et plus seulement en défense en profondeur). `braces`/`source-map-js` restent P3, avec un correctif `overrides` de faible risque. Aucune mise à jour n'est réalisée dans ce lot (C4).
+
+## Précision de revue — 22 octobre 2026
+
+Le tableau recense **10 identifiants GHSA distincts** : sept pour Next et un pour chacun de braces, sharp et source-map-js. Les huit entrées de paquets du rapport npm ne sont pas huit vulnérabilités indépendantes. La mention « 12 avis distincts » de la fiche AUD-023 du 18 octobre est une erreur de comptage, corrigée par cet ajout et celui de la fiche.
+
+`contents: read` limite les droits du jeton GitHub ; cela ne démontre pas à lui seul l'absence de secrets dans tout contexte CI. Le workflow relu à `3c8af43` ne référence pas de secret utilisateur et désactive la conservation des identifiants Git. Les conclusions « sans accès aux secrets » expriment donc la limite de l'impact décrit par ces avis de disponibilité, et ne valent pas garantie générale sur tout code exécuté par une contribution. Aucune exploitation n'a été testée et aucun nouvel avis de sécurité n'a été collecté pendant cette relecture. Les versions proposées restent celles de la collecte du 18–19 octobre, à vérifier avant une future mise à jour.

@@ -188,3 +188,5 @@ Aucune mise à jour de dépendance effectuée (C4). Propositions pour un lot dis
 | AUD-023 | Production, CI et développement local séparés. L'avis MCP de `next dev` est applicable aux postes de développement. `braces`/`source-map-js` sont des expositions conditionnelles en CI. La production reste sans exposition observée, avec une incertitude sur les chemins internes | Les formulations « hors exécution » et « risque nul » du 18 octobre étaient trop absolues | [Entrée du 19 octobre](solutions-to-audit/AUD-023-dependances.md#implementation), [révision de la qualification](evidence/dependances-20261018/qualification.md#révision-du-19-octobre-2026--après-revue) | Revue humaine requise (`manual-review`) |
 
 Proposition révisée pour un lot distinct : `next@16.4.2` en P2 (exposition en développement), patchs `sharp`/`source-map-js` en P3. `eslint-config-next` reste inchangé.
+
+22 octobre — SPEC-12 : relecture manuelle, correction du décompte par ajout (10 GHSA distincts, huit entrées npm) et précision des limites de la protection des secrets en CI ; aucune mise à jour de dépendance sélectionnée.

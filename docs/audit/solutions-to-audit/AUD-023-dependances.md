@@ -95,3 +95,19 @@ Conclusions révisées, sans changement applicatif :
 #### Écarts et limites
 
 Aucune exploitation tentée. Les expositions CI sont des hypothèses fondées sur le texte des avis, non reproduites. La conclusion sur `sharp` repose sur la configuration et les valeurs par défaut du framework, pas sur une exécution. SPEC-12 reste `manual-review` : la qualification doit être relue humainement, aucun test automatique ne la valide.
+
+### 2026-10-22 — SPEC-12 : précision du comptage et des limites CI
+
+Statut : qualification documentaire relue ; aucune dépendance mise à jour. Référence : `3c8af43`, diff documentaire local du 22 octobre.
+
+#### Ce qui a été précisé et où
+
+`docs/audit/evidence/dependances-20261018/qualification.md` reçoit une précision : 10 identifiants GHSA distincts (sept Next, braces, sharp, source-map-js), et huit entrées de paquets npm. La mention historique « 12 avis distincts » était erronée ; elle est conservée et corrigée ici. La synthèse de SPEC-12 reprend les conclusions nuancées du 19 octobre, plutôt que l'ancienne absence générale d'applicabilité.
+
+#### Fonctionnement et validation
+
+Aucun parcours applicatif ne change. Relecture manuelle des identifiants listés, de `package.json` et de `.github/workflows/ci.yml` : pas de modification du manifeste ni du verrou de dépendances ; le workflow ne référence pas de secret utilisateur. Les droits GitHub en lecture seule ne constituent pas une preuve générale d'absence de secrets ; la conclusion est limitée aux effets décrits par les avis. Aucun nouvel audit réseau ni test d'exploitation réalisé. SPEC-12 conserve son mode `manual-review` ; aucune réussite automatique n'est attribuée à cette qualification.
+
+#### Limites
+
+Les versions proposées sont celles de la collecte datée, à revalider avant mise à jour. Cette relecture ne transforme pas les hypothèses d'exposition en résultats d'exploitation. Le texte historique est intégralement conservé.
