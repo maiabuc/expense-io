@@ -108,3 +108,23 @@ Action RH → garde de rôle actuel → lecture du corps → contrôles → en c
 #### Écarts et limites
 
 AFF-019 reste rouge, non modifié et non traité : il exige quatre messages distincts alors que le client Playwright envoie « { » sous forme de chaîne JSON valide (diagnostic de l'entrée du 2026-10-19 conservé) ; AFF-029 prouve les quatre messages avec des octets bruts. Le cas AFF-019 est requis par `tests/specifications.json` : le contrôle « SPEC-07 » de la CI restera rouge tant que cette décision n'est pas prise. L'entrée du 2026-10-19 indiquait conserver « Invalid manager » : la décision D1 du 2026-10-20 la remplace pour le message public. La relecture de la concurrence par une autre personne n'a pas eu lieu.
+
+### 2026-10-22 — Correction du corps brut des tests JSON (SPEC-07)
+
+Statut : implémentée et vérifiée sur le périmètre décrit. Départ : `993c52d`. Réalisation : correction de branche avant fusion.
+
+#### Ce qui a été implémenté / où
+
+`tests/api/permissions.spec.ts`, AFF-001…008 et AFF-019 : envoi des octets `Buffer.from(data)` au lieu d'une chaîne sérialisée une seconde fois par Playwright. Les requêtes vérifient ainsi réellement le JSON illisible, les structures invalides, le champ absent et l'identifiant incorrect ; toutes les assertions et les quatre messages distincts sont conservés. Aucune règle applicative modifiée.
+
+#### Nouveau fonctionnement
+
+Le test envoie le corps JSON brut → la route distingue lecture, structure, champ et valeur → réponse 400 sûre, aucune affectation modifiée.
+
+#### Validation et preuves
+
+Copie isolée Node 24, PostgreSQL/S3 temporaires : lint/types/build exit 0, unitaires 25/25 ; API 139/147 (8 échecs des lots suivants), E2E 62/62 ; contrôle SPEC-07 passed (voir sortie locale `reports/SPEC-07.json`). Fiches historiques conservées, snapshot `/tmp/arla-spec07-20261022.json`. Aucun test du professeur fourni.
+
+#### Écarts et limites
+
+La correction porte sur les données envoyées par le test, sans affaiblissement d'attente. Les échecs des décisions, de la soumission/RLS et du seed restent visibles jusqu'aux lots correspondants.

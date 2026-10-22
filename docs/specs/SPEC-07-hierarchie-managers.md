@@ -93,3 +93,5 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - AFF-019 reste rouge et est requis par `tests/specifications.json` : la décision (corriger l'envoi du test ou distinguer chaîne JSON et tableau) revient à Maia ; rien n'est modifié ici.
 - Ordre des migrations : `1700000000010` doit être appliquée avant `1700000000020` (SPEC-09). Sur une base jetable ayant déjà `0020`, node-pg-migrate refuse `0010` (« Not run migration … is preceding already run migration … ») sans `--no-check-order`.
 - Relecture croisée de la concurrence : non faite.
+
+Validation du 22 octobre : corps JSON de tests envoyé brut, assertions conservées ; lint/types/build et 25 unitaires réussis, API 139/147 avec huit défauts des lots suivants, E2E 62/62. Correction et limites ajoutées à AUD-020.

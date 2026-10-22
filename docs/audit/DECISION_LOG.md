@@ -317,3 +317,5 @@ Choix techniques : contraintes créées NOT VALID pour ne pas toucher aux donné
 | AUD-021 | Aucun changement de mécanisme | — | [AUD-021](solutions-to-audit/AUD-021-boucles-managers.md#implementation) | 7/7 |
 
 Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refusé par node-pg-migrate sans `--no-check-order` (vérifié sur une base jetable). Fichier de `main` modifié : `src/lib/errors.ts` (ajout de `respondRefusal`).
+
+22 octobre — SPEC-07 : correction des requêtes JSON des tests (octets bruts, aucune assertion changée), lint/types/build/unitaires et contrôles du lot réussis ; E2E 62/62. Ajout explicatif dans AUD-020 ; huit échecs API des lots suivants conservés.
