@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 
@@ -17,7 +17,7 @@ function toExpenseNote(row: Record<string, unknown>) {
 
 export async function GET() {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user || session.user.role !== 'manager') {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
@@ -26,13 +26,13 @@ export async function GET() {
       const result = await client.query(
         `SELECT en.* FROM expense_notes en
          JOIN users u ON u.id = en.user_id
-         WHERE u.manager_id = $1 AND en.status = 'pending'
+         WHERE u.manager_id = $1 AND u.company_id = $2 AND en.status = 'pending'
          ORDER BY en.created_at ASC`,
-        [session.user.id]
+        [session.user.id, session.user.companyId]
       )
       return Response.json(result.rows.map(toExpenseNote))
     })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'manager/expense-notes:GET')
   }
 }

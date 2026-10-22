@@ -1,11 +1,11 @@
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 import { getReceiptUrl } from '@/lib/storage'
 
 export async function GET(_request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user || session.user.role !== 'hr_admin') {
       return Response.json({ error: 'Unauthorized' }, { status: 403 })
     }
@@ -28,6 +28,6 @@ export async function GET(_request: Request, { params }: { params: Promise<{ id:
     const url = await getReceiptUrl(note.receipt_key)
     return Response.json({ url })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'hr/expense-notes/[id]/receipt-url:GET')
   }
 }

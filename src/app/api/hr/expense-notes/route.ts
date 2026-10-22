@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth'
+import { currentSession } from '@/lib/current-session'
 import { withUserScope } from '@/lib/db'
 import { respondError } from '@/lib/errors'
 
@@ -17,7 +17,7 @@ function toExpenseNote(row: Record<string, unknown>) {
 
 export async function GET() {
   try {
-    const session = await auth()
+    const session = await currentSession()
     if (!session?.user || session.user.role !== 'hr_admin') {
       return Response.json({ error: 'Unauthorized' }, { status: 403 })
     }
@@ -34,6 +34,6 @@ export async function GET() {
       return Response.json(result.rows.map(toExpenseNote))
     })
   } catch (error) {
-    return respondError(error)
+    return respondError(error, 'hr/expense-notes:GET')
   }
 }

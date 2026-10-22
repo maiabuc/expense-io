@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useState } from 'react'
+import { readErrorMessage } from '@/utils/http'
 
 interface ExpenseNote {
   id: string
@@ -16,7 +17,10 @@ const currencyFormatter = new Intl.NumberFormat('fr-FR', {
   currency: 'EUR',
 })
 
-const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' })
+// timeZone: 'UTC' évite un glissement de jour calendaire selon le fuseau
+// du lecteur : expenseDate est une date seule (yyyy-mm-dd), sans heure ni
+// fuseau propre (AUD-017).
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeZone: 'UTC' })
 
 export function PendingApprovalsPanel() {
   const [notes, setNotes] = useState<ExpenseNote[]>([])
@@ -25,13 +29,18 @@ export function PendingApprovalsPanel() {
   const [decidingId, setDecidingId] = useState<string | null>(null)
 
   const loadPending = useCallback(async () => {
-    const response = await fetch('/api/manager/expense-notes')
-    if (response.ok) {
-      setNotes(await response.json())
-    } else {
-      setError('Impossible de charger les notes en attente.')
+    try {
+      const response = await fetch('/api/manager/expense-notes')
+      if (response.ok) {
+        setNotes(await response.json())
+      } else {
+        setError(await readErrorMessage(response, 'Impossible de charger les notes en attente.'))
+      }
+    } catch {
+      setError('Impossible de charger les notes en attente. Vérifie ta connexion et réessaie.')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -41,32 +50,41 @@ export function PendingApprovalsPanel() {
 
   async function handleViewReceipt(id: string) {
     setError(null)
-    const response = await fetch(`/api/manager/expense-notes/${id}/receipt-url`)
-    if (!response.ok) {
-      setError('Impossible de récupérer le reçu.')
-      return
+    try {
+      const response = await fetch(`/api/manager/expense-notes/${id}/receipt-url`)
+      if (!response.ok) {
+        setError(await readErrorMessage(response, 'Impossible de récupérer le reçu.'))
+        return
+      }
+      const { url } = await response.json()
+      window.open(url, '_blank', 'noopener,noreferrer')
+    } catch {
+      setError('Impossible de récupérer le reçu. Vérifie ta connexion et réessaie.')
     }
-    const { url } = await response.json()
-    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
   async function handleDecide(id: string, decision: 'approve' | 'reject') {
     setDecidingId(id)
     setError(null)
-    const response = await fetch(`/api/manager/expense-notes/${id}/${decision}`, {
-      method: 'POST',
-    })
-    setDecidingId(null)
+    try {
+      const response = await fetch(`/api/manager/expense-notes/${id}/${decision}`, {
+        method: 'POST',
+      })
 
-    if (response.ok) {
-      await loadPending()
-    } else {
-      const body = await response.json().catch(() => null)
-      setError(
-        typeof body?.error === 'string'
-          ? body.error
-          : "Échec de la décision sur cette note de frais."
-      )
+      if (response.ok) {
+        await loadPending()
+      } else {
+        const body = await response.json().catch(() => null)
+        setError(
+          typeof body?.error === 'string'
+            ? body.error
+            : "Échec de la décision sur cette note de frais."
+        )
+      }
+    } catch {
+      setError('Échec de la décision sur cette note de frais. Vérifie ta connexion et réessaie.')
+    } finally {
+      setDecidingId(null)
     }
   }
 

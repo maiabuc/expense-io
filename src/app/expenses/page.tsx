@@ -1,6 +1,7 @@
 'use client'
 
 import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react'
+import { readErrorMessage } from '@/utils/http'
 
 interface ExpenseNote {
   id: string
@@ -9,6 +10,46 @@ interface ExpenseNote {
   description: string
   status: string
   createdAt: string
+  // Clé de reprise, présente seulement pour une soumission incomplète (AUD-003).
+  requestId?: string
+  requestAmount?: string
+}
+
+// Tentative d'envoi en cours : la même clé est réutilisée tant que la soumission n'a pas abouti,
+// pour reprendre la même note plutôt que d'en créer une seconde (AUD-003).
+interface Attempt {
+  key: string
+  signature: string
+  fields?: { amount: string; expenseDate: string; description: string }
+}
+
+const ATTEMPT_PREFIX = 'expense-request:'
+
+function readAttempt(userId: string): Attempt | null {
+  try {
+    const raw = sessionStorage.getItem(ATTEMPT_PREFIX + userId)
+    return raw ? (JSON.parse(raw) as Attempt) : null
+  } catch {
+    return null
+  }
+}
+
+function writeAttempt(userId: string, attempt: Attempt | null) {
+  try {
+    if (attempt) sessionStorage.setItem(ATTEMPT_PREFIX + userId, JSON.stringify(attempt))
+    else sessionStorage.removeItem(ATTEMPT_PREFIX + userId)
+  } catch {
+    // Stockage indisponible : la reprise passera alors par le requestId renvoyé par le serveur.
+  }
+}
+
+function newRequestKey(): string {
+  if (typeof crypto.randomUUID === 'function') return crypto.randomUUID()
+  const bytes = crypto.getRandomValues(new Uint8Array(16))
+  bytes[6] = (bytes[6] & 0x0f) | 0x40
+  bytes[8] = (bytes[8] & 0x3f) | 0x80
+  const hex = Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('')
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`
 }
 
 const inputClass =
@@ -19,15 +60,20 @@ const currencyFormatter = new Intl.NumberFormat('fr-FR', {
   currency: 'EUR',
 })
 
-const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium' })
+// timeZone: 'UTC' évite un glissement de jour calendaire selon le fuseau
+// du lecteur : expenseDate est une date seule (yyyy-mm-dd), sans heure ni
+// fuseau propre (AUD-017).
+const dateFormatter = new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeZone: 'UTC' })
 
 const STATUS_STYLES: Record<string, string> = {
+  incomplete: 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-300',
   pending: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
   approved: 'bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300',
   rejected: 'bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300',
 }
 
 const STATUS_LABELS: Record<string, string> = {
+  incomplete: 'incomplète',
   pending: 'en attente',
   approved: 'approuvée',
   rejected: 'rejetée',
@@ -52,16 +98,24 @@ export default function ExpensesPage() {
   const [suggestionNotice, setSuggestionNotice] = useState<string | null>(null)
   const [amount, setAmount] = useState('')
   const [expenseDate, setExpenseDate] = useState('')
+  const [description, setDescription] = useState('')
+  const [resuming, setResuming] = useState<ExpenseNote | null>(null)
+  const userIdRef = useRef<string | null>(null)
   const receiptInputRef = useRef<HTMLInputElement>(null)
 
   const loadNotes = useCallback(async () => {
-    const response = await fetch('/api/expense-notes')
-    if (response.ok) {
-      setNotes(await response.json())
-    } else {
-      setError('Impossible de charger les notes de frais.')
+    try {
+      const response = await fetch('/api/expense-notes')
+      if (response.ok) {
+        setNotes(await response.json())
+      } else {
+        setError(await readErrorMessage(response, 'Impossible de charger les notes de frais.'))
+      }
+    } catch {
+      setError('Impossible de charger les notes de frais. Vérifie ta connexion et réessaie.')
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -71,32 +125,79 @@ export default function ExpensesPage() {
     loadNotes()
   }, [loadNotes])
 
+  // La clé de tentative est rangée par compte : l'identité vient de la session Auth.js.
+  async function getUserId(): Promise<string> {
+    if (!userIdRef.current) {
+      try {
+        const response = await fetch('/api/auth/session')
+        const session = await response.json()
+        userIdRef.current = session?.user?.id ?? 'inconnu'
+      } catch {
+        userIdRef.current = 'inconnu'
+      }
+    }
+    return userIdRef.current as string
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setSubmitting(true)
     setError(null)
     const form = event.currentTarget
     const formData = new FormData(form)
+    // Sans fichier choisi, le navigateur envoie un fichier vide : on l'omet (reprise d'un reçu déjà stocké).
+    const receipt = formData.get('receipt')
+    if (receipt instanceof File && receipt.size === 0) formData.delete('receipt')
 
-    const response = await fetch('/api/expense-notes', {
-      method: 'POST',
-      body: formData,
-    })
-    setSubmitting(false)
+    try {
+      const userId = await getUserId()
+      const signature = [
+        formData.get('amount'),
+        formData.get('expenseDate'),
+        formData.get('description'),
+        receipt instanceof File ? `${receipt.name}:${receipt.size}:${receipt.lastModified}` : '',
+      ].join('|')
+      // Même contenu : même clé (réessai d'une écriture incertaine) ; contenu modifié : nouvelle demande.
+      let attempt = readAttempt(userId)
+      if (resuming?.requestId) {
+        attempt = { key: resuming.requestId, signature, fields: attempt?.fields }
+      } else if (!attempt || attempt.signature !== signature) {
+        attempt = { key: newRequestKey(), signature }
+      }
+      attempt.fields = {
+        amount: String(formData.get('amount')),
+        expenseDate: String(formData.get('expenseDate')),
+        description: String(formData.get('description')),
+      }
+      writeAttempt(userId, attempt)
 
-    if (response.ok) {
-      form.reset()
-      setAmount('')
-      setExpenseDate('')
-      setSuggestionNotice(null)
-      await loadNotes()
-    } else {
-      const body = await response.json().catch(() => null)
-      setError(
-        typeof body?.error === 'string'
-          ? body.error
-          : 'Échec de la soumission de la note de frais.'
-      )
+      const response = await fetch('/api/expense-notes', {
+        method: 'POST',
+        headers: { 'Idempotency-Key': attempt.key },
+        body: formData,
+      })
+
+      if (response.ok) {
+        writeAttempt(userId, null)
+        form.reset()
+        setAmount('')
+        setExpenseDate('')
+        setDescription('')
+        setResuming(null)
+        setSuggestionNotice(null)
+        await loadNotes()
+      } else {
+        const body = await response.json().catch(() => null)
+        setError(
+          typeof body?.error === 'string'
+            ? body.error
+            : 'Échec de la soumission de la note de frais.'
+        )
+      }
+    } catch {
+      setError('Échec de la soumission de la note de frais. Vérifie ta connexion et réessaie.')
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -110,58 +211,85 @@ export default function ExpensesPage() {
     setError(null)
     setSuggestionNotice(null)
 
-    const formData = new FormData()
-    formData.set('receipt', receipt)
-    const response = await fetch('/api/expense-notes/receipt-suggestion', {
-      method: 'POST',
-      body: formData,
-    })
-    setExtracting(false)
+    try {
+      const formData = new FormData()
+      formData.set('receipt', receipt)
+      const response = await fetch('/api/expense-notes/receipt-suggestion', {
+        method: 'POST',
+        body: formData,
+      })
 
-    if (!response.ok) {
-      setError('Impossible d’analyser ce reçu.')
-      return
-    }
-    // Une réponse vide est valide (rien à suggérer) : sans ce message, ça
-    // ne se distinguerait pas visuellement d'un bouton qui n'a rien fait.
-    const suggestion = (await response.json()) as { amount?: number; expenseDate?: string }
-    const foundAmount = typeof suggestion.amount === 'number'
-    const foundDate = typeof suggestion.expenseDate === 'string'
-    if (foundAmount) {
-      setAmount(String(suggestion.amount))
-    }
-    if (foundDate) {
-      setExpenseDate(suggestion.expenseDate as string)
-    }
-    if (!foundAmount && !foundDate) {
-      setSuggestionNotice('Aucune information reconnue sur ce reçu — saisis les champs manuellement.')
-    } else if (!foundAmount || !foundDate) {
-      setSuggestionNotice(
-        `${foundAmount ? 'Date' : 'Montant'} non reconnu(e) sur ce reçu — vérifie ce champ.`
-      )
+      if (!response.ok) {
+        setError(await readErrorMessage(response, 'Impossible d’analyser ce reçu.'))
+        return
+      }
+      // Une réponse vide est valide (rien à suggérer) : sans ce message, ça
+      // ne se distinguerait pas visuellement d'un bouton qui n'a rien fait.
+      const suggestion = (await response.json()) as { amount?: number; expenseDate?: string }
+      const foundAmount = typeof suggestion.amount === 'number'
+      const foundDate = typeof suggestion.expenseDate === 'string'
+      if (foundAmount) {
+        setAmount(String(suggestion.amount))
+      }
+      if (foundDate) {
+        setExpenseDate(suggestion.expenseDate as string)
+      }
+      if (!foundAmount && !foundDate) {
+        setSuggestionNotice('Aucune information reconnue sur ce reçu — saisis les champs manuellement.')
+      } else if (!foundAmount || !foundDate) {
+        setSuggestionNotice(
+          `${foundAmount ? 'Date' : 'Montant'} non reconnu(e) sur ce reçu — vérifie ce champ.`
+        )
+      }
+    } catch {
+      setError('Impossible d’analyser ce reçu. Vérifie ta connexion et réessaie.')
+    } finally {
+      setExtracting(false)
     }
   }
 
   async function handleViewReceipt(id: string) {
-    const response = await fetch(`/api/expense-notes/${id}/receipt-url`)
-    if (!response.ok) {
-      setError('Impossible de récupérer le reçu.')
-      return
+    setError(null)
+    try {
+      const response = await fetch(`/api/expense-notes/${id}/receipt-url`)
+      if (!response.ok) {
+        setError(await readErrorMessage(response, 'Impossible de récupérer le reçu.'))
+        return
+      }
+      const { url } = await response.json()
+      window.open(url, '_blank', 'noopener,noreferrer')
+    } catch {
+      setError('Impossible de récupérer le reçu. Vérifie ta connexion et réessaie.')
     }
-    const { url } = await response.json()
-    window.open(url, '_blank', 'noopener,noreferrer')
   }
 
-  const total = notes.reduce((sum, note) => sum + note.amount, 0)
+  // Reprise : recharge le formulaire existant avec la soumission inachevée.
+  async function handleResume(note: ExpenseNote) {
+    const userId = await getUserId()
+    const stored = readAttempt(userId)
+    const fields = stored && stored.key === note.requestId ? stored.fields : undefined
+    setResuming(note)
+    setError(null)
+    setAmount(fields?.amount ?? note.requestAmount ?? String(note.amount))
+    setExpenseDate(fields?.expenseDate ?? note.expenseDate)
+    setDescription(fields?.description ?? note.description)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  // Les soumissions incomplètes ne comptent ni dans le total ni dans le nombre de notes.
+  const submittedNotes = notes.filter((note) => note.status !== 'incomplete')
+  const total = submittedNotes.reduce((sum, note) => sum + note.amount, 0)
 
   return (
     <main className="flex flex-col gap-8">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">Mes notes de frais</h1>
         <p className="text-sm text-gray-500 dark:text-gray-400">
-          {notes.length > 0
-            ? `${notes.length} note${notes.length > 1 ? 's' : ''} · ${currencyFormatter.format(total)} au total`
-            : 'Soumets ta première note de frais ci-dessous.'}
+          {submittedNotes.length > 0
+            ? `${submittedNotes.length} note${submittedNotes.length > 1 ? 's' : ''} · ${currencyFormatter.format(total)} au total`
+            : notes.length > 0
+              ? 'Aucune note soumise : reprends ta soumission incomplète dans l’historique.'
+              : 'Soumets ta première note de frais ci-dessous.'}
         </p>
       </div>
 
@@ -177,8 +305,8 @@ export default function ExpensesPage() {
                 id="amount"
                 name="amount"
                 type="number"
-                step="0.01"
-                min="0.01"
+                step={resuming ? "any" : "0.01"}
+                min={resuming ? "0" : "0.01"}
                 required
                 value={amount}
                 onChange={(event) => setAmount(event.target.value)}
@@ -210,6 +338,8 @@ export default function ExpensesPage() {
               type="text"
               placeholder="Ex. Taxi aéroport, repas client…"
               required
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
               className={inputClass}
             />
           </div>
@@ -223,7 +353,7 @@ export default function ExpensesPage() {
               name="receipt"
               type="file"
               accept="image/png,image/jpeg,image/webp,application/pdf"
-              required
+              required={!resuming}
               className="block w-full text-sm text-gray-600 file:mr-3 file:rounded-md file:border-0 file:bg-brand-50 file:px-3 file:py-2 file:text-sm file:font-medium file:text-brand-700 hover:file:bg-brand-100 dark:text-gray-400 dark:file:bg-gray-800 dark:file:text-brand-300"
             />
             <button
@@ -234,6 +364,12 @@ export default function ExpensesPage() {
             >
               {extracting ? 'Analyse du reçu…' : 'Pré-remplir depuis le reçu'}
             </button>
+            {resuming && (
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Reprise d’une soumission incomplète : le reçu déjà envoyé est réutilisé s’il est conforme,
+                sinon sélectionne-le à nouveau.
+              </p>
+            )}
             {suggestionNotice && (
               <p className="text-sm text-amber-700 dark:text-amber-400">{suggestionNotice}</p>
             )}
@@ -292,13 +428,23 @@ export default function ExpensesPage() {
                       <StatusBadge status={note.status} />
                     </td>
                     <td className="px-6 py-3 text-right">
-                      <button
-                        type="button"
-                        onClick={() => handleViewReceipt(note.id)}
-                        className="text-sm font-medium text-brand-600 hover:underline"
-                      >
-                        Voir le reçu
-                      </button>
+                      {note.status === 'incomplete' ? (
+                        <button
+                          type="button"
+                          onClick={() => handleResume(note)}
+                          className="text-sm font-medium text-brand-600 hover:underline"
+                        >
+                          Reprendre
+                        </button>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => handleViewReceipt(note.id)}
+                          className="text-sm font-medium text-brand-600 hover:underline"
+                        >
+                          Voir le reçu
+                        </button>
+                      )}
                     </td>
                   </tr>
                 ))}

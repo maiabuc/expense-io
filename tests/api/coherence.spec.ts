@@ -1,6 +1,6 @@
 import { test, expect, authenticate } from '../support/fixtures'
 import { users, notes, absent } from '../support/data'
-import { db, overlapping } from '../support/database'
+import { db, appDb, overlapping } from '../support/database'
 import { withMissingBucket, withRestrictedDatabase, withParisMidnight, withCapturedDiagnostics } from '../support/failure-server'
 import { readFile } from 'node:fs/promises'
 
@@ -26,9 +26,9 @@ test('[AUD-005][PANNE-002][correction] erreur de stockage sans détail technique
   })
 })
 test('[AUD-009][RLS-001][correction] le compte applicatif applique réellement RLS', async () => {
-  const role = (await db().query('SELECT rolsuper,rolbypassrls FROM pg_roles WHERE rolname=current_user')).rows[0]
+  const role = (await appDb().query('SELECT rolsuper,rolbypassrls FROM pg_roles WHERE rolname=current_user')).rows[0]
   expect.soft(role.rolsuper || role.rolbypassrls).toBe(false)
-  const tables = await db().query("SELECT relrowsecurity,relforcerowsecurity,pg_get_userbyid(relowner)=current_user AS owner FROM pg_class WHERE oid='expense_notes'::regclass")
+  const tables = await appDb().query("SELECT relrowsecurity,relforcerowsecurity,pg_get_userbyid(relowner)=current_user AS owner FROM pg_class WHERE oid='expense_notes'::regclass")
   expect(tables.rows[0].relrowsecurity).toBe(true)
   expect(tables.rows[0].owner && !tables.rows[0].relforcerowsecurity).toBe(false)
 })
