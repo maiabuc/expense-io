@@ -314,6 +314,13 @@ Choix techniques. Les colonnes de demande sont portées par `expense_notes` (pas
 | AUD-018 | Implémentée et vérifiée : relecture de la note, de la référence et de l'objet, réparation de la même note, décisions conservées, vérification finale avec code de sortie en erreur si incomplet | Un script relançable sans doublon doit aussi terminer une préparation interrompue, sans faux succès | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-018-reprise-seed.md#implementation), [SPEC-10](../specs/SPEC-10-seed-recuperable.md) | AUD-018 10/10 |
 
 Choix techniques. La note de démonstration est créée `incomplete` avec sa clé de reçu prévue dans une transaction, puis passée `pending` après vérification du reçu : même état intermédiaire que la soumission de SPEC-09. Le seed garde le compte de préparation et n'ouvre aucun droit de modification supplémentaire. Aucune exécution du seed sur les services de l'utilisateur ; les essais lancent le vrai script sur base et bucket CI jetables. Suites complètes : unit 22/22, api 139/157, e2e 61/62, bilan 222/241, 0 régression sur la base `feat/spec-09`.
+## SPEC-08 — décisions atomiques manager et RH — 19 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-007 | Implémentée et vérifiée : un `UPDATE` conditionnel porte l'état pending et l'autorisation actuelle ; zéro ligne → 404 hors périmètre, 409 dans le périmètre | Lire puis écrire séparément laissait deux décisions s'écraser ; la vérification décisive doit se faire à l'écriture | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-007-decision-concurrency.md#implementation), [SPEC-08](../specs/SPEC-08-decisions-atomiques.md) | AUD-007 21/21 |
+
+Choix techniques. Le `UPDATE` conditionnel est conservé plutôt qu'un `SELECT ... FOR UPDATE` (décision de la fiche). Les quatre routes restent séparées pour garder des SQL distincts et ne pas élargir les droits en partageant du code. Un identifiant non UUID répond 404 (note absente) au lieu d'une erreur de base. Le périmètre est évalué dans l'écriture avec le rôle et la relation relus en base ; les politiques RLS de SPEC-09 imposent la même règle sous le compte applicatif, et DEC-012 prouve que les essais HTTP tournent sous ce compte. Suites complètes (révision `1127b8e`) : unit 22/22, api 142/158, e2e 61/62, bilan 225/242, 0 régression sur la base `1746cdb`.
 
 ## SPEC-09 — intégration avec `main` et décision D2 — 20 octobre 2026
 
@@ -331,3 +338,35 @@ Suites complètes (`5cccc42`) : unit 41/41, api 144/161, e2e 64/64 ; les 17 roug
 | AUD-018 | Vérifiée à nouveau sur le schéma à jour ; aucun changement de code ; le seed garde son identification propre (utilisateur et description) | Décision D3 : SPEC-10 n'exige pas la clé de demande (« réparer la même note et le reçu selon état réel ») | [AUD-018](solutions-to-audit/AUD-018-reprise-seed.md#implementation), [SPEC-10](../specs/SPEC-10-seed-recuperable.md) | AUD-018 10/10 sur `80319af` |
 
 Limites documentées, non corrigées : pas de verrou contre deux lancements simultanés ; une note `incomplete` issue d'un seed interrompu n'est pas reprenable depuis l'écran. Suites complètes : unit 41/41, api 152/168, e2e 64/64 ; les 16 rouges relèvent de SPEC-07 et SPEC-08.
+## SPEC-08 — intégration avec `feat/spec-09` et `main` — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-007 | Vérifiée à nouveau sur le code combiné (`incomplete` non décidable, compte limité) ; aucun changement de code | Les routes utilisaient déjà `respondError(error, operation)` et `currentSession()` | [AUD-007](solutions-to-audit/AUD-007-decision-concurrency.md#implementation), [SPEC-08](../specs/SPEC-08-decisions-atomiques.md) | AUD-007 21/21 sur `6069039` |
+
+Limite documentée, non corrigée : une relation modifiée pendant l'attente du verrou de ligne n'est pas réévaluée par l'`UPDATE` conditionnel. Suites complètes : unit 41/41, api 155/169, e2e 64/64 ; les 14 rouges relèvent de SPEC-07 et SPEC-10. `DEC-008` du manifeste n'existe pas (cas équivalent DEC-011) : statut SPEC-08 « incomplete » attendu, non traité.
+## SPEC-07 — affectations valides et hiérarchie sans boucle — 19 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-020 | Implémentée et vérifiée, sauf AFF-019 : quatre refus 400 distincts (JSON illisible, non objet, champ absent, valeur invalide), aucune mutation, seul `null` explicite retire le manager | Une requête mal formée ne doit plus devenir un retrait | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-020-validation-affectation.md#implementation), [SPEC-07](../specs/SPEC-07-hierarchie-managers.md) | AUD-020 14/15 ; AFF-001 à 008 verts |
+| AUD-021 | Implémentée et vérifiée : boucles directes, longues et concurrentes refusées en 409, contrôle et écriture sous verrou de la ligne `companies` | Une FK ne contrôle pas les cycles ; le verrou par entreprise sérialise les affectations | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-021-boucles-managers.md#implementation) | AUD-021 7/7 |
+| AUD-006 (affectation) | Implémentée et vérifiée : manager de la même entreprise (API) et clé étrangère composite NOT VALID (base) | Contrôle API et invariant en base se complètent | [Entrée IMPLEMENTATION](solutions-to-audit/AUD-006-manager-receipt-authorisation.md#implementation) | AUD-006 35/35 |
+
+Choix techniques : contraintes créées NOT VALID pour ne pas toucher aux données historiques (VALIDATE à lancer après examen). Le message 409 « Invalid manager » est conservé pour les affectations interdites (compatibilité), seul le refus de boucle a un message français nouveau. Les deux cas DROIT-023 et DROIT-032 de SPEC-06 fabriquent leur donnée historique via `donneesHistoriques` (clés étrangères suspendues en transaction), leurs assertions sont inchangées. AFF-019 est laissé rouge, non modifié : voir l'entrée AUD-020 pour le diagnostic. Migration `1700000000010` : numéro réservé à C ; D prendra des numéros supérieurs. Suites complètes (révision `2421887`) : unit 6/6, api 101/135, e2e 38/60, bilan 145/201, 0 régression par rapport à la base `feat/spec-06`.
+
+## SPEC-07 — intégration avec `main` et décision D1 — 20 octobre 2026
+
+| Issue | Décision et état | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-006 (affectation), AUD-020 | Le 409 d'affectation interdite répond « Cette affectation de manager n'est pas autorisée. » (catalogue de 01-contrats) au lieu de « Invalid manager » ; les refus sont journalisés par `respondRefusal` (`src/lib/errors.ts`) | Décision D1 de l'équipe ; un point commun avec le diagnostic de SPEC-01 évite un second mécanisme de journal | [AUD-020](solutions-to-audit/AUD-020-validation-affectation.md#implementation), [AUD-006](solutions-to-audit/AUD-006-manager-receipt-authorisation.md#implementation), [SPEC-07](../specs/SPEC-07-hierarchie-managers.md) | api 138/147, e2e 62/62, unit 25/25 sur `f47d5e8` ; AFF-030, AFF-031 verts |
+| AUD-020 | AFF-019 reste rouge, non modifié, requis par le manifeste | Le client de test envoie « { » comme chaîne JSON valide ; décision réservée | AUD-020, entrée du 2026-10-19 | 15/16 |
+| AUD-021 | Aucun changement de mécanisme | — | [AUD-021](solutions-to-audit/AUD-021-boucles-managers.md#implementation) | 7/7 |
+
+Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refusé par node-pg-migrate sans `--no-check-order` (vérifié sur une base jetable). Fichier de `main` modifié : `src/lib/errors.ts` (ajout de `respondRefusal`).
+
+22 octobre — SPEC-07 : correction des requêtes JSON des tests (octets bruts, aucune assertion changée), lint/types/build/unitaires et contrôles du lot réussis ; E2E 62/62. Ajout explicatif dans AUD-020 ; huit échecs API des lots suivants conservés.
+
+22 octobre — SPEC-09 : l'expiration seule ne prouve pas l'arrêt d'un écrivain ; correction par exclusion de session et versions S3. Montant initial persistant pour la reprise sans stockage navigateur ; INSERT/UPDATE de reçu bornés (RLS-014/015). Tests SOUM-017/124/125 et NAV-032/033 ajoutés, anciennes assertions conservées ; manifeste relié aux cas réels. Compte utilisateur local inchangé : validation RLS sous compte limité du harnais uniquement.
+
+22 octobre — SPEC-08 : attente du verrou d’entreprise avant lecture de l’affectation et décision ; exceptions asynchrones traitées par le contrat API. DEC-018/019 prouvent le refus après changement de relation pendant attente ; SPEC-08 23/23, E2E 66/66. Seul SEED-002 reste rouge dans l’API complète (186/187), dépendance SPEC-10.

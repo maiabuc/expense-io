@@ -32,6 +32,15 @@ export async function withUserScope<T>(
   const pool = getPool()
   const client = await pool.connect()
   try {
+    return await withClientUserScope(userId, client, fn)
+  } finally {
+    client.release()
+  }
+}
+
+/** Transaction courte sur une connexion déjà réservée, sans conserver de transaction pendant S3. */
+export async function withClientUserScope<T>(userId: string, client: PoolClient, fn: (client: PoolClient) => Promise<T>): Promise<T> {
+  try {
     await client.query('BEGIN')
     await client.query("SELECT set_config('app.current_user_id', $1, true)", [userId])
     const result = await fn(client)
@@ -40,7 +49,5 @@ export async function withUserScope<T>(
   } catch (error) {
     await client.query('ROLLBACK')
     throw error
-  } finally {
-    client.release()
   }
 }

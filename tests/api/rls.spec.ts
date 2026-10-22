@@ -140,3 +140,24 @@ test('[AUD-009][RLS-013][correction] une politique par action, aucune politique 
     expect(`${p.qual}${p.with_check}`, p.policyname).toContain('company_id')
   }
 })
+
+test('[AUD-009][RLS-014][correction] une décision SQL ne peut substituer un reçu ni modifier une réservation', async () => {
+  for (const [acteur, note] of [[users.a_root.id, notes.employee], [users.a_hr.id, notes.root]]) {
+    await sousIdentite(acteur, async client => {
+      expect((await essai(client, "UPDATE expense_notes SET status='approved', receipt_key='receipts/etranger.png' WHERE id=$1", [note])).code).toBe('42501')
+      expect((await essai(client, "UPDATE expense_notes SET status='approved', claim_token='00000000-0000-4000-8000-000000000001' WHERE id=$1", [note])).code).toBe('42501')
+      expect((await essai(client, "UPDATE expense_notes SET status='approved' WHERE id=$1", [note])).lignes).toBe(1)
+    })
+  }
+})
+
+test('[AUD-009][RLS-015][correction] une création SQL ne peut rattacher le reçu d’une autre note', async () => {
+  await sousIdentite(users.a_employee.id, async client => {
+    expect((await essai(client, `INSERT INTO expense_notes(user_id, amount, expense_date, description, receipt_key, status)
+      VALUES ($1, 5, '2026-10-01', 'Substitution interdite CI', 'ci-fixtures/receipt.png', 'incomplete')`, [users.a_employee.id])).code).toBe('42501')
+    expect((await essai(client, `INSERT INTO expense_notes(user_id, amount, expense_date, description, receipt_key, status, receipt_seq)
+      VALUES ($1, 5, '2026-10-01', 'Compteur interdit CI', '', 'incomplete', 1)`, [users.a_employee.id])).code).toBe('42501')
+    expect((await essai(client, `INSERT INTO expense_notes(user_id, amount, expense_date, description, receipt_key, status)
+      VALUES ($1, 5, '2026-10-01', 'Réservation autorisée CI', '', 'incomplete')`, [users.a_employee.id])).lignes).toBe(1)
+  })
+})

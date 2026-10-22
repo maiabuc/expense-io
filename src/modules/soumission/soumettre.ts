@@ -15,9 +15,8 @@ export interface DependancesSoumission {
   /** Clé de stockage prévue à partir du compteur de reçu de la note. */
   clePrevue: (compteur: number, extension: string) => string
   /**
-   * Durée de la réservation d'exécution. Elle doit rester supérieure au délai
-   * maximal d'une écriture du reçu, pour qu'un ancien dépôt ne puisse plus écrire
-   * quand une autre exécution reprend la demande.
+   * Délai de récupération après arrêt. L'exclusion repose sur le verrou de
+   * connexion et les écritures S3 conditionnelles, jamais sur ce délai seul.
    */
   dureeReservationSecondes?: number
   jeton?: () => string
@@ -35,6 +34,11 @@ export async function soumettre(
   deps: DependancesSoumission,
   demande: DemandeSoumission
 ): Promise<ResultatSoumission> {
+  return deps.demandes.executer(demande.acteurId, demande.cle, (demandes) =>
+    soumettreSousVerrou({ ...deps, demandes }, demande))
+}
+
+async function soumettreSousVerrou(deps: DependancesSoumission, demande: DemandeSoumission): Promise<ResultatSoumission> {
   const jeton = (deps.jeton ?? (() => globalThis.crypto.randomUUID()))()
   const duree = deps.dureeReservationSecondes ?? DUREE_PAR_DEFAUT_SECONDES
   const empreinte = empreinteContenu(demande.champs)
