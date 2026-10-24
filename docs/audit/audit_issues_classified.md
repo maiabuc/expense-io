@@ -1,5 +1,7 @@
 # Issues classées : nature, impact et priorité
 
+> Rapport historique de la phase d’audit : ses chiffres et états sont datés. Pour les réalisations intégrées, lire le [journal actuel](DECISION_LOG.md) et les derniers ajouts IMPLEMENTATION des fiches AUD.
+
 14 octobre 2026. Code original de référence : `265924bc7274047989e708ab635c2854d376230f`, SHA local revérifié pour ce classement. Ce document rassemble **25 références : AUD-001 à AUD-023, G10 et G14**. Quatre concernent la conduite de l'audit ; vingt et une concernent l'application ou ses outils. Ce total n'est ni un nombre de vulnérabilités prouvées, ni un taux de couverture du dépôt.
 
 Objectif : expliquer aux professeurs ce qui mérite une correction, ce qui constitue une limite assumée, et ce qui relève d'une évolution utile. Les [fiches détaillées](README.md), le [registre](issues.md) et le [journal des décisions](DECISION_LOG.md) conservent les sources, comportements initiaux, alternatives et validations. Les choix actuels sont ceux du tableau du journal et des fiches ; les notes historiques ne les remplacent pas.
@@ -79,7 +81,7 @@ Ces points sont utiles à corriger même s'ils ne nécessitent pas une refonte. 
 
 ## Choix architecturaux et limites sans nouvel ID de défaut
 
-Ne pas inventer des IDs supplémentaires pour chacun des choix suivants. Ils sont enregistrés dans [le journal](DECISION_LOG.md), [la revue structurelle](structure-review.md) et [les points de contrat](next-issues.md).
+Ne pas inventer des IDs supplémentaires pour chacun des choix suivants. Ils sont enregistrés dans [le journal](DECISION_LOG.md), [la revue structurelle](architecture.md) et [les points de contrat](../specs/CONTOURNEMENTS_ET_LIMITES.md).
 
 | Sujet | Nature / statut réel | Conséquence pour l'implémentation |
 | --- | --- | --- |

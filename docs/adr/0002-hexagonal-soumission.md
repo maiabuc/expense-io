@@ -8,7 +8,7 @@ Alternatives : conserver toute l'orchestration dans la route minimise les fichie
 
 Contraintes : contrats et UI conservés, commandes inchangées, pas de dépendance/infrastructure ajoutée pour illustrer le cours. Transactions, RLS et unicité restent dans l'adaptateur DB avec contrats testés en intégration ; un double ne prouve pas leur fonctionnement réel.
 
-Avant implémentation : référence fonctionnelle/contrats, environnement isolé, explication du flux et panne prédite. Aucun test de cette cible exécuté. Extraction structurelle séparée des corrections ; retour arrière sans effacer les données. Reconsidérer si l'interface ne fait que déléguer sans cacher l'orchestration ou si les tests n'y gagnent pas en lisibilité. [Analyse et périmètre](../audit/structure-review.md).
+Avant implémentation : référence fonctionnelle/contrats, environnement isolé, explication du flux et panne prédite. Aucun test de cette cible exécuté. Extraction structurelle séparée des corrections ; retour arrière sans effacer les données. Reconsidérer si l'interface ne fait que déléguer sans cacher l'orchestration ou si les tests n'y gagnent pas en lisibilité. [Analyse et périmètre](../audit/architecture.md).
 
 ## Mise en œuvre — 19 octobre 2026
 

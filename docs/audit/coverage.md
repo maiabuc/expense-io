@@ -1,5 +1,7 @@
 # Coverage ledger
 
+> Rapport historique de la phase d’audit : ses chiffres et états sont datés. Pour les réalisations intégrées, lire le [journal actuel](DECISION_LOG.md) et les derniers ajouts IMPLEMENTATION des fiches AUD.
+
 Read = inspected source; traced = followed caller to dependencies; executed = runtime call; tested = checked expected outcome; measured = recorded protocol results. Le tableau initial décrit la phase source ; la [campagne du 14 octobre](mesures-et-preuves.md) ajoute HTTP/auth/SQL/S3/OCR et contrôles propres, sans navigateur. Les lignes d'actualisation ci-dessous font foi pour le périmètre exécuté.
 
 | Surface | Read | Traced | Executed / tested / measured | Remaining |
@@ -20,7 +22,7 @@ Read = inspected source; traced = followed caller to dependencies; executed = ru
 | Commentaires src et contexte | 12 groupes dans 10 fichiers ; 41 fichiers inventoriés | Chaque groupe comparé au code et aux constats | Lecture et observations isolées seulement | [Revue](comment-review.md) ; pas une couverture exhaustive des 41 fichiers |
 | États UI lors d'erreur réseau | 9 handlers/loaders et consommateurs | Oui, par source | 18 exécutions extraites avec mocks / pas de navigateur / observations enregistrées | AUD-016 : 9 succès et 9 pannes ; React non monté |
 | Affichage de date selon fuseau | 3 écrans et helper | Chaîne DB → Date → formatter | Expression isolée dans 3 fuseaux / pas de navigateur / affichages enregistrés | AUD-017 : 14 octobre devient 13 à Los Angeles ; helper sans consommateur trouvé |
-| Structure domaine/ports/adaptateurs/routes | 40 fichiers TS/TSX inventoriés par imports, modules et routes critiques relus | 91 imports ; 14 routes dont 12 vers DB, aucune route vers le domaine/adaptateurs | Analyse statique / pas de test de cible / comptage enregistré | [Cible validée, non implémentée](structure-review.md), migration et baseline en attente |
+| Structure domaine/ports/adaptateurs/routes | 40 fichiers TS/TSX inventoriés par imports, modules et routes critiques relus | 91 imports ; 14 routes dont 12 vers DB, aucune route vers le domaine/adaptateurs | Analyse statique / pas de test de cible / comptage enregistré | État lors de la mesure : cible non implémentée ; [comparaison avant/après actuelle](architecture.md) |
 
 No percentage of behavioral coverage claimed. [API inventory](api-inventory.md) tracks individual routes. Learning checkpoint: not assessed; no answer recorded.
 

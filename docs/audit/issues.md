@@ -1,5 +1,7 @@
 # ARLA — Registre des issues
 
+> Rapport historique de la phase d’audit : ses chiffres et états sont datés. Pour les réalisations intégrées, lire le [journal actuel](DECISION_LOG.md) et les derniers ajouts IMPLEMENTATION des fiches AUD.
+
 Updated: 2026-10-14. Source SHA: `265924bc7274047989e708ab635c2854d376230f`.
 
 This is the complete index of **currently registered** AUD IDs, not a claim that the repository audit is exhaustive. Source patterns were rechecked; application startup, HTTP scenarios, races and performance measurements remain unexecuted. A selected design is not an implemented or verified fix.
@@ -55,7 +57,7 @@ Sources, sévérité à investiguer, commentaires relus, résultats et limites :
 - AUD-021 : auto-affectation bloquée, boucles entre managers non contrôlées ; [interdiction des boucles retenue](solutions-to-audit/AUD-021-boucles-managers.md), affectations valides conservées ; non implémenté, concurrence à vérifier.
 - AUD-022 : listes de notes sans borne de volume ; [optimisation acceptée si simple](solutions-to-audit/AUD-022-optimisation-simple-listes.md), piste des index à vérifier, aucune pagination sélectionnée ni gain mesuré.
 
-Fichiers, lignes, explications, questions et validation : [nouveaux points](next-issues.md). Identifiants enregistrés, non réutilisés ; neuf points AX de contrat/preuve distincts des risques applicatifs. Architecture hexagonale simple désormais validée, non implémentée.
+Les anciens points sont désormais détaillés dans les fiches AUD et la [synthèse des limites](../specs/CONTOURNEMENTS_ET_LIMITES.md). Identifiants enregistrés, non réutilisés ; neuf points AX de contrat/preuve distincts des risques applicatifs. Architecture hexagonale simple désormais validée, non implémentée.
 
 ## Autres périmètres examinés
 
@@ -64,7 +66,7 @@ Fichiers, lignes, explications, questions et validation : [nouveaux points](next
 
 ## Navigation and next investigation
 
-[DECISION_LOG.md](DECISION_LOG.md) records decisions and trade-offs. [findings.md](findings.md) records observations and hypotheses. Detailed examined issues are in solutions-to-audit/.
+[DECISION_LOG.md](DECISION_LOG.md) records decisions and trade-offs. Les observations originales et leurs conséquences restent dans les fiches AUD ; le [journal](DECISION_LOG.md) en donne l’état consolidé. Detailed examined issues are in solutions-to-audit/.
 
 Premier passage des problèmes recensés terminé hors secret reporté pour le professeur. [Question préparée](questions-professeur.md), non envoyée. Format OCR à vérifier contre sa source formelle si elle manque. Priorités, contrats, migrations, tests et soutenance restent à préparer ; aucun code applicatif modifié ni résultat runtime acquis.
 
