@@ -143,3 +143,11 @@ Essais Linux/Node 24.6.0/npm 11.5.1, copie isolée /tmp, PostgreSQL et LocalStac
 #### Écarts et limites
 
 Cette correction ferme les formats cités reproduits ; une liste de motifs ne prouve pas la confidentialité d'une chaîne arbitraire sans clé ou préfixe. Les autres producteurs de logs restent hors de cette correction. E2E non rejoués localement pour ce correctif ; la CI sera relancée après push. Les 51 échecs API des autres lots restent visibles, sans assertion modifiée, suppression ou skip. La demande explicite de Maia autorise ensuite l'intégration successive des SPEC-01 à 05 ; elle ne transforme pas le rouge global restant en réussite.
+
+### 26 octobre 2026 — Préparation documentaire LastChanges, correction non implémentée
+
+Une nouvelle alerte SonarQube S8786 concerne le coût du motif authorization (`src/lib/errors.ts:19`, SHA `2e9e30cf9f21a240c1213da6baec7f4c61618175`). À la demande de Maia, le [complément AUD-005 LastChanges](AUD-005-diagnostic-borne-LastChanges.md) et [SPEC-14 LastChanges](../../specs/SPEC-14-diagnostic-borne-LastChanges.md) préparent une borne préalable et une reconnaissance sans retours arrière, avec conservation des protections et tests existants. Quatre mesures du motif isolé sont disponibles ; aucune fuite ni saturation HTTP démontrée. Ce nouvel ajout est documentaire : aucun code changé, aucun test de correction exécuté, aucun correctif implémenté à cette date pour cette alerte.
+
+### 26 octobre 2026 — Correction de classement documentaire, aucune implémentation
+
+Maia précise qu'un nouveau constat doit avoir son propre ID AUD. Le rattachement de l'alerte SonarQube 12/16 à AUD-005 est remplacé par [AUD-028 — LastChanges](AUD-028-diagnostic-borne-LastChanges.md), avec [SPEC-14](../../specs/SPEC-14-diagnostic-borne-LastChanges.md). Les textes précédents restent historiques ; ils ne décrivent plus le classement retenu. AUD-005 conserve son objet initial de confidentialité des erreurs. Aucun changement applicatif ou test de correction exécuté.

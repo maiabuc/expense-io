@@ -1,0 +1,30 @@
+{
+  "sourceSha": "2e9e30cf9f21a240c1213da6baec7f4c61618175",
+  "file": "src/lib/errors.ts",
+  "fileSha256": "2b5700895a1ba502dd23fd4ef540102dad131d0bd1368dcd2cb625a43edfa27c",
+  "node": "v24.6.0",
+  "runsPerSize": 1,
+  "measurements": [
+    {
+      "spaces": 500,
+      "milliseconds": 0.232,
+      "changed": false
+    },
+    {
+      "spaces": 1000,
+      "milliseconds": 0.841,
+      "changed": false
+    },
+    {
+      "spaces": 2000,
+      "milliseconds": 3.398,
+      "changed": false
+    },
+    {
+      "spaces": 4000,
+      "milliseconds": 13.078,
+      "changed": false
+    }
+  ],
+  "limits": "Motif isolé, données synthétiques, aucun secret ou appel HTTP ; saturation non démontrée."
+}

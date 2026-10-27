@@ -1,0 +1,750 @@
+{
+  "total": 16,
+  "issues": [
+    {
+      "key": "31deb1d6-13e1-46a6-880c-bfdcaa3136cb",
+      "rule": "javascript:S4036",
+      "severity": "MINOR",
+      "component": "expense-io-audit:scripts/ci/dependencies.mjs",
+      "project": "expense-io-audit",
+      "line": 5,
+      "hash": "6f90289d9f3d998a6788ec4934f646ad",
+      "textRange": {
+        "startLine": 5,
+        "endLine": 5,
+        "startOffset": 25,
+        "endOffset": 30
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure the \"PATH\" variable only contains fixed, unwriteable directories.",
+      "effort": "15min",
+      "debt": "15min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "78f48782-b774-4263-a984-abef297b315a",
+      "rule": "javascript:S4036",
+      "severity": "MINOR",
+      "component": "expense-io-audit:scripts/ci/documentation.mjs",
+      "project": "expense-io-audit",
+      "line": 11,
+      "hash": "e220ae66d19129079f4827070f740c5e",
+      "textRange": {
+        "startLine": 11,
+        "endLine": 11,
+        "startOffset": 13,
+        "endOffset": 18
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure the \"PATH\" variable only contains fixed, unwriteable directories.",
+      "effort": "15min",
+      "debt": "15min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "4b07cc9a-eb77-4c49-bdc3-13827accc06c",
+      "rule": "javascript:S4036",
+      "severity": "MINOR",
+      "component": "expense-io-audit:scripts/ci/documentation.mjs",
+      "project": "expense-io-audit",
+      "line": 14,
+      "hash": "84d11a886faf1689ab584c36d4f73417",
+      "textRange": {
+        "startLine": 14,
+        "endLine": 14,
+        "startOffset": 27,
+        "endOffset": 32
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure the \"PATH\" variable only contains fixed, unwriteable directories.",
+      "effort": "15min",
+      "debt": "15min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "2c5e8293-fd7b-4148-93b8-78ac109a437a",
+      "rule": "javascript:S4036",
+      "severity": "MINOR",
+      "component": "expense-io-audit:scripts/ci/documentation.mjs",
+      "project": "expense-io-audit",
+      "line": 16,
+      "hash": "641e4773d9d404e0d980eb730d2bd9b5",
+      "textRange": {
+        "startLine": 16,
+        "endLine": 16,
+        "startOffset": 29,
+        "endOffset": 34
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure the \"PATH\" variable only contains fixed, unwriteable directories.",
+      "effort": "15min",
+      "debt": "15min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "d61a8784-b1a6-4e99-be99-838fdd274c65",
+      "rule": "javascript:S4036",
+      "severity": "MINOR",
+      "component": "expense-io-audit:scripts/ci/documentation.mjs",
+      "project": "expense-io-audit",
+      "line": 20,
+      "hash": "f2d9b5b38b43ba8f5ead900500c7527a",
+      "textRange": {
+        "startLine": 20,
+        "endLine": 20,
+        "startOffset": 27,
+        "endOffset": 32
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure the \"PATH\" variable only contains fixed, unwriteable directories.",
+      "effort": "15min",
+      "debt": "15min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "0f11b68f-4018-4bec-b763-d2d221a1744f",
+      "rule": "javascript:S4036",
+      "severity": "MINOR",
+      "component": "expense-io-audit:scripts/ci/documentation.mjs",
+      "project": "expense-io-audit",
+      "line": 22,
+      "hash": "45e3945697a360106d7afd7212d844e0",
+      "textRange": {
+        "startLine": 22,
+        "endLine": 22,
+        "startOffset": 29,
+        "endOffset": 34
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure the \"PATH\" variable only contains fixed, unwriteable directories.",
+      "effort": "15min",
+      "debt": "15min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "COMPLETE",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "LOW"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "f4324737-c027-4428-af78-820666dade73",
+      "rule": "javascript:S2871",
+      "severity": "CRITICAL",
+      "component": "expense-io-audit:scripts/ci/report.mjs",
+      "project": "expense-io-audit",
+      "line": 49,
+      "hash": "d68af3ccf142d332f4b9185d6dfef6a6",
+      "textRange": {
+        "startLine": 49,
+        "endLine": 49,
+        "startOffset": 88,
+        "endOffset": 92
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Provide a compare function that depends on \"String.localeCompare\", to reliably sort elements alphabetically.",
+      "effort": "10min",
+      "debt": "10min",
+      "author": "",
+      "tags": [
+        "type-dependent",
+        "bad-practice"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "BUG",
+      "scope": "MAIN",
+      "quickFixAvailable": true,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "CLEAR",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "HIGH"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "94c10ec0-1098-4a5c-9ddf-6134f56eed21",
+      "rule": "secrets:S6698",
+      "severity": "BLOCKER",
+      "component": "expense-io-audit:scripts/ci/run.mjs",
+      "project": "expense-io-audit",
+      "line": 12,
+      "hash": "5182567c7f39aa141214f77935ca00dd",
+      "textRange": {
+        "startLine": 12,
+        "endLine": 12,
+        "startOffset": 36,
+        "endOffset": 51
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure this PostgreSQL password gets changed and removed from the code.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "secret"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "6ccd9937-fdd1-43cd-a896-4ae0184f493f",
+      "rule": "secrets:S6698",
+      "severity": "BLOCKER",
+      "component": "expense-io-audit:scripts/ci/run.mjs",
+      "project": "expense-io-audit",
+      "line": 14,
+      "hash": "6e6698f6ed29f854a764cacc719084c9",
+      "textRange": {
+        "startLine": 14,
+        "endLine": 14,
+        "startOffset": 48,
+        "endOffset": 59
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Make sure this PostgreSQL password gets changed and removed from the code.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "secret"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "394c4368-76d4-493b-8ee3-2ee929f62caf",
+      "rule": "javascript:S2068",
+      "severity": "MAJOR",
+      "component": "expense-io-audit:scripts/seed.mjs",
+      "project": "expense-io-audit",
+      "line": 20,
+      "hash": "b05f03de9b3035bc51ebccab0ae959a0",
+      "textRange": {
+        "startLine": 20,
+        "endLine": 20,
+        "startOffset": 24,
+        "endOffset": 74
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Review this potentially hard-coded password.",
+      "effort": "30min",
+      "debt": "30min",
+      "author": "",
+      "tags": [
+        "cwe",
+        "secret",
+        "former-hotspot"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "VULNERABILITY",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TRUSTWORTHY",
+      "cleanCodeAttributeCategory": "RESPONSIBLE",
+      "impacts": [
+        {
+          "softwareQuality": "SECURITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "49d44925-6047-43d6-8d67-57e453963af3",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "expense-io-audit:src/app/actions/auth.ts",
+      "project": "expense-io-audit",
+      "line": 13,
+      "hash": "497f3844f71ff7ede7d6fb3b86c4a4ea",
+      "textRange": {
+        "startLine": 13,
+        "endLine": 13,
+        "startOffset": 22,
+        "endOffset": 52
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "",
+      "tags": [
+        "regex",
+        "performance"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "8604a8a4-3b80-4ec2-94c8-4db488b2c362",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "expense-io-audit:src/lib/errors.ts",
+      "project": "expense-io-audit",
+      "line": 19,
+      "hash": "41e093c38d0ad83e3bf1808223a6fa79",
+      "textRange": {
+        "startLine": 19,
+        "endLine": 19,
+        "startOffset": 2,
+        "endOffset": 104
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "",
+      "tags": [
+        "regex",
+        "performance"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "958763bc-5c3c-41fb-93ed-ca3182e5cc72",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "expense-io-audit:src/modules/soumission/empreinte.ts",
+      "project": "expense-io-audit",
+      "line": 12,
+      "hash": "62223dd387d1486fc882d31d48765225",
+      "textRange": {
+        "startLine": 12,
+        "endLine": 12,
+        "startOffset": 42,
+        "endOffset": 47
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "",
+      "tags": [
+        "regex",
+        "performance"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "db0c43c1-deb5-4273-9c6e-f6e1d57c5d76",
+      "rule": "typescript:S8786",
+      "severity": "MAJOR",
+      "component": "expense-io-audit:src/utils/validators.ts",
+      "project": "expense-io-audit",
+      "line": 1,
+      "hash": "497f3844f71ff7ede7d6fb3b86c4a4ea",
+      "textRange": {
+        "startLine": 1,
+        "endLine": 1,
+        "startOffset": 22,
+        "endOffset": 52
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Simplify this regular expression to reduce its runtime, as it has super-linear performance due to backtracking.",
+      "effort": "20min",
+      "debt": "20min",
+      "author": "",
+      "tags": [
+        "regex",
+        "performance"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "CODE_SMELL",
+      "scope": "MAIN",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "EFFICIENT",
+      "cleanCodeAttributeCategory": "INTENTIONAL",
+      "impacts": [
+        {
+          "softwareQuality": "RELIABILITY",
+          "severity": "MEDIUM"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "29032312-f228-4ac0-b120-153f0854d52f",
+      "rule": "typescript:S2699",
+      "severity": "BLOCKER",
+      "component": "expense-io-audit:tests/api/auth.spec.ts",
+      "project": "expense-io-audit",
+      "line": 4,
+      "hash": "ba0ef169a9087960e5d08b82fdb8b29f",
+      "textRange": {
+        "startLine": 4,
+        "endLine": 4,
+        "startOffset": 0,
+        "endOffset": 4
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add at least one assertion to this test case.",
+      "effort": "10min",
+      "debt": "10min",
+      "author": "",
+      "tags": [
+        "chai",
+        "type-dependent",
+        "mocha",
+        "jasmine",
+        "jest",
+        "cypress",
+        "node",
+        "sinon",
+        "tests",
+        "playwright",
+        "editable-source",
+        "bun",
+        "supertest",
+        "vitest"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "CODE_SMELL",
+      "scope": "TEST",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TESTED",
+      "cleanCodeAttributeCategory": "ADAPTABLE",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    },
+    {
+      "key": "cced728c-84bb-40af-a3dc-3aa5b42202a7",
+      "rule": "typescript:S2699",
+      "severity": "BLOCKER",
+      "component": "expense-io-audit:tests/api/expenses.spec.ts",
+      "project": "expense-io-audit",
+      "line": 297,
+      "hash": "6182bd191140739adca9f01d4c4aa8c4",
+      "textRange": {
+        "startLine": 297,
+        "endLine": 297,
+        "startOffset": 0,
+        "endOffset": 4
+      },
+      "flows": [],
+      "status": "OPEN",
+      "message": "Add at least one assertion to this test case.",
+      "effort": "10min",
+      "debt": "10min",
+      "author": "",
+      "tags": [
+        "chai",
+        "type-dependent",
+        "mocha",
+        "jasmine",
+        "jest",
+        "cypress",
+        "node",
+        "sinon",
+        "tests",
+        "playwright",
+        "editable-source",
+        "bun",
+        "supertest",
+        "vitest"
+      ],
+      "creationDate": "2026-10-26T18:47:46+0000",
+      "updateDate": "2026-10-26T18:47:46+0000",
+      "type": "CODE_SMELL",
+      "scope": "TEST",
+      "quickFixAvailable": false,
+      "messageFormattings": [],
+      "codeVariants": [],
+      "cleanCodeAttribute": "TESTED",
+      "cleanCodeAttributeCategory": "ADAPTABLE",
+      "impacts": [
+        {
+          "softwareQuality": "MAINTAINABILITY",
+          "severity": "BLOCKER"
+        }
+      ],
+      "issueStatus": "OPEN",
+      "prioritizedRule": false,
+      "fromSonarQubeUpdate": false,
+      "internalTags": [],
+      "linkedTicketStatus": "NOT_LINKED"
+    }
+  ]
+}

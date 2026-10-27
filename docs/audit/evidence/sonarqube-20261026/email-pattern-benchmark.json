@@ -1,0 +1,31 @@
+{
+  "sourceSha": "2e9e30cf9f21a240c1213da6baec7f4c61618175",
+  "file": "src/app/actions/auth.ts",
+  "fileSha256": "6c6df3fc667179f2ab569043a45186a24332398ada570fea5e216de580a141b7",
+  "node": "v24.6.0",
+  "input": "'a@' + 'a.'.repeat(repetitions) + '@'",
+  "runsPerSize": 1,
+  "measurements": [
+    {
+      "characters": 1003,
+      "accepted": false,
+      "milliseconds": 0.841
+    },
+    {
+      "characters": 2003,
+      "accepted": false,
+      "milliseconds": 2.294
+    },
+    {
+      "characters": 4003,
+      "accepted": false,
+      "milliseconds": 7.304
+    },
+    {
+      "characters": 8003,
+      "accepted": false,
+      "milliseconds": 30.213
+    }
+  ],
+  "limits": "Mesure locale indicative, quatre appels après échauffement, aucun appel HTTP ; aucune saturation serveur démontrée."
+}

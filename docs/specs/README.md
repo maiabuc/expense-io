@@ -87,3 +87,15 @@ Les 22 fiches sont ainsi soit attribuées, soit explicitement conservées/report
 ## État de cette préparation
 
 Specs préparées, aucune implémentation applicative démarrée. Les résultats historiques sont dans la [campagne CI du 15 octobre](../audit/evidence/ci-20261015/README.md) ; ils ne constituent pas une validation de ces specs. La vérification du 17 octobre confirme la fusion CI et les étapes hébergées de qualité/build réussies, avec API/E2E et bilan global en échec. Voir le [journal](../audit/DECISION_LOG.md). Message à transmettre : [équipe](../development/MESSAGE_EQUIPE.md). Ce fichier ne provoque aucun envoi à l’équipe.
+
+## Complément sélectionné le 26 octobre 2026
+
+[SPEC-13 — validation d’email bornée, LastChanges](SPEC-13-validation-email-bornee-LastChanges.md) traite [AUD-027](../audit/solutions-to-audit/AUD-027-validation-email-bornee-LastChanges.md). Responsable non attribué ; spec préparée, correction non implémentée. Aucun changement d'affectation des lots historiques.
+
+[SPEC-14 — diagnostic borné, LastChanges](SPEC-14-diagnostic-borne-LastChanges.md) complète AUD-005 sur le coût d'expurgation des logs. Responsable non attribué ; préparation documentaire, correction non implémentée.
+
+## Correction du classement SonarQube — 26 octobre 2026
+
+Maia exige un nouvel ID pour chaque nouveau problème retenu : SPEC-14 est désormais associée à [AUD-028](../audit/solutions-to-audit/AUD-028-diagnostic-borne-LastChanges.md), et [SPEC-15 LastChanges](SPEC-15-normalisation-montant-LastChanges.md) traite [AUD-029](../audit/solutions-to-audit/AUD-029-normalisation-montant-LastChanges.md). Les mentions antérieures du rattachement à AUD-005 sont historiques. Ces specs sont préparées, non implémentées.
+
+26 octobre 2026 — SPEC-13 inclut maintenant [AUD-030](../audit/solutions-to-audit/AUD-030-validation-email-partagee-LastChanges.md), nouvelle issue de partage du validateur, en complément d'AUD-027. Corriger isValidEmail puis l'appeler depuis signup en conservant le domaine ; pas de helper concurrent. Spec préparée, non implémentée.

@@ -1,0 +1,16 @@
+[
+  {
+    "image": "sonarqube:community",
+    "id": "sha256:3e12909c111125d76968a5de3444d8d8169be42e3592870c978c7fd642f269ba",
+    "digests": [
+      "sonarqube@sha256:0b3408443fb6a311253de27941b10977c9b977fd53be2265947bfe14161308b8"
+    ]
+  },
+  {
+    "image": "sonarsource/sonar-scanner-cli:latest",
+    "id": "sha256:e2c3f88a575aa4f4a7ed625c615988eff882690937333f8a5f3e2b85bb0755b1",
+    "digests": [
+      "sonarsource/sonar-scanner-cli@sha256:47956b669bf486bdad919e1cbd0533223515aa0b6d1d31763e5a3754942df6d7"
+    ]
+  }
+]

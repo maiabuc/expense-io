@@ -1,0 +1,125 @@
+18:47:37.213 INFO  Scanner configuration file: /opt/sonar-scanner/conf/sonar-scanner.properties
+18:47:37.219 INFO  Project root configuration file: /usr/src/sonar-project.properties
+18:47:37.255 INFO  SonarScanner CLI 8.1.0.6389
+18:47:37.267 INFO  Linux 6.18.54.1-microsoft-standard-WSL2 amd64
+18:47:39.088 INFO  Communicating with SonarQube Community Build 26.10.0.133078
+18:47:39.089 INFO  JRE provisioning: os[linux], arch[x86_64]
+18:47:42.809 INFO  Starting SonarScanner Engine...
+18:47:42.810 INFO  Java 21.0.12.1 Eclipse Adoptium (64-bit)
+18:47:44.683 INFO  Load global settings
+18:47:44.874 INFO  Load global settings (done) | time=188ms
+18:47:44.879 INFO  Server id: 147B411E-AaF5h94jqpTQP1EAUfYm
+18:47:44.894 INFO  Loading required plugins
+18:47:44.895 INFO  Load plugins index
+18:47:44.944 INFO  Load plugins index (done) | time=49ms
+18:47:44.945 INFO  Load/download plugins
+18:47:45.465 INFO  Load/download plugins (done) | time=520ms
+18:47:45.936 INFO  Load project settings for component key: 'expense-io-audit'
+18:47:45.976 INFO  Load project settings for component key: 'expense-io-audit' (done) | time=40ms
+18:47:45.998 INFO  Process project properties
+18:47:46.022 INFO  Process project properties (done) | time=24ms
+18:47:46.039 INFO  Project key: expense-io-audit
+18:47:46.040 INFO  Base dir: /usr/src
+18:47:46.041 INFO  Working dir: /tmp/.scannerwork
+18:47:46.123 INFO  Load quality profiles
+18:47:46.274 INFO  Load quality profiles (done) | time=149ms
+18:47:46.341 INFO  Load active rules
+18:47:46.763 INFO  Load active rules (done) | time=421ms
+18:47:46.773 INFO  Load analysis cache
+18:47:46.801 INFO  Load analysis cache (404) | time=28ms
+18:47:46.954 INFO  Preprocessing files...
+18:47:47.135 INFO  5 languages detected in 108 preprocessed files (done) | time=177ms
+18:47:47.136 INFO  9 files ignored because of inclusion/exclusion patterns
+18:47:47.139 INFO  Loading plugins for detected languages
+18:47:47.139 INFO  Load/download plugins
+18:47:48.496 INFO  Load/download plugins (done) | time=1356ms
+18:47:48.698 INFO  Load project repositories
+18:47:48.825 INFO  Load project repositories (done) | time=128ms
+18:47:48.861 INFO  Indexing files...
+18:47:48.862 INFO  Project configuration:
+18:47:48.863 INFO    Excluded sources: **/node_modules/**, **/.next/**, **/fixtures/**, **/*.traineddata, **/package-lock.json, tests/**/*.ts, tests/**/*.mjs
+18:47:48.863 INFO    Included tests: tests/**/*.ts, tests/**/*.mjs
+18:47:48.891 INFO  107 files indexed (done) | time=29ms
+18:47:48.894 INFO  Quality profile for css: Sonar way core
+18:47:48.894 INFO  Quality profile for js: Sonar way core
+18:47:48.894 INFO  Quality profile for json: Sonar way comprehensive
+18:47:48.895 INFO  Quality profile for ts: Sonar way core
+18:47:48.895 INFO  Quality profile for yaml: Sonar way comprehensive
+18:47:48.896 INFO  ------------- Run sensors on module Expense.io audit
+18:47:48.945 INFO  Load metrics repository
+18:47:48.993 INFO  Load metrics repository (done) | time=49ms
+18:47:49.499 INFO  Reflections took 125 ms to scan 1 urls, producing 30 keys and 303 values
+18:47:49.658 INFO  Sensor IaC YAML File Type Classification Sensor [iac]
+18:47:49.681 INFO  Sensor IaC YAML File Type Classification Sensor [iac] (done) | time=23ms
+18:47:49.682 INFO  Sensor IaC CloudFormation Sensor [iac]
+18:47:49.683 INFO  There are no files to be analyzed for the CloudFormation language
+18:47:49.683 INFO  Sensor IaC CloudFormation Sensor [iac] (done) | time=1ms
+18:47:49.683 INFO  Sensor IaC cfn-lint report Sensor [iac]
+18:47:49.684 INFO  Sensor IaC cfn-lint report Sensor [iac] (done) | time=1ms
+18:47:49.689 INFO  Sensor IaC Kustomization Sensor [iac]
+18:47:49.690 INFO  Sensor IaC Kustomization Sensor [iac] (done) | time=1ms
+18:47:49.690 INFO  Sensor IaC hadolint report Sensor [iac]
+18:47:49.690 INFO  Sensor IaC hadolint report Sensor [iac] (done) | time=0ms
+18:47:49.691 INFO  Sensor IaC Azure Resource Manager Sensor [iac]
+18:47:49.691 INFO  There are no files to be analyzed for the Azure Resource Manager language
+18:47:49.691 INFO  Sensor IaC Azure Resource Manager Sensor [iac] (done) | time=0ms
+18:47:49.691 INFO  Sensor Java Config Sensor [iac]
+18:47:49.692 INFO  There are no files to be analyzed for the Java language
+18:47:49.692 INFO  Sensor Java Config Sensor [iac] (done) | time=0ms
+18:47:49.692 INFO  Sensor IaC Docker Sensor [iac]
+18:47:49.698 INFO  There are no files to be analyzed for the Docker language
+18:47:49.698 INFO  Sensor IaC Docker Sensor [iac] (done) | time=7ms
+18:47:49.699 INFO  Sensor HTML [web]
+18:47:49.706 INFO  Sensor HTML [web] (done) | time=11ms
+18:47:49.707 INFO  Sensor IaC Kubernetes Sensor [iac]
+18:47:49.866 INFO  There are no files to be analyzed for the Kubernetes language
+18:47:49.867 INFO  Sensor IaC Kubernetes Sensor [iac] (done) | time=159ms
+18:47:49.868 INFO  Sensor TextAndSecretsSensor [text]
+18:47:49.957 INFO  Available processors: 8
+18:47:49.958 INFO  Using 8 threads for analysis.
+18:47:50.524 INFO  Start fetching files for the text and secrets analysis
+18:47:50.569 INFO  Using Git CLI to retrieve dirty files
+18:47:50.575 WARN  Retrieving only language associated files, make sure to run the analysis inside a git repository to make use of inclusions specified via "sonar.text.inclusions"
+18:47:50.575 INFO  Starting the text and secrets analysis
+18:47:50.578 INFO  103 source files to be analyzed for the text and secrets analysis
+18:47:50.841 INFO  103/103 source files have been analyzed for the text and secrets analysis
+18:47:50.845 INFO  Sensor TextAndSecretsSensor [text] (done) | time=978ms
+18:47:50.851 INFO  ------------- Run sensors on project
+18:47:51.209 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript]
+18:47:51.671 INFO  Detected os: Linux arch: amd64 alpine: false. Platform: LINUX_X64
+18:47:51.672 INFO  Deploy location /opt/sonar-scanner/.sonar/js/node-runtime, tagetRuntime: /opt/sonar-scanner/.sonar/js/node-runtime/node,  version: /opt/sonar-scanner/.sonar/js/node-runtime/version.txt
+18:47:55.537 INFO  Using embedded Node.js runtime.
+18:47:55.539 INFO  Using Node.js executable: '/opt/sonar-scanner/.sonar/js/node-runtime/node'.
+18:47:59.114 INFO  Memory configuration: OS (7807 MB), Node.js (2240 MB).
+18:47:59.458 INFO  gRPC analyze-project server listening on 127.0.0.1:37289
+18:47:59.821 INFO  Plugin version: [14.0.0.46108]
+18:48:02.876 INFO  Found 1 tsconfig.json file(s): [/usr/src/tsconfig.json]
+18:48:06.767 INFO  99 source files to be analyzed
+18:48:06.768 INFO  Creating TypeScript(6.0.3) program with configuration file /usr/src/tsconfig.json [lib: lib.dom.d.ts, lib.dom.iterable.d.ts, lib.esnext.d.ts]
+18:48:06.772 INFO  Analyzing 86 file(s) from tsconfig /usr/src/tsconfig.json (176 total files in program)
+18:48:06.773 INFO  Analyzing 12 file(s) using merged compiler options [lib: lib.es2024.d.ts, lib.dom.d.ts]
+18:48:06.774 INFO  99/99 source files have been analyzed
+18:48:06.798 INFO  Hit the cache for 0 out of 98
+18:48:06.801 INFO  Miss the cache for 98 out of 98: ANALYSIS_MODE_INELIGIBLE [98/98]
+18:48:06.803 INFO  Sensor JavaScript/TypeScript/CSS analysis [javascript] (done) | time=15591ms
+18:48:06.805 INFO  Sensor IaC Project Sensor [iac]
+18:48:06.819 INFO  Sensor IaC Project Sensor [iac] (done) | time=17ms
+18:48:06.820 INFO  Sensor Zero Coverage Sensor
+18:48:06.871 INFO  Sensor Zero Coverage Sensor (done) | time=52ms
+18:48:06.872 INFO  ------------- Gather SCA dependencies on project
+18:48:06.891 INFO  Dependency analysis skipped
+18:48:06.896 INFO  SCM Publisher is disabled
+18:48:06.911 INFO  CPD Executor 13 files had no CPD blocks
+18:48:06.912 INFO  CPD Executor Calculating CPD for 51 files
+18:48:06.989 INFO  CPD Executor CPD calculation finished (done) | time=73ms
+18:48:07.013 INFO  SCM revision ID '2e9e30cf9f21a240c1213da6baec7f4c61618175'
+18:48:07.210 INFO  Analysis report generated in 191ms, dir size=1.0 MB
+18:48:07.382 INFO  Analysis report compressed in 171ms, zip size=497.9 kB
+18:48:07.502 INFO  Analysis report uploaded in 119ms
+18:48:07.504 INFO  ANALYSIS SUCCESSFUL, you can find the results at: http://127.0.0.1:9000/dashboard?id=expense-io-audit
+18:48:07.504 INFO  Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+18:48:07.504 INFO  More about the report processing at http://127.0.0.1:9000/api/ce/task?id=3c1bb2dd-fe95-464c-870d-baa6abdd255d
+18:48:07.745 INFO  Analysis total time: 24.855 s
+18:48:07.785 INFO  SonarScanner Engine completed successfully
+18:48:07.835 INFO  EXECUTION SUCCESS
+18:48:07.926 INFO  Total time: 30.636s
