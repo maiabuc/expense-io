@@ -4,13 +4,13 @@ import bcrypt from 'bcryptjs'
 import { AuthError } from 'next-auth'
 import { getPool } from '@/lib/db'
 import { signIn, signOut } from '@/lib/auth'
+import { isValidEmail } from '@/utils/validators'
 
 export interface AuthFormState {
   error?: string
 }
 
 const MIN_PASSWORD_LENGTH = 8
-const EMAIL_PATTERN = /^[^\s@]+@([^\s@]+\.[^\s@]+)$/
 const UNIQUE_VIOLATION = '23505'
 
 function isUniqueViolation(error: unknown): boolean {
@@ -27,11 +27,14 @@ export async function signup(
   const email = formData.get('email')
   const password = formData.get('password')
 
-  const emailMatch = typeof email === 'string' ? EMAIL_PATTERN.exec(email) : null
+  // isValidEmail (validateur partagé, corrigé et borné) est la seule source de
+  // format/longueur : plus d'expression indépendante dans l'action (AUD-030).
+  // Le contrôle de type précède l'appel pour ne jamais valider un non-string.
   if (
     typeof name !== 'string' ||
     name.trim().length === 0 ||
-    !emailMatch ||
+    typeof email !== 'string' ||
+    !isValidEmail(email) ||
     typeof password !== 'string' ||
     password.length < MIN_PASSWORD_LENGTH
   ) {
@@ -40,7 +43,9 @@ export async function signup(
     }
   }
 
-  const domain = emailMatch[1].toLowerCase()
+  // Domaine extrait depuis l'unique @ déjà validé, sans réexécuter l'analyse ;
+  // l'adresse originale reste stockée inchangée (AUD-030, convention AUD-019).
+  const domain = email.slice(email.indexOf('@') + 1).toLowerCase()
   const companyName = domain.split('.')[0]
   const passwordHash = await bcrypt.hash(password, 12)
 

@@ -1,6 +1,13 @@
 const EMAIL_PATTERN = /^[^\s@]+@([^\s@]+\.[^\s@]+)$/
 
+// Plafond généreux (unités UTF-16, comme String.length) appliqué AVANT
+// l'analyse (AUD-027/AUD-030) : il borne le coût du parcours de l'expression
+// sur une entrée adverse très longue, sans imposer de politique RFC ni de
+// seuil de performance mesuré. Une valeur plus longue est refusée telle quelle.
+export const MAX_EMAIL_LENGTH = 4096
+
 export function isValidEmail(value: string): boolean {
+  if (value.length > MAX_EMAIL_LENGTH) return false
   return EMAIL_PATTERN.test(value)
 }
 
