@@ -1,14 +1,23 @@
-const EMAIL_PATTERN = /^[^\s@]+@([^\s@]+\.[^\s@]+)$/
-
-// Plafond généreux (unités UTF-16, comme String.length) appliqué AVANT
-// l'analyse (AUD-027/AUD-030) : il borne le coût du parcours de l'expression
-// sur une entrée adverse très longue, sans imposer de politique RFC ni de
-// seuil de performance mesuré. Une valeur plus longue est refusée telle quelle.
 export const MAX_EMAIL_LENGTH = 4096
+const EMAIL_WHITESPACE = /\s/
 
+/** Grammaire historique, sans retours arrière : un @ et un point intérieur au domaine. */
 export function isValidEmail(value: string): boolean {
   if (value.length > MAX_EMAIL_LENGTH) return false
-  return EMAIL_PATTERN.test(value)
+
+  let separator = -1
+  let domainHasInteriorDot = false
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index]
+    if (EMAIL_WHITESPACE.test(character)) return false
+    if (character === '@') {
+      if (separator !== -1 || index === 0) return false
+      separator = index
+    } else if (character === '.' && separator !== -1 && index > separator + 1 && index < value.length - 1) {
+      domainHasInteriorDot = true
+    }
+  }
+  return separator !== -1 && domainHasInteriorDot
 }
 
 export function isPositiveAmount(value: number): boolean {

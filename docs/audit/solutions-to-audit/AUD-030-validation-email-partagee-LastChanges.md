@@ -60,3 +60,20 @@ Formulaire signup → action → `typeof email !== 'string'` (court-circuit : si
 #### Écarts et limites
 
 Aucun écart avec SPEC-13 : l'expression locale est supprimée, l'extraction du domaine conserve le résultat historique (vérifié par EMAIL-010 sur casse, sous-domaines et points admis). Les cas E2E, dont la conservation des parcours AUD-013, restent à exécuter en CI avec les services jetables.
+
+
+### 29 octobre 2026 — Correction de revue C7
+
+Statut : implémentée, validation distante incomplète. Spec : [SPEC-13](../../specs/SPEC-13-validation-email-bornee-LastChanges.md). Base : `0f7edf376237bdbee2d9ac845b329da4bc2a7232`, réalisation : diff de revue du 29 octobre 2026.
+
+#### Ce qui a été implémenté
+
+L’ancienne entrée « aucun écart avec SPEC-13 » était trop affirmative : la regex bornée ne satisfaisait pas le parcours sans retours arrière de C7. `src/utils/validators.ts`, `isValidEmail`, utilise désormais une boucle unique avec contrôle préalable de longueur, refus des blancs et de plusieurs @, et recherche d’un point intérieur au domaine. Le parcours signup → validateur partagé → domaine → transaction reste inchangé.
+
+#### Validation et preuves
+
+9/9 unitaires ciblés réussis ; corpus historique enrichi pour les blancs et points aux frontières ; lint et types exit 0. Mesures synthétiques avant/après, cinq répétitions et quatre tailles : [JSON](../evidence/spec13-review-20261029/email-comparison.json), [script](../evidence/spec13-review-20261029/email-comparison.mjs). Les sorties brutes ne démontrent aucun débit HTTP.
+
+#### Écarts et limites
+
+Build local bloqué par l’accès Google Fonts ; EMAIL-008 et la non-régression INS doivent être exécutés en CI avec PostgreSQL/S3 jetables. Aucun résultat E2E inventé. Le préfixe de l’entrée précédente reste conservé.
