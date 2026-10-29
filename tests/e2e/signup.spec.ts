@@ -95,7 +95,10 @@ test('[AUD-027,AUD-030][EMAIL-008][correction] email surdimensionné refusé par
   const response = page.waitForResponse(r => new URL(r.url()).pathname === '/signup' && r.request().method() === 'POST')
   await page.getByRole('button', { name: "S'inscrire", exact: true }).click()
   await response
-  await expect(page.getByRole('alert')).toContainText('email invalide')
+  // Le route-announcer de Next possède aussi role=alert : cibler le formulaire.
+  const formError = page.getByRole('main').getByRole('alert')
+  await expect(formError).toHaveCount(1)
+  await expect(formError).toContainText('email invalide')
   await expect(page).toHaveURL(/\/signup$/)
   const after = (await db().query(`SELECT
     (SELECT count(*)::int FROM users) AS users,
