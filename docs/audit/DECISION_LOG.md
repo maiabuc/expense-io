@@ -393,3 +393,18 @@ Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refus
 22 octobre — SPEC-08 : attente du verrou d’entreprise avant lecture de l’affectation et décision ; exceptions asynchrones traitées par le contrat API. DEC-018/019 prouvent le refus après changement de relation pendant attente ; SPEC-08 23/23, E2E 66/66. Seul SEED-002 reste rouge dans l’API complète (186/187), dépendance SPEC-10.
 
 22 octobre — SPEC-10 : seed relu et testé sur main combinée à `7c7703c` ; 10/10 scénarios seed, 302/302 tests complets et SPEC-01 à 10 passed. Les quatre anciens repères remplacés par f08f8a7 sont restitués en ajout dans AUD-018, sans réécrire le texte reçu. Le seed concurrent et sa reprise UI restent hors périmètre.
+
+## Vérification des specs et compléments ciblés — 29 octobre 2026
+
+Périmètre demandé par Maia : vérifier les specs des derniers fichiers AUD et des quatre constats cités, puis rédiger ce qui manque. OBSERVATION au SHA `2e9e30cf9f21a240c1213da6baec7f4c61618175` : arbre initial propre, branche `hacked-status` ; HEAD, main et origin/main locaux identiques. Aucun fetch ni contrôle de main distant. Aucun fichier nommé « last » trouvé ; identification des éventuels fichiers différents toujours à préciser. [Table de couverture](../specs/README.md#vérification-des-specs-restantes--29-octobre-2026).
+
+| Issue | Décision | Pourquoi | Évidence | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-022 / AUD-023 | Conserver SPEC-11 et SPEC-12 existantes | Déjà spécifiées ; ne pas transformer une condition ou qualification en correction autorisée | Specs et fiches relues ; AUD-022 préparée, AUD-023 qualification documentée | Aucun benchmark, audit npm ou mise à jour de dépendances exécuté |
+| AUD-005 — deux listes P2 | [SPEC-13](../specs/SPEC-13-erreurs-asynchrones-listes.md), préparée | Compléter SPEC-01 par les rejets différés et les erreurs HTTP réelles des deux routes | manager/expense-notes/route.ts:25 et hr/expense-notes/route.ts:25 retournent withUserScope sans await au SHA cité | Lecture statique ; tests nouveaux prévus, 0 exécuté |
+| AUD-008 — montant OCR P2 | [SPEC-14](../specs/SPEC-14-montants-ocr-sans-groupement.md), préparée | SPEC-03 ne fixe pas la frontière des montants non groupés | ocr.ts:204 et parseAmount relus au SHA cité ; motif décimal limité et repli entier | Résultat 1234 déduit du code, non mesuré ici ; tests de parsing prévus |
+| AUD-015 — année zéro P3 | [SPEC-15](../specs/SPEC-15-date-annee-zero.md), préparée | Expliciter une frontière de validité absente de SPEC-04 | validators.ts:79 et POST de soumission relus au SHA cité ; aucune borne year < 1 | Acceptation déduite du code, non exécutée ici ; validation pure et absence de mutation à tester |
+
+Documentation seule ; aucune entrée IMPLEMENTATION ajoutée, aucune fiche AUD réécrite, aucun code applicatif ni test modifié. Pas de nouvelle décision architecturale nécessitant un ADR. Compréhension de Maia non évaluée ; checkpoint à reprendre avant réalisation, aucune réponse inventée.
+
+MEASUREMENT documentaire : commande de capture prescrite échouée avec code 127 (`node: command not found`). Snapshot indépendant Python avant écriture : `/tmp/arla-spec-complements-20261029.json` ; comparaison exacte des empreintes des 22 fiches à la fin, contrôle des liens des trois nouvelles specs et du diff. Contrôles `ci:docs`, append-only Node, lint/types/build et tests applicatifs non exécutés ; aucune réussite applicative annoncée.
