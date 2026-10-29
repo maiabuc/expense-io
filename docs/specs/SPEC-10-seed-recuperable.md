@@ -1,5 +1,7 @@
 # SPEC-10 — Seed complet et relançable sans perte des décisions
 
+> État courant au 29 octobre 2026 : correction intégrée dans main ; contrôle automatisé SPEC-10 réussi dans la [CI interne complète](https://github.com/maiabuc/expense-io/actions/runs/40945194492). Les préparations et mesures anciennes ci-dessous décrivent leurs dates et révisions, pas une correction encore à livrer.
+
 ## Identification
 
 - Responsable : personne D. Branche : `feat/spec-10`.

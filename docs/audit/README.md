@@ -1,8 +1,12 @@
 # Audit d’architecture d’Expense.io
 
-Code original : `265924bc7274047989e708ab635c2854d376230f`. Mise à jour : 14 octobre 2026. Dossier d’audit et de passation documentaire finalisé le 15 octobre sur son périmètre explicite. Aucune correction applicative implémentée. La campagne ajoute des preuves HTTP/SQL/S3/OCR ; angles morts et tests du professeur non disponibles restent des réserves, sans réussite inventée.
+État courant au 29 octobre 2026 : les corrections intégrées sont détaillées dans les [specs](../specs/README.md) et les entrées IMPLEMENTATION des fiches ci-dessous. La [PR #20](https://github.com/maiabuc/expense-io/pull/20) a livré les compléments SPEC-13–18 dans main, commit `2e76fe1`.
 
-## Parcours de lecture pour les professeurs
+La [CI interne complète](https://github.com/maiabuc/expense-io/actions/runs/40945194492) réussit **347/347 tests**, sans échec ni cas ignoré : 81 unitaires, 199 API et 67 navigateur, avec qualité/build et 16 contrôles de lot réussis. La référence externe donne **86/89** ; ses trois différences acceptées restent explicites dans le [guide de tests](../testing/README.md).
+
+L’audit initial porte sur `265924bc7274047989e708ab635c2854d376230f` et les campagnes des 14–15 octobre. Les observations « aucune correction implémentée » et les anciens comptes décrivent ces révisions historiques, pas le code actuel. Ils sont conservés pour comparer avant/après. SPEC-11 reste conditionnelle et SPEC-12 en revue humaine ; aucune optimisation ou mise à jour de dépendance non réalisée n’est revendiquée.
+
+## Parcours de lecture
 
 1. [Processus suivi](processus-audit.md) : cadre, flux, axes, décisions, exécutions et limites.
 2. [Issues classées](audit_issues_classified.md) : IDs, défauts, conventions, limites, impact et priorités.
@@ -40,10 +44,14 @@ Chaque fiche explique le problème, sa raison, le fichier et les lignes au SHA o
 | AUD-021 | [Interdire les boucles entre managers](solutions-to-audit/AUD-021-boucles-managers.md) |
 | AUD-022 | [Optimiser les listes si la solution reste simple](solutions-to-audit/AUD-022-optimisation-simple-listes.md) |
 | AUD-023 | [Qualifier les alertes de dépendances](solutions-to-audit/AUD-023-dependances.md) |
+| AUD-027 | [Coût de validation de l’email](solutions-to-audit/AUD-027-validation-email-bornee-LastChanges.md) |
+| AUD-028 | [Coût d’expurgation des diagnostics](solutions-to-audit/AUD-028-diagnostic-borne-LastChanges.md) |
+| AUD-029 | [Coût de normalisation du montant](solutions-to-audit/AUD-029-normalisation-montant-LastChanges.md) |
+| AUD-030 | [Validateur d’email partagé à l’inscription](solutions-to-audit/AUD-030-validation-email-partagee-LastChanges.md) |
 | G10 | [Droits selon le rôle actuel](solutions-to-audit/G10-droits-role-actuel.md) |
 | G14 | [Contrôle du format des reçus](solutions-to-audit/G14-controle-recus.md) |
 
-AUD-001/002/012 sont des dossiers de provenance/méthode/outillage, indexés dans le journal. Les 22 fiches comprennent aussi AUD-011, dossier de validation : elles ne représentent donc pas 22 vulnérabilités démontrées. Le tracker d’entretien et le fichier de cleanup supprimés ne sont pas recréés.
+AUD-001/002/012 sont des dossiers de provenance/méthode/outillage, indexés dans le journal. Les fiches comprennent aussi des conventions, validations et risques reportés : leur nombre ne représente pas un nombre de vulnérabilités démontrées. La fiche historique AUD-005-diagnostic-borne-LastChanges est conservée ; le complément courant est indexé sous AUD-028. Le tracker d’entretien et le fichier de cleanup supprimés ne sont pas recréés.
 
 ## Les cinq références de réalisation
 
@@ -56,3 +64,8 @@ Pour écrire une spec, réaliser un lot ou le relire : suivre les [instructions 
 5. [Lots, critères d’acceptation et clôture](05-lots-et-acceptation.md).
 
 À la demande de Maia, aucun plan de migration ni de retour arrière n’est requis pour cette clôture. Le troisième fichier traite les dépendances et responsabilités. Clôture documentaire, implémentation et validation des corrections sont distinctes ; les réserves sont centralisées dans le fichier 5.
+
+
+## Archives et conservation des preuves
+
+Les [instantanés de préparation](archive/README.md) restent consultables avec leurs dates. Les campagnes sous evidence conservent leurs SHA, scripts, mesures brutes et résultats, y compris les échecs initiaux. Les deux copies identiques de sortie TypeScript ont été regroupées ; les résultats de chaque campagne restent dans leurs fichiers JSON.

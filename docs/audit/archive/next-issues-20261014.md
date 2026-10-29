@@ -1,10 +1,12 @@
+> Archive de préparation : ce document décrit sa révision datée, pas l’état actuel du produit. Voir [l’index courant](../README.md).
+
 # Nouveaux points à discuter après revue des axes d'architecture
 
-14 octobre 2026. Source : `265924bc7274047989e708ab635c2854d376230f`. Lecture de code et observation isolée de parsing uniquement ; aucun code applicatif ni service modifié. [Décisions](DECISION_LOG.md), [couverture](coverage.md), [bilan des axes](status-and-changes.md).
+14 octobre 2026. Source : `265924bc7274047989e708ab635c2854d376230f`. Lecture de code et observation isolée de parsing uniquement ; aucun code applicatif ni service modifié. [Décisions](../DECISION_LOG.md), [couverture](../coverage.md), [bilan des axes](status-and-changes-20261015.md).
 
 ## Architecture désormais validée
 
-L'architecture hexagonale est acceptée à condition de rester simple : monolithe conservé, interfaces utiles, adaptateurs DB/S3/test, première extraction de la soumission. [ADR accepté](../adr/0002-hexagonal-soumission.md). Pas de framework d'injection, queue, notifications ou service réseau ajouté pour illustrer le cours. Ne pas remettre cette décision en question ; les détails et tests restent à préparer. Le checkpoint suspendu n'est pas réputé acquis.
+L'architecture hexagonale est acceptée à condition de rester simple : monolithe conservé, interfaces utiles, adaptateurs DB/S3/test, première extraction de la soumission. [ADR accepté](../../adr/0002-hexagonal-soumission.md). Pas de framework d'injection, queue, notifications ou service réseau ajouté pour illustrer le cours. Ne pas remettre cette décision en question ; les détails et tests restent à préparer. Le checkpoint suspendu n'est pas réputé acquis.
 
 ## Résultat de cette passe
 
@@ -16,11 +18,11 @@ Priorité d'investigation proposée : identité/entreprise et requête d'affecta
 
 ## AUD-019 — L'adresse saisie suffit à rejoindre ou créer une entreprise
 
-Décision obtenue : fonctionnement conservé comme convention pédagogique, pas de correction à réaliser. Limite de confiance documentée dans [la décision](solutions-to-audit/AUD-019-inscription-domaine.md). Ne pas reposer cette question ; avancer à AUD-020.
+Décision obtenue : fonctionnement conservé comme convention pédagogique, pas de correction à réaliser. Limite de confiance documentée dans [la décision](../solutions-to-audit/AUD-019-inscription-domaine.md). Ne pas reposer cette question ; avancer à AUD-020.
 
 **Axe :** identité, permissions et isolation. **Statut :** risque source, attendu métier à confirmer ; non reproduit.
 
-**Localisation initiale :** [signup:23–29](../../src/app/actions/auth.ts#L23) valide la syntaxe de l'email ; [signup:41–62](../../src/app/actions/auth.ts#L41) rattache l'utilisateur au domaine ou crée l'entreprise et attribue RH ; [signup:65–68](../../src/app/actions/auth.ts#L65) crée le compte. Authentification Credentials : `src/lib/auth.ts:25–40` vérifie le mot de passe de ce compte, sans preuve de possession de l'adresse dans ce parcours.
+**Localisation initiale :** [signup:23–29](../../../src/app/actions/auth.ts#L23) valide la syntaxe de l'email ; [signup:41–62](../../../src/app/actions/auth.ts#L41) rattache l'utilisateur au domaine ou crée l'entreprise et attribue RH ; [signup:65–68](../../../src/app/actions/auth.ts#L65) crée le compte. Authentification Credentials : `src/lib/auth.ts:25–40` vérifie le mot de passe de ce compte, sans preuve de possession de l'adresse dans ce parcours.
 
 **OBSERVATION :** aucune invitation ou vérification de possession de l'adresse n'est identifiée dans l'inscription inspectée. Le domaine vient d'une chaîne fournie par le visiteur. **HYPOTHÈSE :** quelqu'un saisissant une adresse d'un domaine qu'il ne contrôle pas peut obtenir un compte rattaché à cette entreprise ; le premier inscrit pour un domaine nouveau reçoit RH. Cela ne prouve pas qu'il lit des reçus d'autrui ni qu'il vole un compte RH existant.
 
@@ -32,15 +34,15 @@ Décision obtenue : fonctionnement conservé comme convention pédagogique, pas 
 
 ## AUD-020 — Une requête invalide peut devenir un retrait de manager
 
-Direction désormais retenue : distinguer JSON illisible, structure incorrecte, champ manquant et valeur invalide ; refuser sans mutation. Null explicite reste une demande valide de retrait. Codes techniques distincts dans les logs, messages publics compréhensibles. [Solution](solutions-to-audit/AUD-020-validation-affectation.md), non implémentée.
+Direction désormais retenue : distinguer JSON illisible, structure incorrecte, champ manquant et valeur invalide ; refuser sans mutation. Null explicite reste une demande valide de retrait. Codes techniques distincts dans les logs, messages publics compréhensibles. [Solution](../solutions-to-audit/AUD-020-validation-affectation.md), non implémentée.
 
 **Axe :** contrat API, validation et autorisation. **Statut :** parsing observé et reproduit isolément ; mutation HTTP/DB non exécutée.
 
-**Localisation initiale :** [affectation:12–13](../../src/app/api/hr/users/[id]/manager/route.ts#L12) remplace l'échec JSON par null puis managerId absent par null ; [affectation:31–46](../../src/app/api/hr/users/[id]/manager/route.ts#L31) ne vérifie le manager que s'il est non null ; [affectation:48–51](../../src/app/api/hr/users/[id]/manager/route.ts#L48) sauvegarde cette valeur. Le [client RH:74–78](../../src/components/AdminConsole.tsx#L74) envoie explicitement managerId, y compris null pour retirer une affectation.
+**Localisation initiale :** [affectation:12–13](../../../src/app/api/hr/users/[id]/manager/route.ts#L12) remplace l'échec JSON par null puis managerId absent par null ; [affectation:31–46](../../../src/app/api/hr/users/[id]/manager/route.ts#L31) ne vérifie le manager que s'il est non null ; [affectation:48–51](../../../src/app/api/hr/users/[id]/manager/route.ts#L48) sauvegarde cette valeur. Le [client RH:74–78](../../../src/components/AdminConsole.tsx#L74) envoie explicitement managerId, y compris null pour retirer une affectation.
 
-**MEASUREMENT :** les deux déclarations extraites du source ont été exécutées sur huit corps. JSON cassé `{`, objet vide, null, tableau, nombre et chaîne aboutissent tous à managerId=null, comme le retrait explicite valide ; un identifiant explicite est conservé. [Résultats bruts](evidence/manager-body-check.json). Aucun utilisateur ni DB modifié.
+**MEASUREMENT :** les deux déclarations extraites du source ont été exécutées sur huit corps. JSON cassé `{`, objet vide, null, tableau, nombre et chaîne aboutissent tous à managerId=null, comme le retrait explicite valide ; un identifiant explicite est conservé. [Résultats bruts](../evidence/manager-body-check.json). Aucun utilisateur ni DB modifié.
 
-Reproduction depuis la racine : `node docs/audit/evidence/manager-body-check.cjs` ([script](evidence/manager-body-check.cjs)). Il lit seulement le code, simule request.json et imprime les résultats ; aucune connexion réseau ni écriture DB.
+Reproduction depuis la racine : `node docs/audit/evidence/manager-body-check.cjs` ([script](../evidence/manager-body-check.cjs)). Il lit seulement le code, simule request.json et imprime les résultats ; aucune connexion réseau ni écriture DB.
 
 **Pourquoi examiner :** un contenu mal formé ne devrait pas être silencieusement interprété comme une action valide qui change la hiérarchie et le périmètre de review. Le problème ne concerne pas le retrait explicite, qui doit rester disponible.
 
@@ -50,11 +52,11 @@ Reproduction depuis la racine : `node docs/audit/evidence/manager-body-check.cjs
 
 ## AUD-021 — Les cycles entre managers ne sont pas contrôlés
 
-Décision obtenue : interdire les boucles tout en conservant les affectations valides. [Solution retenue](solutions-to-audit/AUD-021-boucles-managers.md). Mécanisme et contrat à préparer ; aucune correction implémentée. Prochain et dernier candidat de cette liste : AUD-022, puis preuves et mesures.
+Décision obtenue : interdire les boucles tout en conservant les affectations valides. [Solution retenue](../solutions-to-audit/AUD-021-boucles-managers.md). Mécanisme et contrat à préparer ; aucune correction implémentée. Prochain et dernier candidat de cette liste : AUD-022, puis preuves et mesures.
 
 **Axe :** règles de domaine et cohérence. **Statut :** observation source et règle métier acceptée ; comportement HTTP/DB non reproduit.
 
-**Localisation initiale :** [affectation:32–34](../../src/app/api/hr/users/[id]/manager/route.ts#L32) bloque seulement managerId égal à l'utilisateur cible ; [affectation:39–51](../../src/app/api/hr/users/[id]/manager/route.ts#L39) vérifie le rôle puis écrit. [Schéma:18](../../migrations/1700000000001_init-schema.sql#L18) a une référence de user ID sans contrôle de cycle. Les managers sont aussi des cibles autorisées (`affectation:24`).
+**Localisation initiale :** [affectation:32–34](../../../src/app/api/hr/users/[id]/manager/route.ts#L32) bloque seulement managerId égal à l'utilisateur cible ; [affectation:39–51](../../../src/app/api/hr/users/[id]/manager/route.ts#L39) vérifie le rôle puis écrit. [Schéma:18](../../../migrations/1700000000001_init-schema.sql#L18) a une référence de user ID sans contrôle de cycle. Les managers sont aussi des cibles autorisées (`affectation:24`).
 
 **HYPOTHÈSE :** A peut être rattaché à B, puis B à A, ou former une boucle plus longue. Deux requêtes concurrentes peuvent compliquer le contrôle. Le blocage de l'auto-affectation ne garantit pas une hiérarchie sans cycle.
 
@@ -66,11 +68,11 @@ Décision obtenue : interdire les boucles tout en conservant les affectations va
 
 ## AUD-022 — Listes sans borne de volume
 
-Décision obtenue : optimiser si et seulement si la solution est simple, en préservant le fonctionnement et l'UI. [Solution conditionnelle](solutions-to-audit/AUD-022-optimisation-simple-listes.md). Les index sont une piste à préciser, pas un gain démontré. Les quatre candidats ont été discutés ; prochaine phase : preuves et mesures isolées.
+Décision obtenue : optimiser si et seulement si la solution est simple, en préservant le fonctionnement et l'UI. [Solution conditionnelle](../solutions-to-audit/AUD-022-optimisation-simple-listes.md). Les index sont une piste à préciser, pas un gain démontré. Les quatre candidats ont été discutés ; prochaine phase : preuves et mesures isolées.
 
 **Axe :** performance et évolutions métier. **Statut :** observation source, risque de charge non mesuré.
 
-**Localisation initiale :** [liste propriétaire:45–49](../../src/app/api/expense-notes/route.ts#L45), [liste manager:26–33](../../src/app/api/manager/expense-notes/route.ts#L26) et [liste RH:26–34](../../src/app/api/hr/expense-notes/route.ts#L26) retournent tous les résultats du périmètre sans LIMIT/pagination. [UI:155,282–285](../../src/app/expenses/page.tsx#L155) calcule le total des notes reçues et affiche chaque entrée.
+**Localisation initiale :** [liste propriétaire:45–49](../../../src/app/api/expense-notes/route.ts#L45), [liste manager:26–33](../../../src/app/api/manager/expense-notes/route.ts#L26) et [liste RH:26–34](../../../src/app/api/hr/expense-notes/route.ts#L26) retournent tous les résultats du périmètre sans LIMIT/pagination. [UI:155,282–285](../../../src/app/expenses/page.tsx#L155) calcule le total des notes reçues et affiche chaque entrée.
 
 **HYPOTHÈSE :** l'historique croissant augmente requête, taille de réponse et rendu. Aucune lenteur actuelle ni seuil critique démontré ; faible volume de démonstration possible. À distinguer du coût OCR.
 
@@ -106,6 +108,6 @@ Cette correspondance identifie les discussions/preuves manquantes, pas 13 nouvel
 
 Source relu : inscription, affectation, listes, schéma, UI, scripts/config et décisions. Observation supplémentaire : 8 cas de parsing sur deux déclarations extraites, pas HTTP/DB. SHA inchangé. Aucun build, CI, OCR réel, migration ou test de service exécuté ici. Provenance IA des défauts non vérifiée, aucun secret réel lu. Les scripts/mesures précédents restent disponibles sans être présentés comme des tests E2E.
 
-Les quatre points ont désormais été discutés : AUD-019 conservé, AUD-020/021 retenus, AUD-022 sous condition de simplicité. Aucun quiz ajouté ; fichier grill_me supprimé non recréé. Les mentions de non-exécution ci-dessus décrivent la revue initiale ; voir les [preuves désormais exécutées](mesures-et-preuves.md). [État de l'audit](status-and-changes.md) : incomplet tant que contrats et vérifications restantes ne sont pas réunis.
+Les quatre points ont désormais été discutés : AUD-019 conservé, AUD-020/021 retenus, AUD-022 sous condition de simplicité. Aucun quiz ajouté ; fichier grill_me supprimé non recréé. Les mentions de non-exécution ci-dessus décrivent la revue initiale ; voir les [preuves désormais exécutées](../mesures-et-preuves.md). [État de l'audit](status-and-changes-20261015.md) : incomplet tant que contrats et vérifications restantes ne sont pas réunis.
 
 Vérification documentaire : 195 liens locaux contrôlés, aucune cible ni ancre manquante. Syntaxe du script d'observation vérifiée. Aucun diff sur src, scripts applicatifs, migrations, Makefile, README racine, manifest/lockfile ou Compose.

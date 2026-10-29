@@ -24,7 +24,7 @@ Les sessions sont obtenues par le vrai parcours HTTP Credentials avec CSRF et co
 | npm run start de la copie construite | Démarrage annoncé en 208 ms, puis HTTP/auth/DB/S3 exécutés | Pas test d'interaction navigateur ; seconde instance de panne en 153 ms |
 | Préparation fixtures | 3 vérifications réussies : 2 entreprises, 10 utilisateurs, 6 notes | Contrôles de préparation, séparés des scénarios |
 
-**Contrôles finaux avec dépendances issues du npm ci : lint=0, typecheck=0, build=0.** [Résumé](evidence/runtime-20261014/summary.json), [lint](evidence/runtime-20261014/clean-lint.log), [types](evidence/runtime-20261014/clean-typecheck.log), [build](evidence/runtime-20261014/clean-build.log). Les erreurs de déplacement liées à la propriété root des fichiers Docker ont nécessité une correction dans /tmp ; un essai intermédiaire sans node_modules a échoué `next: not found`, sans être attribué au code applicatif.
+**Contrôles finaux avec dépendances issues du npm ci : lint=0, typecheck=0, build=0.** [Résumé](evidence/runtime-20261014/summary.json), [lint](evidence/runtime-20261014/clean-lint.log), [types](evidence/runtime-20261014/typecheck.json), [build](evidence/runtime-20261014/clean-build.log). Les erreurs de déplacement liées à la propriété root des fichiers Docker ont nécessité une correction dans /tmp ; un essai intermédiaire sans node_modules a échoué `next: not found`, sans être attribué au code applicatif.
 
 ## Résultats des scénarios
 

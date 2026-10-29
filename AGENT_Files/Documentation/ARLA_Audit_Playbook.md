@@ -1,3 +1,5 @@
+> Source historique de cadrage : les consignes restent des références de travail, mais les inventaires et étapes de préparation ci-dessous décrivent leur date initiale. Voir le [README courant](../../README.md) et le [statut des specs](../../docs/specs/README.md) pour les réalisations et validations intégrées.
+
 # ARLA — Audit and understanding playbook
 
 Prepared for Maia on 11 October 2026. Deadline retained from ARLA_context: Monday 26 October 2026.

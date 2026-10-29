@@ -1,5 +1,7 @@
 # SPEC-16 — Intercepter les erreurs asynchrones des listes manager et RH
 
+> État courant au 29 octobre 2026 : correction intégrée dans main ; contrôle automatisé SPEC-16 réussi dans la [CI interne complète](https://github.com/maiabuc/expense-io/actions/runs/40945194492). Les préparations et mesures anciennes ci-dessous décrivent leurs dates et révisions, pas une correction encore à livrer.
+
 ## Identification
 
 - Objet : complément ciblé de [SPEC-01](SPEC-01-erreurs-api.md), sans remplacer son historique.

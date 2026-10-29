@@ -79,7 +79,7 @@ Ces points sont utiles à corriger même s'ils ne nécessitent pas une refonte. 
 
 ## Choix architecturaux et limites sans nouvel ID de défaut
 
-Ne pas inventer des IDs supplémentaires pour chacun des choix suivants. Ils sont enregistrés dans [le journal](DECISION_LOG.md), [la revue structurelle](structure-review.md) et [les points de contrat](next-issues.md).
+Ne pas inventer des IDs supplémentaires pour chacun des choix suivants. Ils sont enregistrés dans [le journal](DECISION_LOG.md), [la revue structurelle](structure-review.md) et [les points de contrat](archive/next-issues-20261014.md).
 
 | Sujet | Nature / statut réel | Conséquence pour l'implémentation |
 | --- | --- | --- |

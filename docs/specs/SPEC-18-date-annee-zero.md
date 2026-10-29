@@ -1,5 +1,7 @@
 # SPEC-18 — Refuser l’année zéro avant soumission
 
+> État courant au 29 octobre 2026 : correction intégrée dans main ; contrôle automatisé SPEC-18 réussi dans la [CI interne complète](https://github.com/maiabuc/expense-io/actions/runs/40945194492). Les préparations et mesures anciennes ci-dessous décrivent leurs dates et révisions, pas une correction encore à livrer.
+
 ## Identification
 
 - Objet : complément ciblé de [SPEC-04](SPEC-04-entrees-et-affichage.md), sans remplacer son historique.

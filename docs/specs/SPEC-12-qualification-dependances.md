@@ -1,5 +1,7 @@
 # SPEC-12 — Qualification des dépendances avant mise à jour choisie
 
+> État courant au 29 octobre 2026 : qualification documentaire réalisée, revue humaine ; aucune mise à niveau automatique de dépendances. Voir le [statut des specs](README.md#statut-des-specs).
+
 ## Identification
 
 - Responsable : personne A. Branche : `feat/spec-12`.

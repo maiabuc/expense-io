@@ -12,7 +12,7 @@ Nous avons suivi les acteurs employé, manager et RH : saisie → appel serveur 
 
 ## 3. Inspecter les axes d'architecture
 
-La revue a couvert responsabilités, dépendances, permissions, contrats, erreurs, concurrence, cohérence, performance, exploitation et scénarios futurs. Le comptage des imports a montré que les dossiers domaine/ports/adaptateurs ne suffisent pas à constituer une architecture hexagonale utilisée. Les commentaires ont été comparés au code : leur présence n'est pas une preuve d'erreur ou de provenance IA. [Structure](structure-review.md), [commentaires](comment-review.md), [matrice des axes](status-and-changes.md).
+La revue a couvert responsabilités, dépendances, permissions, contrats, erreurs, concurrence, cohérence, performance, exploitation et scénarios futurs. Le comptage des imports a montré que les dossiers domaine/ports/adaptateurs ne suffisent pas à constituer une architecture hexagonale utilisée. Les commentaires ont été comparés au code : leur présence n'est pas une preuve d'erreur ou de provenance IA. [Structure](structure-review.md), [commentaires](comment-review.md), [matrice des axes](archive/status-and-changes-20261015.md).
 
 ## 4. Distinguer les preuves et décider
 

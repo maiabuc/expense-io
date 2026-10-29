@@ -1,3 +1,5 @@
+> Source historique de cadrage : les consignes restent des références de travail, mais les inventaires et étapes de préparation ci-dessous décrivent leur date initiale. Voir le [README courant](../../README.md) et le [statut des specs](../../docs/specs/README.md) pour les réalisations et validations intégrées.
+
 # ARLA — Contexte et règles du projet
 
 **Responsable :** Maia Bucamp, réalisation solo sous la condition indiquée ci-dessous.  
