@@ -1,7 +1,23 @@
-const EMAIL_PATTERN = /^[^\s@]+@([^\s@]+\.[^\s@]+)$/
+export const MAX_EMAIL_LENGTH = 4096
+const EMAIL_WHITESPACE = /\s/
 
+/** Grammaire historique, sans retours arrière : un @ et un point intérieur au domaine. */
 export function isValidEmail(value: string): boolean {
-  return EMAIL_PATTERN.test(value)
+  if (value.length > MAX_EMAIL_LENGTH) return false
+
+  let separator = -1
+  let domainHasInteriorDot = false
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index]
+    if (EMAIL_WHITESPACE.test(character)) return false
+    if (character === '@') {
+      if (separator !== -1 || index === 0) return false
+      separator = index
+    } else if (character === '.' && separator !== -1 && index > separator + 1 && index < value.length - 1) {
+      domainHasInteriorDot = true
+    }
+  }
+  return separator !== -1 && domainHasInteriorDot
 }
 
 export function isPositiveAmount(value: number): boolean {
@@ -79,6 +95,8 @@ export function parseStrictExpenseDate(raw: string, today = todayInParis()): str
   const year = Number(match[1])
   const month = Number(match[2])
   const day = Number(match[3])
+  // SPEC-18 : refuser l’année zéro avant toute soumission.
+  if (year < 1) return null
   if (month < 1 || month > 12) return null
   if (day < 1 || day > daysInMonth(year, month)) return null
 

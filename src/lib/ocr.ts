@@ -201,7 +201,16 @@ function enginePool(): EnginePool {
 
 const AMOUNT_KEYWORD_PATTERN = /total|montant|ttc|à payer|net à/i
 const CURRENCY_HINT_PATTERN = /€|eur\b/i
-const DECIMAL_AMOUNT_PATTERN = /\b\d{1,3}(?:[ .]\d{3})*[.,]\d{2}/g
+// Montant décimal. Deux alternatives (AUD-008) :
+//  1. groupé : 1 à 3 chiffres puis au moins un groupe de milliers séparé par
+//     espace ou point (`1 234,56`, `1.234,56`, `1 234 567,89`) ;
+//  2. non groupé : une suite continue de chiffres suivie du séparateur
+//     décimal et de deux chiffres (`1234,56`, `12345,67`, `1234567.89`).
+// L'ancien motif limitait toujours la partie entière à `\d{1,3}` : un montant
+// non groupé de quatre chiffres ou plus n'était pas reconnu et le repli
+// entier perdait les centimes (1234,56 → 1234). Le séparateur décimal reste
+// exactement deux chiffres pour éviter de capturer un suffixe.
+const DECIMAL_AMOUNT_PATTERN = /\b\d{1,3}(?:[ .]\d{3})+[.,]\d{2}\b|\b\d+[.,]\d{2}\b/g
 const INTEGER_AMOUNT_PATTERN = /\b\d{1,5}\b/g
 
 const DATE_PATTERNS = [

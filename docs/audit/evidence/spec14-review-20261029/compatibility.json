@@ -1,0 +1,8 @@
+{
+  "node": "v24.6.0",
+  "source": "diff local SPEC-14 du 29 octobre 2026",
+  "syntheticSecretForms": 15,
+  "boundaryAndNoValueChecks": 5,
+  "passed": 20,
+  "failed": 0
+}
