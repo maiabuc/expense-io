@@ -22,7 +22,11 @@ export async function GET() {
       return Response.json({ error: 'Unauthorized' }, { status: 403 })
     }
 
-    return withUserScope(session.user.id, async (client) => {
+    // return await (et non return) : withUserScope renvoie une promesse dont
+    // le rejet survient après une frontière asynchrone. Sans await ici, le
+    // rejet s'échappe du try sans passer par le catch ; avec await, toute
+    // panne de contexte ou de requête rejoint respondError (AUD-005).
+    return await withUserScope(session.user.id, async (client) => {
       const result = await client.query(
         `SELECT en.* FROM expense_notes en
          JOIN users u ON u.id = en.user_id

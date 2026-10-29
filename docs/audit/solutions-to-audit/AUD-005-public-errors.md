@@ -151,3 +151,38 @@ Une nouvelle alerte SonarQube S8786 concerne le coût du motif authorization (`s
 ### 26 octobre 2026 — Correction de classement documentaire, aucune implémentation
 
 Maia précise qu'un nouveau constat doit avoir son propre ID AUD. Le rattachement de l'alerte SonarQube 12/16 à AUD-005 est remplacé par [AUD-028 — LastChanges](AUD-028-diagnostic-borne-LastChanges.md), avec [SPEC-14](../../specs/SPEC-14-diagnostic-borne-LastChanges.md). Les textes précédents restent historiques ; ils ne décrivent plus le classement retenu. AUD-005 conserve son objet initial de confidentialité des erreurs. Aucun changement applicatif ou test de correction exécuté.
+
+### 29 octobre 2026 — SPEC-16, rejets asynchrones des listes manager et RH
+
+Statut : implémentée et vérifiée sur le périmètre unitaire décrit ; API (panne SQL réelle) à vérifier par la CI, Docker absent localement.
+Spec : [SPEC-16](../../specs/SPEC-16-erreurs-asynchrones-listes.md). Révision de départ : `2e9e30cf9f21a240c1213da6baec7f4c61618175`. Réalisation : branche `feat/spec-16`, diff local du 29 octobre 2026.
+
+#### Ce qui a été implémenté
+
+Les deux routes de liste renvoyaient `return withUserScope(...)` sans `await` à l'intérieur de leur bloc `try`. La promesse de `withUserScope` étant résolue/rejetée après une frontière asynchrone, un rejet (panne d'ouverture de contexte SQL ou panne du SELECT) s'échappait du gestionnaire sans passer par le `catch`, laissant une promesse rejetée non traitée au lieu de produire la réponse sûre. Correction : `return await withUserScope(...)` dans `GET` des deux routes. Tout rejet rejoint désormais le `catch` existant → `respondError(error, operation)` → journal structuré expurgé et réponse publique 500 générique. Aucune autre logique (SQL, périmètre, tri, gardes 401/403) modifiée.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/app/api/manager/expense-notes/route.ts : GET | `return await withUserScope(...)` | Rejet différé du contexte/requête capté par le catch manager |
+| src/app/api/hr/expense-notes/route.ts : GET | `return await withUserScope(...)` | Rejet différé du contexte/requête capté par le catch RH |
+
+#### Nouveau fonctionnement
+
+Lecture de liste → `currentSession` → garde de rôle (401 manager / 403 RH, inchangée, sans ouvrir de contexte) → `return await withUserScope(id, callback)` → le callback exécute le SELECT ; une panne d'ouverture de contexte ou de requête rejette la promesse → l'`await` propage le rejet dans le `catch` → `respondError(error, "<route>:GET")` journalise `{operation, status:500, …}` expurgé et renvoie `{ error: "Une erreur inattendue est survenue. Réessaie plus tard." }`. En succès, réponse 200 avec le même tableau, ordre ASC et champs. La séparation A/B et les gardes restent identiques.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npx vitest run tests/unit/list-errors.test.ts` | LIST-PANNE-001…008 verts | exit 0, 8/8 réussis (4 correction + 4 référence) | Sortie locale 2026-10-29, Node 24.6.0 |
+| `npm run typecheck` | exit 0 | exit 0 | Sortie locale 2026-10-29 |
+| `npm run lint` | exit 0 | exit 0 (1 avertissement préexistant hors périmètre) | Sortie locale 2026-10-29 |
+| `npm run build` | exit 0 | exit 0 | Sortie locale 2026-10-29 |
+| `npm run test:unit` (suite complète) | Aucune régression ; seuls les défauts LastChanges non encore corrigés + spec-report préexistant restent rouges | 69/81 réussis ; 12 échecs restants (11 cas LastChanges d'autres specs + CI-SPEC-014 préexistant) | `reports/unit.json` |
+| `tests/api/list-errors.spec.ts` (LIST-PANNE-009/010, panne SQL réelle) | 500 + contrat erreur, diagnostic expurgé | Non exécuté localement : Docker/Compose absents | À vérifier sur GitHub Actions à l'ouverture de la PR |
+
+#### Écarts et limites
+
+Aucun écart avec la proposition de SPEC-16 : seul `await` a été ajouté aux deux retours, sans extraction ni `.catch`. La preuve de la panne SQL réelle (compte applicatif limité, REVOKE/GRANT SELECT) dépend de PostgreSQL jetable et reste à exécuter en CI ; l'environnement local n'a pas Docker. Le test unitaire `specification-report` CI-SPEC-014 reste rouge indépendamment de ce lot (défaut préexistant hors périmètre AUD-005).
