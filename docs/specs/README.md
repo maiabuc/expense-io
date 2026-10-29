@@ -88,6 +88,19 @@ Les 22 fiches sont ainsi soit attribuées, soit explicitement conservées/report
 
 Specs préparées, aucune implémentation applicative démarrée. Les résultats historiques sont dans la [campagne CI du 15 octobre](../audit/evidence/ci-20261015/README.md) ; ils ne constituent pas une validation de ces specs. La vérification du 17 octobre confirme la fusion CI et les étapes hébergées de qualité/build réussies, avec API/E2E et bilan global en échec. Voir le [journal](../audit/DECISION_LOG.md). Message à transmettre : [équipe](../development/MESSAGE_EQUIPE.md). Ce fichier ne provoque aucun envoi à l’équipe.
 
+## Complément sélectionné le 26 octobre 2026
+
+[SPEC-13 — validation d’email bornée, LastChanges](SPEC-13-validation-email-bornee-LastChanges.md) traite [AUD-027](../audit/solutions-to-audit/AUD-027-validation-email-bornee-LastChanges.md). Responsable non attribué ; spec préparée, correction non implémentée. Aucun changement d'affectation des lots historiques.
+
+[SPEC-14 — diagnostic borné, LastChanges](SPEC-14-diagnostic-borne-LastChanges.md) complète AUD-005 sur le coût d'expurgation des logs. Responsable non attribué ; préparation documentaire, correction non implémentée.
+
+## Correction du classement SonarQube — 26 octobre 2026
+
+Maia exige un nouvel ID pour chaque nouveau problème retenu : SPEC-14 est désormais associée à [AUD-028](../audit/solutions-to-audit/AUD-028-diagnostic-borne-LastChanges.md), et [SPEC-15 LastChanges](SPEC-15-normalisation-montant-LastChanges.md) traite [AUD-029](../audit/solutions-to-audit/AUD-029-normalisation-montant-LastChanges.md). Les mentions antérieures du rattachement à AUD-005 sont historiques. Ces specs sont préparées, non implémentées.
+
+26 octobre 2026 — SPEC-13 inclut maintenant [AUD-030](../audit/solutions-to-audit/AUD-030-validation-email-partagee-LastChanges.md), nouvelle issue de partage du validateur, en complément d'AUD-027. Corriger isValidEmail puis l'appeler depuis signup en conservant le domaine ; pas de helper concurrent. Spec préparée, non implémentée.
+
+
 ## Vérification des specs restantes — 29 octobre 2026
 
 OBSERVATION : revue locale au SHA `2e9e30cf9f21a240c1213da6baec7f4c61618175`, identique aux références locales `main` et `origin/main`, sans fetch distant. Aucun fichier contenant « last » dans son nom trouvé dans l’inventaire, y compris les fichiers cachés hors `.git`, `node_modules` et `.next`. L’expression de Maia « les derniers AUD » est interprétée provisoirement comme les derniers numéros ; les éventuels autres fichiers restent à identifier.
@@ -98,8 +111,12 @@ OBSERVATION : revue locale au SHA `2e9e30cf9f21a240c1213da6baec7f4c61618175`, id
 | AUD-020 / AUD-021 | SPEC-07 | Specs présentes, réalisation historique documentée ; aucune nouvelle preuve runtime produite |
 | AUD-022, listes | [SPEC-11](SPEC-11-mesures-listes.md) | Spec déjà créée ; reste préparée, mesures actuelles non exécutées |
 | AUD-023, dépendances | [SPEC-12](SPEC-12-qualification-dependances.md) | Spec déjà créée ; qualification documentée, mise à jour non sélectionnée |
-| P2 — rejets des listes manager et RH (2 constats) | SPEC-01, principe d’erreur sûre | [SPEC-13](SPEC-13-erreurs-asynchrones-listes.md) précise les deux chemins asynchrones et leur validation |
-| P2 — montant OCR 1234,56 | SPEC-03, ressources OCR | [SPEC-14](SPEC-14-montants-ocr-sans-groupement.md) ajoute le résultat de parsing manquant |
-| P3 — année zéro | SPEC-04, validation des dates | [SPEC-15](SPEC-15-date-annee-zero.md) explicite cette frontière absente des critères |
+| P2 — rejets des listes manager et RH (2 constats) | SPEC-01, principe d’erreur sûre | [SPEC-16](SPEC-16-erreurs-asynchrones-listes.md) précise les deux chemins asynchrones et leur validation |
+| P2 — montant OCR 1234,56 | SPEC-03, ressources OCR | [SPEC-17](SPEC-17-montants-ocr-sans-groupement.md) ajoute le résultat de parsing manquant |
+| P3 — année zéro | SPEC-04, validation des dates | [SPEC-18](SPEC-18-date-annee-zero.md) explicite cette frontière absente des critères |
 
 Les trois compléments sont préparés, sans réalisation applicative. Les quatre motifs signalés sont toujours présents par lecture du code au SHA ci-dessus ; aucun test applicatif exécuté. AUD-010 reste reporté ; AUD-011 dispose de CI-001. Aucun doublon de SPEC-11/12 créé. Node.js absent : contrôles Node du dépôt non exécutables ici ; contrôle indépendant des fiches et liens documentaires décrit dans le journal.
+
+## Corrections sélectionnées — consolidation du 29 octobre 2026
+
+Voir la [table de suivi des changements et specs](CHANGEMENTS_A_SPECIFIER.md). Les quatre AUD SonarQube sélectionnés (027 à 030) sont couverts par les trois specs LastChanges récupérées (13 à 15). Les trois compléments créés ici sont renumérotés 16 à 18 pour éviter les collisions. AUD-024 à 026 restent assumés, sans spec. La recherche initiale sans fichiers LastChanges décrite ci-dessus précédait la récupération distante ; ces fichiers sont maintenant présents.

@@ -1,0 +1,21 @@
+{
+  "task": {
+    "id": "3c1bb2dd-fe95-464c-870d-baa6abdd255d",
+    "type": "REPORT",
+    "componentId": "7b819eae-435d-4cf8-a5a1-48745a7d2c61",
+    "componentKey": "expense-io-audit",
+    "componentName": "Expense.io audit",
+    "componentQualifier": "TRK",
+    "analysisId": "e150a93a-1d8d-432f-88de-f9ff9bae98df",
+    "status": "SUCCESS",
+    "submittedAt": "2026-10-26T18:48:07+0000",
+    "submitterLogin": "admin",
+    "startedAt": "2026-10-26T18:48:07+0000",
+    "executedAt": "2026-10-26T18:48:14+0000",
+    "executionTimeMs": 6395,
+    "hasScannerContext": true,
+    "warningCount": 0,
+    "warnings": [],
+    "infoMessages": []
+  }
+}

@@ -394,6 +394,50 @@ Migrations : `0010` (SPEC-07) avant `0020` (SPEC-09) ; l'ordre inverse est refus
 
 22 octobre — SPEC-10 : seed relu et testé sur main combinée à `7c7703c` ; 10/10 scénarios seed, 302/302 tests complets et SPEC-01 à 10 passed. Les quatre anciens repères remplacés par f08f8a7 sont restitués en ajout dans AUD-018, sans réécrire le texte reçu. Le seed concurrent et sa reprise UI restent hors périmètre.
 
+## SonarQube — audit statique local — 26 octobre 2026
+
+| Issue | Décision | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| Demande de Maia : lancer SonarQube pour auditer le dépôt | OBSERVATION : instance locale isolée et projet privé ; analyse seule, aucune correction sélectionnée | Obtenir des signaux chiffrés sans modifier le code, le lockfile local ni les services existants | SHA `2e9e30cf9f21a240c1213da6baec7f4c61618175` ; [rapport et exports](evidence/sonarqube-20261026/README.md) | MEASUREMENT : scanner exit 0, calcul serveur SUCCESS ; 107 fichiers indexés, 16 alertes (9 vulnérabilités selon l'outil, 1 bug, 6 code smells), duplication 6,3 %. Gate OK sans condition évaluée ; couverture 0 % sans rapport importé. Aucun test exécuté ; alertes non qualifiées, exploitabilité non confirmée. Compréhension de Maia non évaluée. |
+
+## SonarQube — première qualification et risques assumés — 26 octobre 2026
+
+| Issue | Décision | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-024 : S4036 sur la recherche de npm dans `scripts/ci/dependencies.mjs:5` | À la demande de Maia, risque assumé dans [assumed_issues](assumed_issues/README.md) ; aucune correction ni spec prévue | Risque faible et conditionnel, P3 : substitution possible seulement avec influence sur la recherche d'exécutable ; cette influence n'est pas démontrée ici | [Fiche AUD-024](assumed_issues/AUD-024-recherche-executables-path.md), source `2e9e30cf9f21a240c1213da6baec7f4c61618175` | Code et workflow relus ; 0 test d'exploitation. Les autres occurrences restent à examiner. Aucune réponse à la question de compréhension, aucun acquis attribué. |
+
+26 octobre 2026 — SonarQube 2/16 : Maia accepte aussi le risque de recherche de git via PATH dans `scripts/ci/documentation.mjs:11` (S4036, source `2e9e30cf9f21a240c1213da6baec7f4c61618175`). Ajout dans [AUD-024](assumed_issues/AUD-024-recherche-executables-path.md) : faible/P3, assumé, aucune correction ni spec ; même mécanisme conditionnel que l'occurrence npm. Code et export relus, 0 test d'exploitation.
+
+26 octobre 2026 — SonarQube 3/16 : à la demande explicite de Maia, S4036 dans `scripts/ci/documentation.mjs:14` rejoint [AUD-024](assumed_issues/AUD-024-recherche-executables-path.md) comme risque assumé faible/P3, sans correction ni spec. Même recherche conditionnelle de git via PATH ; source `2e9e30cf9f21a240c1213da6baec7f4c61618175`, code et export relus, 0 test d'exploitation.
+
+26 octobre 2026 — SonarQube 4 à 6/16 : Maia accepte aussi le regroupement des autres occurrences du même risque PATH. Les appels git de `scripts/ci/documentation.mjs:16,20,22` rejoignent [AUD-024](assumed_issues/AUD-024-recherche-executables-path.md), faible/P3, assumé, sans correction ni spec. Les six S4036 de l'export sont rattachées ; autres mécanismes non décidés. Source `2e9e30cf9f21a240c1213da6baec7f4c61618175`, code et clés d'alertes relus, 0 test d'exploitation.
+
+26 octobre 2026 — SonarQube 8/16 : Maia accepte le risque du mot de passe fixe du compte PostgreSQL de préparation des tests (`scripts/ci/run.mjs:12`, S6698). Création d'[AUD-025](assumed_issues/AUD-025-identifiants-base-tests.md) : faible/P3 dans le périmètre de tests isolés, sans correction ni spec ; la publication locale et les données jetables motivent cette acceptation, sans garantie contre un accès local. Source `2e9e30cf9f21a240c1213da6baec7f4c61618175`, code et configuration relus, 0 test d'accès. Chiffrement non évalué ; valeurs des identifiants non reproduites.
+
+26 octobre 2026 — SonarQube 9/16 : Maia accepte le risque du mot de passe fixe du compte applicatif PostgreSQL de test (`scripts/ci/run.mjs:14`, S6698). Rattachement à [AUD-025](assumed_issues/AUD-025-identifiants-base-tests.md), faible/P3 dans le périmètre isolé, sans correction ni spec. Compte limité distinct du compte de préparation ; source `2e9e30cf9f21a240c1213da6baec7f4c61618175`, code et export relus, 0 test d'accès non autorisé.
+
+26 octobre 2026 — SonarQube 10/16 : Maia assume le mot de passe par défaut du manager de démonstration, en précisant « on le justifie car on reste en local ». Création d'[AUD-026](assumed_issues/AUD-026-comptes-demonstration-locale.md), faible/P3 pour cet usage local, sans correction ni spec ; décision à réexaminer avant toute exposition réseau. Le seed n'impose pas lui-même cette restriction ; exposition effective non mesurée, 0 test d'accès non autorisé. Source `2e9e30cf9f21a240c1213da6baec7f4c61618175`, `scripts/seed.mjs:20`, S2068 ; aucune valeur de mot de passe reproduite.
+
+## AUD-027 — validation d’email, LastChanges — 26 octobre 2026
+
+| Issue | Décision | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| S8786, action signup `src/app/actions/auth.ts:13,30` | À la demande de Maia, création d'[AUD-027](solutions-to-audit/AUD-027-validation-email-bornee-LastChanges.md) et [SPEC-13](../specs/SPEC-13-validation-email-bornee-LastChanges.md), suffixe -LastChanges ; P2, correction sélectionnée mais non implémentée | Coût de retours arrière observé avant hachage/DB ; prévoir borne préalable et validation déterministe en conservant les règles d'inscription | SHA `2e9e30cf9f21a240c1213da6baec7f4c61618175` ; [mesure reproductible](evidence/sonarqube-20261026/email-pattern-benchmark.json) | Quatre mesures locales, 4/4 entrées refusées ; aucune saturation HTTP démontrée. Première capture échouée sur EPERM Git, relance autorisée exit 0. Tests de correction : 0 ; code inchangé. Borne de 4096 proposée comme budget technique, pas norme d'email. Compréhension indépendante non évaluée. |
+
+26 octobre 2026 — SonarQube 12/16 : Maia demande « Pareil un last-change et next ». Création du [complément AUD-005 LastChanges](solutions-to-audit/AUD-005-diagnostic-borne-LastChanges.md) et de [SPEC-14 LastChanges](../specs/SPEC-14-diagnostic-borne-LastChanges.md), sans nouvel ID AUD. Pourquoi : coût des retours arrière du filtre authorization, mesuré sur quatre chaînes synthétiques sans secret ; priorité P2, atteignabilité HTTP non démontrée. Source `2e9e30cf9f21a240c1213da6baec7f4c61618175`, [mesures](evidence/sonarqube-20261026/authorization-pattern-benchmark.json). Prévoir une borne avant filtrage avec omission entière du champ trop long, sans affaiblir l'expurgation. Aucun code modifié ; tests de correction : 0, aucune fuite démontrée.
+
+## Correction des IDs SonarQube — 26 octobre 2026
+
+Maia précise : un nouveau problème retenu doit recevoir un nouvel AUD, même s'il touche un parcours déjà audité. Le rattachement précédent de l'alerte 12 à AUD-005 est remplacé ; celui de l'alerte 13 à AUD-003 a été interrompu avant création de documents ou modification de sa fiche. Les groupements de risques identiques explicitement acceptés dans AUD-024/AUD-025 restent inchangés.
+
+| Issue | Décision | Pourquoi | Preuves | Validation |
+| --- | --- | --- | --- | --- |
+| SonarQube 12/16, coût du diagnostic | Nouvel [AUD-028](solutions-to-audit/AUD-028-diagnostic-borne-LastChanges.md), SPEC-14 réassociée ; ancien complément AUD-005 conservé avec note de remplacement | Nouveau problème de coût distinct de la confidentialité initiale d'AUD-005, conformément à la clarification de Maia | Source 2e9e30cf9f21a240c1213da6baec7f4c61618175 ; mesure authorization existante | Préparation documentaire, aucune correction appliquée ; vérification append-only et liens |
+| SonarQube 13/16, coût de normalisation du montant | Nouvel [AUD-029](solutions-to-audit/AUD-029-normalisation-montant-LastChanges.md) et [SPEC-15](../specs/SPEC-15-normalisation-montant-LastChanges.md), sans rattachement à AUD-003 | Conserver empreintes et montants tout en supprimant le coût de recherche répétée ; P2 | Même SHA, empreinte.ts:12 ; quatre mesures de présentation dans la session, pas de fichier brut | Tests de correction : 0 ; aucun code ou service modifié, fiche AUD-003 préservée |
+
+26 octobre 2026 — SonarQube 14/16 : Maia sélectionne la réutilisation d'isValidEmail après correction, avec extraction du domaine conservée, et demande un nouvel AUD. Création d'[AUD-030 LastChanges](solutions-to-audit/AUD-030-validation-email-partagee-LastChanges.md), P2 dans le lot commun, distinct d'AUD-027 ; pas de classement en risque assumé. SPEC-13 actualisée pour les deux issues : validateur existant unique au lieu du helper signup-email.ts initialement proposé. Pourquoi : fonction sans appel trouvé, même expression coûteuse, éviter deux validations divergentes. Source `2e9e30cf9f21a240c1213da6baec7f4c61618175`, code et recherche de consommateurs relus ; aucun code modifié, 0 test de correction. Compréhension indépendante non déduite de la décision.
+
+
 ## Vérification des specs et compléments ciblés — 29 octobre 2026
 
 Périmètre demandé par Maia : vérifier les specs des derniers fichiers AUD et des quatre constats cités, puis rédiger ce qui manque. OBSERVATION au SHA `2e9e30cf9f21a240c1213da6baec7f4c61618175` : arbre initial propre, branche `hacked-status` ; HEAD, main et origin/main locaux identiques. Aucun fetch ni contrôle de main distant. Aucun fichier nommé « last » trouvé ; identification des éventuels fichiers différents toujours à préciser. [Table de couverture](../specs/README.md#vérification-des-specs-restantes--29-octobre-2026).
@@ -401,10 +445,24 @@ Périmètre demandé par Maia : vérifier les specs des derniers fichiers AUD et
 | Issue | Décision | Pourquoi | Évidence | Validation |
 | --- | --- | --- | --- | --- |
 | AUD-022 / AUD-023 | Conserver SPEC-11 et SPEC-12 existantes | Déjà spécifiées ; ne pas transformer une condition ou qualification en correction autorisée | Specs et fiches relues ; AUD-022 préparée, AUD-023 qualification documentée | Aucun benchmark, audit npm ou mise à jour de dépendances exécuté |
-| AUD-005 — deux listes P2 | [SPEC-13](../specs/SPEC-13-erreurs-asynchrones-listes.md), préparée | Compléter SPEC-01 par les rejets différés et les erreurs HTTP réelles des deux routes | manager/expense-notes/route.ts:25 et hr/expense-notes/route.ts:25 retournent withUserScope sans await au SHA cité | Lecture statique ; tests nouveaux prévus, 0 exécuté |
-| AUD-008 — montant OCR P2 | [SPEC-14](../specs/SPEC-14-montants-ocr-sans-groupement.md), préparée | SPEC-03 ne fixe pas la frontière des montants non groupés | ocr.ts:204 et parseAmount relus au SHA cité ; motif décimal limité et repli entier | Résultat 1234 déduit du code, non mesuré ici ; tests de parsing prévus |
-| AUD-015 — année zéro P3 | [SPEC-15](../specs/SPEC-15-date-annee-zero.md), préparée | Expliciter une frontière de validité absente de SPEC-04 | validators.ts:79 et POST de soumission relus au SHA cité ; aucune borne year < 1 | Acceptation déduite du code, non exécutée ici ; validation pure et absence de mutation à tester |
+| AUD-005 — deux listes P2 | [SPEC-16](../specs/SPEC-16-erreurs-asynchrones-listes.md), préparée | Compléter SPEC-01 par les rejets différés et les erreurs HTTP réelles des deux routes | manager/expense-notes/route.ts:25 et hr/expense-notes/route.ts:25 retournent withUserScope sans await au SHA cité | Lecture statique ; tests nouveaux prévus, 0 exécuté |
+| AUD-008 — montant OCR P2 | [SPEC-17](../specs/SPEC-17-montants-ocr-sans-groupement.md), préparée | SPEC-03 ne fixe pas la frontière des montants non groupés | ocr.ts:204 et parseAmount relus au SHA cité ; motif décimal limité et repli entier | Résultat 1234 déduit du code, non mesuré ici ; tests de parsing prévus |
+| AUD-015 — année zéro P3 | [SPEC-18](../specs/SPEC-18-date-annee-zero.md), préparée | Expliciter une frontière de validité absente de SPEC-04 | validators.ts:79 et POST de soumission relus au SHA cité ; aucune borne year < 1 | Acceptation déduite du code, non exécutée ici ; validation pure et absence de mutation à tester |
 
 Documentation seule ; aucune entrée IMPLEMENTATION ajoutée, aucune fiche AUD réécrite, aucun code applicatif ni test modifié. Pas de nouvelle décision architecturale nécessitant un ADR. Compréhension de Maia non évaluée ; checkpoint à reprendre avant réalisation, aucune réponse inventée.
 
 MEASUREMENT documentaire : commande de capture prescrite échouée avec code 127 (`node: command not found`). Snapshot indépendant Python avant écriture : `/tmp/arla-spec-complements-20261029.json` ; comparaison exacte des empreintes des 22 fiches à la fin, contrôle des liens des trois nouvelles specs et du diff. Contrôles `ci:docs`, append-only Node, lint/types/build et tests applicatifs non exécutés ; aucune réussite applicative annoncée.
+
+## Specs des corrections retenues après récupération LastChanges — 29 octobre 2026
+
+| Issue | Décision | Pourquoi | Évidence | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-027 et AUD-030 | Conserver et compléter la traçabilité de SPEC-13 LastChanges | Une seule validation email corrigée et partagée, choix de Maia déjà documenté | Fiches, spec, validators.ts et signup relus ; regex indépendantes encore présentes | Spec complète C1 à C10, préparation uniquement ; 0 test exécuté ici |
+| AUD-028 | Conserver SPEC-14 LastChanges, revue datée ajoutée | Borne et diagnostic sûr déjà spécifiés, aucun doublon nécessaire | Fiche, spec et errors.ts relus ; filtrage sans borne toujours présent | C1 à C7 présents ; 0 test ou benchmark exécuté ici |
+| AUD-029 | Conserver SPEC-15 LastChanges, revue datée ajoutée | Correction linéaire sans changer les empreintes | Fiche, spec et empreinte.ts relus ; replace(/0+$/) toujours présent | C1 à C7 présents ; compatibilité historique prévue, non exécutée ici |
+| AUD-005 / AUD-008 / AUD-015, compléments récents | Renuméroter les specs locales 13/14/15 en 16/17/18 et actualiser leurs liens | Les identifiants 13 à 15 étaient déjà attribués dans le commit distant récupéré ; un numéro unique par spec | Documents locaux et distants comparés ; [table de couverture](../specs/CHANGEMENTS_A_SPECIFIER.md) | Critères conservés ; aucun changement de code applicatif |
+| AUD-024 à 026 | Exclure des specs de correction | Risques assumés explicitement, conformément à Maia | Fiches assumed_issues relues | Aucun changement de ces fiches |
+
+Révision de revue : HEAD `f637381f0e144fda04c0166b650279b4d9b0726a`, MERGE_HEAD `13ffcb0c6bd4c6050557e3cc14248d90fdc8b5da`. La fusion reste non finalisée ; aucun staging, commit ou push dans cette tâche. Modification préexistante du lockfile et contenu récupéré préservés. Les observations initiales « LastChanges absent » sont antérieures au fetch ; elles ne décrivent plus l’état courant. Les liens des entrées du 29 octobre vers les compléments ont été actualisés vers 16 à 18 ; aucune fiche AUD réécrite.
+
+Snapshot indépendant avant travail : `/tmp/arla-spec-lastchanges-20261029.json`. Contrôle exact des empreintes des fiches et liens des six specs + tableau exécuté via Python ; `git diff --check` contrôlé. Node.js absent : outils Node de capture/check, ci:docs et tests applicatifs non exécutés. Pas de réalisation applicative, pas d’entrée IMPLEMENTATION fictive, compréhension de Maia non évaluée.

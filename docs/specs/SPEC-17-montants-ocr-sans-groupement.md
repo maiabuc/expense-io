@@ -1,4 +1,4 @@
-# SPEC-14 — Préserver les centimes des montants OCR non groupés
+# SPEC-17 — Préserver les centimes des montants OCR non groupés
 
 ## Identification
 
@@ -72,3 +72,7 @@ Les contrôles par spec restent ceux du parent ; ce complément documentaire ne 
 - [Journal des décisions](../audit/DECISION_LOG.md) : vérification et compléments du 29 octobre 2026.
 - Réalisation : diff documentaire local du 29 octobre 2026, aucun commit créé ni code applicatif modifié.
 - Restant : implémentation et validation des critères ; statut préparée.
+
+## Clarification du 29 octobre 2026 après récupération distante
+
+Cette spec porte désormais SPEC-17 pour préserver les identifiants SonarQube SPEC-13 à SPEC-15 déjà attribués. Les critères et le périmètre restent inchangés. Révision de revue : HEAD `f637381f0e144fda04c0166b650279b4d9b0726a`, documents distants `13ffcb0c6bd4c6050557e3cc14248d90fdc8b5da` présents dans une fusion non finalisée. Aucun changement applicatif dans cette tâche. Les états de branche et de fichiers décrits plus haut sont ceux de la préparation initiale.
