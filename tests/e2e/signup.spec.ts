@@ -77,3 +77,30 @@ test('[AUD-013][INS-008][reference] un échec de connexion automatique ne suppri
     expect((await (await page.request.get('/api/auth/session')).json())?.user).toBeUndefined()
   } finally { await db().query('DROP TRIGGER IF EXISTS ci_login_failure ON users') }
 })
+
+test('[AUD-027,AUD-030][EMAIL-008][correction] email surdimensionné refusé par le serveur sans création de compte ou entreprise', async ({ page }) => {
+  const domain = 'ci-email-borne.invalid'
+  const email = `${'a'.repeat(4097 - domain.length - 1)}@${domain}`
+  expect(email).toHaveLength(4097)
+  const before = (await db().query(`SELECT
+    (SELECT count(*)::int FROM users) AS users,
+    (SELECT count(*)::int FROM companies) AS companies`)).rows[0]
+  await fillSignup(page, email)
+  // Neutraliser les contraintes HTML pour vérifier la validation de l'action serveur.
+  await page.getByLabel('Email', { exact: true }).evaluate((input: HTMLInputElement) => {
+    input.type = 'text'
+    input.removeAttribute('maxlength')
+    if (input.form) input.form.noValidate = true
+  })
+  const response = page.waitForResponse(r => new URL(r.url()).pathname === '/signup' && r.request().method() === 'POST')
+  await page.getByRole('button', { name: "S'inscrire", exact: true }).click()
+  await response
+  await expect(page.getByRole('alert')).toContainText('email invalide')
+  await expect(page).toHaveURL(/\/signup$/)
+  const after = (await db().query(`SELECT
+    (SELECT count(*)::int FROM users) AS users,
+    (SELECT count(*)::int FROM companies) AS companies`)).rows[0]
+  expect(after).toEqual(before)
+  expect((await db().query('SELECT id FROM users WHERE email=$1', [email])).rows).toEqual([])
+  expect((await db().query('SELECT id FROM companies WHERE email_domain=$1', [domain])).rows).toEqual([])
+})

@@ -368,5 +368,147 @@
       "AUD-023"
     ],
     "reason": "Avis, usages et incertitudes à relire ; npm audit ne valide pas la qualification."
+  },
+  {
+    "id": "SPEC-13",
+    "title": "Validation email bornée et partagée",
+    "mode": "automated",
+    "issues": [
+      "AUD-027",
+      "AUD-030"
+    ],
+    "includePrefixes": [
+      "EMAIL-"
+    ],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "EMAIL-001",
+      "EMAIL-002",
+      "EMAIL-003",
+      "EMAIL-004",
+      "EMAIL-005",
+      "EMAIL-006",
+      "EMAIL-007",
+      "EMAIL-008",
+      "EMAIL-009",
+      "EMAIL-010"
+    ]
+  },
+  {
+    "id": "SPEC-14",
+    "title": "Diagnostic interne borné",
+    "mode": "automated",
+    "issues": [
+      "AUD-028"
+    ],
+    "includePrefixes": [
+      "DIAG-"
+    ],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "DIAG-001",
+      "DIAG-002",
+      "DIAG-003",
+      "DIAG-004",
+      "DIAG-005",
+      "DIAG-006"
+    ]
+  },
+  {
+    "id": "SPEC-15",
+    "title": "Normalisation du montant linéaire",
+    "mode": "automated",
+    "issues": [
+      "AUD-029"
+    ],
+    "includePrefixes": [
+      "CANON-"
+    ],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "CANON-001",
+      "CANON-002",
+      "CANON-003",
+      "CANON-004",
+      "CANON-005"
+    ]
+  },
+  {
+    "id": "SPEC-16",
+    "title": "Erreurs asynchrones des listes",
+    "mode": "automated",
+    "issues": [
+      "AUD-005"
+    ],
+    "includePrefixes": [
+      "LIST-PANNE-"
+    ],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "LIST-PANNE-001",
+      "LIST-PANNE-002",
+      "LIST-PANNE-003",
+      "LIST-PANNE-004",
+      "LIST-PANNE-005",
+      "LIST-PANNE-006",
+      "LIST-PANNE-007",
+      "LIST-PANNE-008",
+      "LIST-PANNE-009",
+      "LIST-PANNE-010"
+    ]
+  },
+  {
+    "id": "SPEC-17",
+    "title": "Montants OCR non groupés",
+    "mode": "automated",
+    "issues": [
+      "AUD-008"
+    ],
+    "includePrefixes": [
+      "OCR-AMOUNT-"
+    ],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "OCR-AMOUNT-001",
+      "OCR-AMOUNT-002",
+      "OCR-AMOUNT-003",
+      "OCR-AMOUNT-004",
+      "OCR-AMOUNT-005",
+      "OCR-AMOUNT-006"
+    ]
+  },
+  {
+    "id": "SPEC-18",
+    "title": "Refus année zéro",
+    "mode": "automated",
+    "issues": [
+      "AUD-015"
+    ],
+    "includePrefixes": [
+      "DATE-ZERO-"
+    ],
+    "includeCases": [],
+    "excludePrefixes": [],
+    "excludeCases": [],
+    "requiredCases": [
+      "DATE-ZERO-001",
+      "DATE-ZERO-002",
+      "DATE-ZERO-003",
+      "DATE-ZERO-004",
+      "DATE-ZERO-005",
+      "DATE-ZERO-006",
+      "DATE-ZERO-007",
+      "DATE-ZERO-008"
+    ]
   }
 ]

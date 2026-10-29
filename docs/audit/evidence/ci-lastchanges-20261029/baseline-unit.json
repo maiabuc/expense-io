@@ -1,0 +1,166 @@
+{
+  "revision": "786d193bd03b87764ed32b9103a72f7ef84eb533",
+  "state": "tests added before application fixes, local diff",
+  "node": "24.6.0",
+  "executed": 39,
+  "passed": 24,
+  "failed": 15,
+  "results": [
+    {
+      "title": "[AUD-028][DIAG-001][correction] champ de 16385 unités omis entièrement",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-028][DIAG-002][reference] diagnostic bénin conservé aux frontières inclusives",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-028][DIAG-003][correction] secrets filtrés sans omission sous le plafond",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-028][DIAG-004][correction] omission entière sans fragment sensible au début à la frontière ou à la fin",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-028][DIAG-005][reference] authorization sans valeur et variantes de secrets restent traités",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-028][DIAG-006][correction] réponse publique et journal structuré conservent leurs contrats avec champs surdimensionnés",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-015][DATE-ZERO-001][correction] année zéro refusée au début et à la fin de son année",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-015][DATE-ZERO-002][reference] première année positive conservée sans seuil ancienneté",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-015][DATE-ZERO-003][reference] dates réelles et bissextiles conservent les refus existants",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-015][DATE-ZERO-004][reference] date du jour suit minuit Paris indépendamment du fuseau serveur",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-015][DATE-ZERO-005][correction] POST refuse année zéro avant assemblage ou soumission",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-015][DATE-ZERO-006][reference] POST transmet année 0001 inchangée au module de soumission",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-001][correction] manager transforme le rejet différé du contexte en réponse sûre",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-002][correction] RH transforme le rejet différé du contexte en réponse sûre",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-003][correction] manager intercepte aussi le rejet asynchrone de la requête",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-004][correction] RH intercepte aussi le rejet asynchrone de la requête",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-005][reference] garde manager conserve 401 sans ouvrir de contexte",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-006][reference] garde RH conserve 403 sans ouvrir de contexte",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-007][reference] succès manager conserve le tableau et ses champs",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-005][LIST-PANNE-008][reference] succès RH conserve le tableau et ses champs",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-029][CANON-001][reference] la forme canonique conserve les valeurs du corpus historique",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-029][CANON-002][reference] les équivalences avant arrondi ne fusionnent pas deux montants distincts",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-029][CANON-003][correction] les longues fractions restent exactes sans limite nouvelle de précision",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-029][CANON-004][reference] les empreintes fixes restent compatibles avec les demandes historiques",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-008][OCR-AMOUNT-001][correction] quatre chiffres non groupés conservent les centimes avec virgule et point",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-008][OCR-AMOUNT-002][correction] les grands montants non groupés sont reconnus en entier",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-008][OCR-AMOUNT-003][reference] les groupements de milliers restent reconnus",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-008][OCR-AMOUNT-004][reference] les petits montants et le repli entier restent disponibles",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-008][OCR-AMOUNT-005][reference] une analyse sans nombre reste un succès sans suggestion",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-008][OCR-AMOUNT-006][reference] la ligne total garde la priorité et la date reste indépendante",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-001][correction] email trop long refusé avant hachage connexion SQL et authentification",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-007][correction] champ email absent refusé côté action sans effet",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-030][EMAIL-009][correction] signup respecte le refus du validateur partagé",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-010][reference] domaine normalisé et adresse originale transmis sans changer la transaction",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-002][correction] email valide de 4095 unités accepté",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-003][correction] email valide de 4096 unités accepté",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-004][correction] email valide de 4097 unités refusé",
+      "status": "failed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-005][reference] grammaire courte historique conservée sans normalisation",
+      "status": "passed"
+    },
+    {
+      "title": "[AUD-027,AUD-030][EMAIL-006][correction] domaine adverse à nombreux points refusé",
+      "status": "passed"
+    }
+  ]
+}

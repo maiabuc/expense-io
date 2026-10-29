@@ -466,3 +466,11 @@ MEASUREMENT documentaire : commande de capture prescrite échouée avec code 127
 Révision de revue : HEAD `f637381f0e144fda04c0166b650279b4d9b0726a`, MERGE_HEAD `13ffcb0c6bd4c6050557e3cc14248d90fdc8b5da`. La fusion reste non finalisée ; aucun staging, commit ou push dans cette tâche. Modification préexistante du lockfile et contenu récupéré préservés. Les observations initiales « LastChanges absent » sont antérieures au fetch ; elles ne décrivent plus l’état courant. Les liens des entrées du 29 octobre vers les compléments ont été actualisés vers 16 à 18 ; aucune fiche AUD réécrite.
 
 Snapshot indépendant avant travail : `/tmp/arla-spec-lastchanges-20261029.json`. Contrôle exact des empreintes des fiches et liens des six specs + tableau exécuté via Python ; `git diff --check` contrôlé. Node.js absent : outils Node de capture/check, ci:docs et tests applicatifs non exécutés. Pas de réalisation applicative, pas d’entrée IMPLEMENTATION fictive, compréhension de Maia non évaluée.
+
+## Tests avant corrections SPEC-13 à 18 — 29 octobre 2026
+
+| Issue | Décision | Pourquoi | Évidence | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-027/030, AUD-028, AUD-029, compléments AUD-005/008/015 | Tests ajoutés d’abord sur feat/ci ; publication main directement demandée par Maia, avant branches de réalisation | Matérialiser les critères avant corrections, aucune assertion de référence affaiblie | [Campagne et limites](evidence/ci-lastchanges-20261029/README.md), baseline unitaire avant correction | 45 nouveaux cas catalogués ; types et docs exit 0 ; 39 unitaires exécutés : 24 verts, 15 rouges attendus ; API/E2E locaux bloqués par absence Docker |
+
+Aucun correctif applicatif dans ce lot. Alias Vitest, manifeste et matrice CI adaptés ; binding Linux Rolldown à version inchangée restauré dans le lockfile pour rendre les tests exécutables. Les six futures branches gardent les tests des autres lots en échec tant que leurs corrections ne sont pas intégrées ; ce rouge n’est pas masqué et n’autorise pas à annoncer la CI globale verte.
