@@ -86,3 +86,16 @@ export function fixtureImage(fileName: string): UploadFile {
     buffer: readFileSync(path.join(__dirname, '..', 'fixtures', fileName)),
   }
 }
+
+
+/** Fixtures de formats réels : changer le MIME d’un PNG ne crée pas un JPEG/PDF. */
+export function receiptForType(label: string, mimeType: string): UploadFile {
+  if (mimeType === 'image/png') return pngReceipt(label)
+  const extension = { 'image/jpeg': 'jpg', 'image/webp': 'webp', 'application/pdf': 'pdf' }[mimeType]
+  if (!extension) throw new Error('Format de fixture non pris en charge')
+  return {
+    name: `recu-${label}.${extension}`,
+    mimeType,
+    buffer: readFileSync(path.join(process.cwd(), 'tests', 'fixtures', `receipt.${extension}`)),
+  }
+}

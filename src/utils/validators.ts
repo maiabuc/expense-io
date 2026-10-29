@@ -114,6 +114,9 @@ const SORT_OPTIONS = new Map<string, string>([
   ['newest', 'created_at DESC'],
   ['amount_asc', 'amount ASC'],
   ['amount_desc', 'amount DESC'],
+  // Alias historiques exacts : aucun fragment SQL reçu n’est interpolé.
+  ['amount asc', 'amount ASC'],
+  ['amount desc', 'amount DESC'],
 ])
 export const DEFAULT_SORT_OPTION = 'created_at DESC'
 

@@ -148,37 +148,6 @@ jobs:
           if-no-files-found: warn
           retention-days: 7
 
-  upstream:
-    name: E2E de référence NathanPrats PR 4
-    needs: [installation, build]
-    runs-on: ubuntu-24.04
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: npm
-      - run: npm ci
-      - uses: actions/download-artifact@v4
-        with:
-          name: production-build
-          path: .next/
-      - run: npx --no-install playwright install --with-deps chromium
-      - run: npm run test:upstream
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: upstream-e2e-results
-          path: |
-            reports/upstream.json
-            reports/server-upstream.log
-            test-results/upstream/
-          if-no-files-found: warn
-          retention-days: 7
-
   dependances:
     name: AUD-023 — Dépendances (informatif)
     needs: installation
@@ -259,7 +228,7 @@ jobs:
   resultat:
     name: Résultat CI requis
     if: always()
-    needs: [installation, qualite, build, parcours, dependances, specs, upstream]
+    needs: [installation, qualite, build, parcours, dependances, specs]
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -291,7 +260,7 @@ jobs:
         run: |
           if [ -f reports/specifications.md ]; then cat reports/specifications.md >> "$GITHUB_STEP_SUMMARY"; fi
           if [ -f reports/issues.md ]; then cat reports/issues.md >> "$GITHUB_STEP_SUMMARY"; fi
-          node -e 'const jobs=JSON.parse(process.env.JOBS); for (const [name,job] of Object.entries(jobs)) console.log(name,job.result); if (["installation","qualite","build","parcours","specs","upstream"].some(name => jobs[name].result !== "success")) process.exit(1)'
+          node -e 'const jobs=JSON.parse(process.env.JOBS); for (const [name,job] of Object.entries(jobs)) console.log(name,job.result); if (["installation","qualite","build","parcours","specs"].some(name => jobs[name].result !== "success")) process.exit(1)'
         env:
           JOBS: ${{ toJSON(needs) }}
       - uses: actions/upload-artifact@v4

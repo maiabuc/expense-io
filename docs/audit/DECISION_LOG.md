@@ -488,3 +488,14 @@ Aucun correctif applicatif dans ce lot. Alias Vitest, manifeste et matrice CI ad
 ## 29 octobre 2026 — Revue SPEC-14
 
 AUD-028 : parcours authorization déterministe retenu pour C5 ; le plafond seul ne supprimait pas les recherches répétées. [Spec](../specs/SPEC-14-diagnostic-borne-LastChanges.md) et [mesures](evidence/spec14-review-20261029/after.json). 6/6 DIAG, 20/20 contrôles de compatibilité, lint/types exit 0 ; PANNE et build distants en attente. Les fiches antérieures restent immuables.
+
+
+## 29 octobre 2026 — Corrections immédiates, priorité CI interne
+
+| Issue | Décision | Pourquoi | Preuve | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-004 | Ajouter deux alias historiques fixes | Rendre le tri historique compatible sans SQL libre | SPEC-04 complément ; LIST-003/004/006 | À relancer en CI sur le SHA publié |
+| AUD-014 | Restaurer Champs invalides pour les montants refusés | Même statut, même validation stricte, contrat externe historique | NOTE-006 et NDF-08 | À relancer en CI sur le SHA publié |
+| Tests externes | Utiliser de vrais octets JPEG/WebP/PDF pour six scénarios | Tester les formats légitimes sans désactiver la validation MIME | receiptForType ; assertions conservées | Suite des 89 scénarios à relancer |
+| CI | Séparer référence externe et CI interne obligatoire | Priorité P1 explicite de Maia ; tous les contrôles internes restent requis | ci.yml et upstream-e2e.yml | Pas de continue-on-error ni de skip d’assertion |
+| Documentation | Supprimer le rapport de compatibilité | Demande explicite de Maia | Suppression du fichier de rapport et des liens actifs | Diff revu |

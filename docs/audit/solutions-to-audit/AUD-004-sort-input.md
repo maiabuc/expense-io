@@ -111,3 +111,20 @@ La [revue du 19 octobre](../revue-pr-g4bi2004-20261019.md) relève (P2, C1) que 
 | `npm run test:api` (suite complète) | LIST-001…006 et ENTREE-002 réussis | Tous réussis (`constructor`, `__proto__` → 400) | `reports/api.json` |
 | Vérification directe du module | Propriétés héritées refusées | `constructor`, `__proto__`, `toString`, `hasOwnProperty` → `null` ; options nommées inchangées | Sortie locale 2026-10-19 |
 | `npm run test:spec:report -- SPEC-04` | Contrôle par spec vert | `passed`, 44/44 | `reports/SPEC-04.json` |
+
+
+### 29 octobre 2026 — Corrections immédiates de faible risque
+
+Statut : implémentée, validation distante en cours. Autorisation : demande de Maia de rendre la CI interne fusionnable puis de préserver les parcours externes critiques. Base : `08a4e12aa697d6e880f6a9305399a5c5dc2c775b` ; réalisation : diff isolé du 29 octobre 2026. Spec : [SPEC-04, complément](../../specs/SPEC-04-entrees-et-affichage.md).
+
+#### Ce qui a été implémenté et où
+
+Les alias historiques exacts amount ASC et amount DESC sont ajoutés à la Map, insensibles à la casse. Aucun texte SQL reçu n’est interpolé ; l’expression libre de LIST-006 reste refusée. LIST-003/004 vérifient anciennes et nouvelles conventions. Fichiers : src/utils/validators.ts et tests/api/expenses.spec.ts pour le tri ; src/app/api/expense-notes/route.ts et NOTE-006 pour le message de montant.
+
+#### Nouveau fonctionnement
+
+Entrée → validation serveur existante → option fixe ou refus avant SQL → réponse publique compatible. Aucun droit, transaction ou effet persistant supplémentaire.
+
+#### Validation et limites
+
+Les 81 unitaires du code combiné réussissent localement. Lint/types et les suites HTTP/E2E complètes sont relancés sur le diff courant. Les résultats distants seront consignés au SHA exécuté ; aucune assertion de référence n’est retirée.

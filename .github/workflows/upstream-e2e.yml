@@ -1,0 +1,41 @@
+name: Référence E2E externe
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: upstream-e2e-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  upstream:
+    name: Scénarios de NathanPrats PR 4
+    if: github.event_name != 'pull_request' || github.head_ref == 'test/reference-quickfix-validation'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.21.0'
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx --no-install playwright install --with-deps chromium
+      - run: npm run test:upstream
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: upstream-e2e-results
+          path: |
+            reports/upstream.json
+            reports/server-upstream.log
+            test-results/upstream/
+          if-no-files-found: warn
+          retention-days: 7

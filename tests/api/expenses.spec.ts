@@ -42,7 +42,9 @@ test("[G14][NOTE-005][reference] dépôt légitime application/pdf", async ({ re
 test("[AUD-014][NOTE-006][reference] montant zéro refusé sans note", async ({ request }) => {
   await authenticate(request, 'a_employee')
   const before = (await ownNotes(request)).length
-  expect((await submit(request, { amount: '0' })).status()).toBe(400)
+  const response = await submit(request, { amount: '0' })
+  expect(response.status()).toBe(400)
+  expect(await response.json()).toEqual({ error: 'Champs invalides' })
   expect((await ownNotes(request)).length).toBe(before)
 })
 
@@ -212,16 +214,20 @@ test("[AUD-004][LIST-002][correction] option nommée newest", async ({ request }
 
 test("[AUD-004][LIST-003][correction] option nommée amount_asc", async ({ request }) => {
   await authenticate(request, 'a_employee')
-  const response = await request.get('/api/expense-notes?sort=amount_asc')
-  expect(response.status()).toBe(200)
-  expect((await response.json()).map((n: { id: string }) => n.id)).toEqual([notes.rejected, notes.employee, notes.approved])
+  for (const sort of ['amount_asc', 'amount ASC']) {
+    const response = await request.get('/api/expense-notes?sort=' + encodeURIComponent(sort))
+    expect(response.status()).toBe(200)
+    expect((await response.json()).map((n: { id: string }) => n.id)).toEqual([notes.rejected, notes.employee, notes.approved])
+  }
 })
 
 test("[AUD-004][LIST-004][correction] option nommée AMOUNT_DESC", async ({ request }) => {
   await authenticate(request, 'a_employee')
-  const response = await request.get('/api/expense-notes?sort=AMOUNT_DESC')
-  expect(response.status()).toBe(200)
-  expect((await response.json()).map((n: { id: string }) => n.id)).toEqual([notes.approved, notes.employee, notes.rejected])
+  for (const sort of ['AMOUNT_DESC', 'amount DESC']) {
+    const response = await request.get('/api/expense-notes?sort=' + encodeURIComponent(sort))
+    expect(response.status()).toBe(200)
+    expect((await response.json()).map((n: { id: string }) => n.id)).toEqual([notes.approved, notes.employee, notes.rejected])
+  }
 })
 
 test("[AUD-004][LIST-005][correction] tri inconnu rejeté avant exécution SQL", async ({ request }) => {
