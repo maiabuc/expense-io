@@ -68,3 +68,24 @@ Exception dans une route → `respondError(error, operation)` → `logInternalEr
 #### Écarts et limites
 
 Écart assumé avec la proposition de SPEC-14 : le remplacement de la reconnaissance `authorization` par un parcours déterministe n'a pas été réalisé, car les cas de confidentialité et de frontière (DIAG-002/003/005, PANNE-005…009) passent déjà avec l'expression existante et le seul plafond manquait. Conformément aux instructions (séparer correction et refactor, n'ajouter que le nécessaire au lot démontré), seule la borne — qui corrige les cas rouges DIAG-001/004/006 — est appliquée. Le microbenchmark comparatif du motif et la suite API restent à exécuter en CI ; aucun gain de débit HTTP revendiqué.
+
+
+### 29 octobre 2026 — Revue du critère C5
+
+Statut : implémentée, validation distante incomplète. Base : `ebd8b96`, réalisation : diff de revue daté. Spec : [SPEC-14](../../specs/SPEC-14-diagnostic-borne-LastChanges.md).
+
+#### Ce qui a été implémenté et où
+
+L’écart déclaré dans l’entrée précédente n’est pas retenu : sous le plafond, les espaces après authorization provoquaient encore des recherches répétées. `src/lib/errors.ts`, `redactAuthorization`, parcourt désormais la valeur avec indices croissants, reconnaît les valeurs citées et échappées ainsi que Bearer/Basic, et conserve le marqueur expurgé. Les autres filtres et la borne préalable restent actifs. Une conversion ASCII seulement préserve les indices Unicode du texte original.
+
+#### Nouveau fonctionnement
+
+Erreur → respondError → code/message/stack → borne du champ entier → filtre URL → parcours authorization déterministe → autres filtres → journal structuré. Réponse publique inchangée.
+
+#### Validation et preuves
+
+6/6 tests DIAG et 20/20 contrôles synthétiques de confidentialité/frontières ; lint et types exit 0. [Compatibilité](../evidence/spec14-review-20261029/compatibility.json), [mesure avant](../evidence/spec14-review-20261029/before.json), [après](../evidence/spec14-review-20261029/after.json), [protocole](../evidence/spec14-review-20261029/benchmark.mjs). Chaque version est exécutée dans un processus limité à 15 secondes, cinq répétitions sur quatre tailles. Aucune capacité HTTP déduite.
+
+#### Limites
+
+La suite PANNE et le build réel sont vérifiés par Actions sur la révision publiée ; aucun succès distant anticipé. Ancienne entrée conservée intégralement.

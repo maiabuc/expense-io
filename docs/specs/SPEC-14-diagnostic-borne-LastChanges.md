@@ -93,3 +93,8 @@ Périmètre confirmé par la demande de Maia : spécifier les corrections sélec
 Révision locale : `f637381f0e144fda04c0166b650279b4d9b0726a` ; documents récupérés depuis `13ffcb0c6bd4c6050557e3cc14248d90fdc8b5da`, fusion non finalisée. Aucun changement de grammaire, de plafond ou de règle métier ajouté par cette revue. Conserver les critères, scénarios et étapes de réalisation ci-dessus. [Table de suivi](CHANGEMENTS_A_SPECIFIER.md).
 
 Snapshot de revue avant modification : `/tmp/arla-spec-lastchanges-20261029.json`. Node.js absent : capture/contrôle prescrits non exécutables ; empreintes indépendantes capturées via Python et fiches laissées intactes. Contrôles documentaires de cette revue consignés dans le journal ; lint/types/build et tests non exécutés. Aucun ajout IMPLEMENTATION applicatif ni manifeste CI fictif. Avant réalisation, actualiser le SHA et capturer à nouveau les fiches avec l’outil Node du dépôt.
+
+
+## Revue C5 — 29 octobre 2026
+
+La borne seule de `ebd8b96` ne remplit pas le parcours sans retours combinatoires demandé. Le filtre authorization est remplacé par le parcours à indices croissants décrit dans [l’entrée de revue AUD-028](../audit/solutions-to-audit/AUD-028-diagnostic-borne-LastChanges.md). 6/6 DIAG, 20/20 contrôles synthétiques, lint/types réussis ; mesures brutes avant/après dans `docs/audit/evidence/spec14-review-20261029`. PANNE, build et E2E restent à vérifier en CI. Aucune assertion existante modifiée.
