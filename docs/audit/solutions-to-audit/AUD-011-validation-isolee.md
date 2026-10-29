@@ -108,3 +108,37 @@ PR → suites unitaires/API/navigateur complètes → artefacts du même run →
 #### Écarts et limites
 
 Aucune correction applicative, modification UI, suppression/affaiblissement de test, ni fusion/modification des six PR. Les défauts et compléments sont décrits dans la revue ; la PR5 a aussi été vérifiée séparément sur ses huit scénarios d’inscription avec le harnais complété. Un job vert ne remplace pas la revue ni la preuve des mesures. Les cas futurs de pool/reprise/hexagone restent exigés lorsqu’absents ; SPEC-11/12 ne deviennent pas verts automatiquement. Aucun test du professeur fourni, aucune validation de compréhension de Maia inférée.
+
+### 29 octobre 2026 — Priorité de l'erreur d'exécution sur l'état incomplet (CI-SPEC-014)
+
+Statut : implémentée et vérifiée (outillage unitaire). Associée à SPEC-16.
+Spec : [SPEC-16](../../specs/SPEC-16-erreurs-asynchrones-listes.md). Révision de départ : `2e9e30cf9f21a240c1213da6baec7f4c61618175`. Réalisation : branche `feat/spec-16`, diff local du 29 octobre 2026.
+
+#### Ce qui a été implémenté
+
+Le test d'outillage `CI-SPEC-014` échouait (`incomplete` au lieu de `failed`) après l'ajout des huit cas unitaires `LIST-PANNE-001…008` étiquetés `[AUD-005]` pour SPEC-16. Diagnostic : `evaluateSpecification` évaluait l'état dans l'ordre `incomplete` puis `failed`, si bien qu'un ou plusieurs cas `not-run` faisaient primer `incomplete` et masquaient les erreurs d'exécution signalées (`errors`). Concrètement, CI-SPEC-014 fournit un rapport `api.json` d'un ancien SHA sans `unit.json` ; les cas unitaires de SPEC-01 devenaient `not-run`, donc le lot était annoncé `incomplete` alors que le SHA périmé aurait dû le rendre `failed`. Avant l'ajout des cas unitaires à AUD-005, SPEC-01 ne sélectionnait que des cas API, tous présents : `notRun` valait 0 et le défaut de priorité restait invisible.
+
+Correction : une erreur d'exécution (SHA périmé, erreur globale de suite, prérequis qualité échoué, exécution partielle par issue) ou un cas en échec rend désormais le lot `failed` **en priorité**, avant les conditions d'état incomplet. L'absence de preuve sans erreur signalée (couverture obligatoire manquante, cas non exécutés seuls) reste `incomplete`. Aucune assertion de test affaiblie ou supprimée ; c'est le défaut de priorité de l'outillage qui est corrigé pour satisfaire l'assertion `CI-SPEC-014`.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| tests/reporters/specifications.mjs : `evaluateSpecification`, calcul de `status` | `failed || errors.length` évalué avant `incomplete` | Un résultat d'un SHA périmé ou une erreur globale ne peut plus être annoncé « incomplet » |
+
+#### Nouveau fonctionnement
+
+`summarize` calcule `specificationExecutionErrors` (dont le refus du SHA périmé) et les passe en `options.errors` à `evaluateSpecification`. Le nouvel ordre d'évaluation : si un cas est en échec ou si `errors` est non vide → `failed` ; sinon si aucun cas, couverture obligatoire manquante ou cas non exécutés → `incomplete` ; sinon `passed`. Le job `spec-check.mjs` et la synthèse partagent cette logique : tous deux refusent désormais ensemble un rapport d'ancien SHA (sortie 1, état `failed`).
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npx vitest run tests/unit/specification-report.test.ts` | CI-SPEC-001…015 verts | exit 0, 15/15 réussis (dont CI-SPEC-014 auparavant rouge) | Sortie locale 2026-10-29, Node 24.6.0 |
+| Reproduction `summarize` avec `api.json` ancien SHA sans `unit.json` | SPEC-01 `failed` | `failed`, erreurs `unit/api : révision du rapport absente ou différente` conservées | Reproduction locale 2026-10-29 |
+| `npm run typecheck` | exit 0 | exit 0 | Sortie locale 2026-10-29 |
+| `npm run test:unit` (sur `feat/spec-16`) | CI-SPEC-014 et LIST-PANNE verts ; seuls les autres défauts LastChanges restent rouges | 70/81 réussis ; 11 échecs restants = cas correction des specs 13/14/15/17/18 non fusionnées sur cette branche | `reports/unit.json` |
+
+#### Écarts et limites
+
+La correction touche uniquement l'ordre d'évaluation de l'état ; les critères d'intégrité (SHA, erreur globale, prérequis, couverture) sont inchangés. Les autres cas `CI-SPEC` conservent leur comportement : couverture manquante et cas non exécutés sans erreur restent `incomplete`. Le contrôle par spec sur rapports hébergés reste à confirmer en CI.
