@@ -34,7 +34,16 @@ const SENSITIVE_PATTERNS: RegExp[] = [
 // L'hôte et le chemin restent visibles pour le diagnostic.
 const URL_QUERY_PATTERN = /(\bhttps?:\/\/[^\s?#"']+)\?[^\s"'#]*/gi
 
+// Budget conservateur de diagnostic (unités UTF-16) vérifié AVANT tout filtre
+// (AUD-028) : au-delà, le champ entier est omis par un marqueur constant
+// plutôt que filtré, pour borner le coût des expressions sur une entrée très
+// longue et ne jamais conserver un préfixe/suffixe brut contenant une valeur
+// sensible coupée. Ce n'est pas un seuil normatif.
+export const MAX_DIAGNOSTIC_LENGTH = 16384
+const OVERSIZED_DIAGNOSTIC = '[diagnostic trop volumineux, omis]'
+
 export function redactDiagnostic(text: string): string {
+  if (text.length > MAX_DIAGNOSTIC_LENGTH) return OVERSIZED_DIAGNOSTIC
   let result = text.replace(URL_QUERY_PATTERN, `$1?${REDACTED}`)
   for (const pattern of SENSITIVE_PATTERNS) {
     result = result.replace(pattern, REDACTED)
