@@ -9,7 +9,14 @@ import type { ChampsNote } from './ports'
 export function montantCanonique(normalise: string): string {
   const [entier = '', fraction = ''] = normalise.split('.')
   const partieEntiere = entier.replace(/^0+/, '') || '0'
-  const partieDecimale = fraction.replace(/0+$/, '')
+  // Retrait des zéros décimaux terminaux par parcours arrière en temps
+  // linéaire (AUD-029) : on recule un index tant que le caractère précédent
+  // est un 0, puis on conserve la tranche avant cet index. Remplace
+  // `fraction.replace(/0+$/, '')`, dont l'expression peut provoquer des
+  // retours arrière coûteux sur une longue fraction. Résultat identique.
+  let fin = fraction.length
+  while (fin > 0 && fraction[fin - 1] === '0') fin--
+  const partieDecimale = fraction.slice(0, fin)
   return partieDecimale ? `${partieEntiere}.${partieDecimale}` : partieEntiere
 }
 
