@@ -31,7 +31,7 @@ Les directions actuelles sont dans [le journal](DECISION_LOG.md) et les solution
 
 ## Passe complémentaire des commentaires
 
-Passe ultérieure des axes : AUD-019 (confiance domaine email), AUD-020 (JSON invalide converti en retrait de manager), AUD-021 (cycles à définir), AUD-022 (volume des listes à mesurer). [Source, attendu et limites](next-issues.md). Pour AUD-020, huit observations de parsing avec déclarations extraites : six entrées mal formées/incomplètes donnent la même valeur null que le retrait explicite valide. Pas d'écriture ni de route HTTP exécutée. Les autres nouveaux points sont source/hypothèse ou clarification métier ; aucune solution sélectionnée.
+Passe ultérieure des axes : AUD-019 (confiance domaine email), AUD-020 (JSON invalide converti en retrait de manager), AUD-021 (cycles à définir), AUD-022 (volume des listes à mesurer). [Source, attendu et limites](archive/next-issues-20261014.md). Pour AUD-020, huit observations de parsing avec déclarations extraites : six entrées mal formées/incomplètes donnent la même valeur null que le retrait explicite valide. Pas d'écriture ni de route HTTP exécutée. Les autres nouveaux points sont source/hypothèse ou clarification métier ; aucune solution sélectionnée.
 
 [Revue du 14 octobre](comment-review.md), SHA inchangé : 12 groupes src dans 10 fichiers, comparaison avec les constats existants. AUD-016 (gestion d'erreurs réseau) et AUD-017 (jour affiché selon fuseau) reproduits sur code isolé ; AUD-018 (seed incomplet non repris) est une hypothèse source non exécutée. Ajouter aux vérifications les interactions compte DB restrictif/contexte finalisation et les réponses OCR vides après erreur. Aucune nouvelle correction sélectionnée.
 

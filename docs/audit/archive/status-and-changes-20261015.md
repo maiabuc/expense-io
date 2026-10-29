@@ -1,8 +1,10 @@
+> Archive de préparation : ce document décrit sa révision datée, pas l’état actuel du produit. Voir [l’index courant](../README.md).
+
 # Changements retenus et état réel de l'audit
 
-État actuel, 15 octobre : [dossier de passation documentaire finalisé](05-lots-et-acceptation.md), cinq fichiers de référence produits. Les bilans antérieurs ci-dessous décrivent les étapes ; les réserves restent explicites. Aucun correctif applicatif livré. Plan de migration/retour arrière exclu par demande de Maia.
+État actuel, 15 octobre : [dossier de passation documentaire finalisé](../05-lots-et-acceptation.md), cinq fichiers de référence produits. Les bilans antérieurs ci-dessous décrivent les étapes ; les réserves restent explicites. Aucun correctif applicatif livré. Plan de migration/retour arrière exclu par demande de Maia.
 
-15 octobre 2026. Source : `265924bc7274047989e708ab635c2854d376230f`. Aucune correction applicative implémentée. Décisions et preuves : [journal](DECISION_LOG.md), [couverture](coverage.md), [solutions](README.md).
+15 octobre 2026. Source : `265924bc7274047989e708ab635c2854d376230f`. Aucune correction applicative implémentée. Décisions et preuves : [journal](../DECISION_LOG.md), [couverture](../coverage.md), [solutions](../README.md).
 
 ## Liste des corrections retenues
 
@@ -28,9 +30,9 @@ La validation isolée avec deux entreprises et plusieurs rôles (AUD-011) est re
 
 ## Propositions, reports et compatibilité
 
-Architecture hexagonale simple et progressive validée ; premier module de soumission préparé dans la [revue](structure-review.md), [ADR accepté](../adr/0002-hexagonal-soumission.md). Les détails techniques et vérifications préalables restent à réaliser. Conserver le monolithe et les technologies ; pas de refonte générale, notifications ou queue ajoutées. Le choix précédent de non-centralisation des permissions manager/RH n'est pas remplacé automatiquement.
+Architecture hexagonale simple et progressive validée ; premier module de soumission préparé dans la [revue](../structure-review.md), [ADR accepté](../../adr/0002-hexagonal-soumission.md). Les détails techniques et vérifications préalables restent à réaliser. Conserver le monolithe et les technologies ; pas de refonte générale, notifications ou queue ajoutées. Le choix précédent de non-centralisation des permissions manager/RH n'est pas remplacé automatiquement.
 
-Secret d'authentification (AUD-010) : reporté ; [question au professeur](questions-professeur.md). Formats OCR : préserver ceux formellement acceptés ; la source formelle reste à confirmer si elle n'est pas fournie. Révocation immédiate de liens déjà délivrés : aucun chantier sélectionné ; cinq minutes actuelles documentées et recommandées.
+Secret d'authentification (AUD-010) : reporté ; [question au professeur](../questions-professeur.md). Formats OCR : préserver ceux formellement acceptés ; la source formelle reste à confirmer si elle n'est pas fournie. Révocation immédiate de liens déjà délivrés : aucun chantier sélectionné ; cinq minutes actuelles documentées et recommandées.
 
 Compatibilité fonctionnelle pas encore démontrée : l'état incomplete et sa reprise, les entrées désormais rejetées et notamment la date future changent certains résultats observables. Les décisions de correction sont retenues, mais elles ne prouvent pas leur conformité aux tests du professeur. Définir les fonctions attendues et les contrats avant implémentation, sans réécrire les tests pour accepter arbitrairement une régression.
 
@@ -58,9 +60,9 @@ Les grands thèmes ont été couverts à des degrés différents. Ils ne sont pa
 
 ## Preuves déjà acquises et preuves manquantes
 
-Acquis : SHA identifié ; lecture de parcours/commentaires ; comptage des imports ; observations isolées UI/date ; installation propre, lint/types/build et démarrage réussis ; 47 vérifications de scénarios HTTP/SQL/S3/OCR (26 conformes, 21 écarts), plus 3 contrôles de fixtures ; 20 mesures HTTP de listes et un index expérimental supprimé. [Résultats et limites](mesures-et-preuves.md).
+Acquis : SHA identifié ; lecture de parcours/commentaires ; comptage des imports ; observations isolées UI/date ; installation propre, lint/types/build et démarrage réussis ; 47 vérifications de scénarios HTTP/SQL/S3/OCR (26 conformes, 21 écarts), plus 3 contrôles de fixtures ; 20 mesures HTTP de listes et un index expérimental supprimé. [Résultats et limites](../mesures-et-preuves.md).
 
-À terminer : référence navigateur, matrice de permissions complète, contrats communs de reprise/décision/erreurs, plan de migration et retour arrière, inscription et autres frontières, capacité OCR et qualification des dépendances. Les tests du professeur ne sont pas fournis. Ni pourcentage de couverture comportementale ni réussite des corrections ne sont inférés. Le [bilan de cohérence et passation](coherence-et-passation.md) distingue les tensions de contrat, les dépendances entre corrections et les règles de cible encore non vérifiées.
+À terminer : référence navigateur, matrice de permissions complète, contrats communs de reprise/décision/erreurs, plan de migration et retour arrière, inscription et autres frontières, capacité OCR et qualification des dépendances. Les tests du professeur ne sont pas fournis. Ni pourcentage de couverture comportementale ni réussite des corrections ne sont inférés. Le [bilan de cohérence et passation](../coherence-et-passation.md) distingue les tensions de contrat, les dépendances entre corrections et les règles de cible encore non vérifiées.
 
 ## Suite recommandée
 
@@ -68,8 +70,8 @@ Terminer l'audit par les preuves/contrats et une synthèse des priorités, puis 
 
 ## Actualisation après campagne du 14–15 octobre
 
-[Processus suivi](processus-audit.md), [classement et priorités](audit_issues_classified.md), [revue API](api-standardisation-review.md), [preuves](mesures-et-preuves.md). Installation propre, lint/types/build réussis ; 47 vérifications de scénarios, 26 conformes et 21 écarts ; services d’audit nettoyés. AUD-019 convention conservée, AUD-020/021 retenus, AUD-022 optimisation si simple sans gain HTTP démontré. Nouvelle alerte AUD-023 sur dépendances, qualification et correction non sélectionnées. Audit encore non clos : navigateur/E2E, capacité OCR, contrats de reprise/décision, migrations et plusieurs frontières restent ouverts ; secret reporté. Les tableaux antérieurs décrivent l’état de préparation et ne doivent pas annuler ces preuves actuelles.
+[Processus suivi](../processus-audit.md), [classement et priorités](../audit_issues_classified.md), [revue API](../api-standardisation-review.md), [preuves](../mesures-et-preuves.md). Installation propre, lint/types/build réussis ; 47 vérifications de scénarios, 26 conformes et 21 écarts ; services d’audit nettoyés. AUD-019 convention conservée, AUD-020/021 retenus, AUD-022 optimisation si simple sans gain HTTP démontré. Nouvelle alerte AUD-023 sur dépendances, qualification et correction non sélectionnées. Audit encore non clos : navigateur/E2E, capacité OCR, contrats de reprise/décision, migrations et plusieurs frontières restent ouverts ; secret reporté. Les tableaux antérieurs décrivent l’état de préparation et ne doivent pas annuler ces preuves actuelles.
 
 ## Passation aux équipes — 15 octobre
 
-[Revue croisée des corrections](coherence-et-passation.md) : points d’intégration, règles d’architecture, cinq livrables finis et ordre de lots proposé. Les principales tensions sont incomplete/reprise face à la compatibilité UI/API et options de tri nommées face aux anciennes expressions. RLS/finalisation, décisions/reprise, rôle/affectation et erreurs/OCR/UI sont des dépendances à coordonner, pas des choix opposés. Aucun nouveau mécanisme sélectionné par cette revue.
+[Revue croisée des corrections](../coherence-et-passation.md) : points d’intégration, règles d’architecture, cinq livrables finis et ordre de lots proposé. Les principales tensions sont incomplete/reprise face à la compatibilité UI/API et options de tri nommées face aux anciennes expressions. RLS/finalisation, décisions/reprise, rôle/affectation et erreurs/OCR/UI sont des dépendances à coordonner, pas des choix opposés. Aucun nouveau mécanisme sélectionné par cette revue.

@@ -1,5 +1,7 @@
 # SPEC-05 — Inscription atomique et convention de domaine conservée
 
+> État courant au 29 octobre 2026 : correction intégrée dans main ; contrôle automatisé SPEC-05 réussi dans la [CI interne complète](https://github.com/maiabuc/expense-io/actions/runs/40945194492). Les préparations et mesures anciennes ci-dessous décrivent leurs dates et révisions, pas une correction encore à livrer.
+
 ## Identification
 
 - Responsable : personne B. Branche : `feat/spec-05`.

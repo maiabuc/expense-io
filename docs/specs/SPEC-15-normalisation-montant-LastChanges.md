@@ -1,5 +1,7 @@
 # SPEC-15 — Normalisation du montant sans recherche quadratique
 
+> État courant au 29 octobre 2026 : correction intégrée dans main ; contrôle automatisé SPEC-15 réussi dans la [CI interne complète](https://github.com/maiabuc/expense-io/actions/runs/40945194492). Les préparations et mesures anciennes ci-dessous décrivent leurs dates et révisions, pas une correction encore à livrer.
+
 ## Identification
 
 - Objet : retirer les zéros décimaux terminaux en temps linéaire sans changer les montants ou empreintes.
@@ -79,6 +81,6 @@ Snapshot : `/tmp/arla-new-aud-028-029-20261026.json` (24 fiches au début de la 
 
 Périmètre confirmé par la demande de Maia : spécifier les corrections sélectionnées, en excluant les risques assumés. Cette spec couvre AUD-029 ; elle reste préparée, non implémentée. Fiche(s), code courant et critères relus : le défaut décrit est encore présent par inspection, aucune exécution applicative réalisée dans cette revue. Les mesures du 26 octobre restent des preuves historiques de leur révision.
 
-Révision locale : `f637381f0e144fda04c0166b650279b4d9b0726a` ; documents récupérés depuis `13ffcb0c6bd4c6050557e3cc14248d90fdc8b5da`, fusion non finalisée. Aucun changement de grammaire, de plafond ou de règle métier ajouté par cette revue. Conserver les critères, scénarios et étapes de réalisation ci-dessus. [Table de suivi](CHANGEMENTS_A_SPECIFIER.md).
+Révision locale : `f637381f0e144fda04c0166b650279b4d9b0726a` ; documents récupérés depuis `13ffcb0c6bd4c6050557e3cc14248d90fdc8b5da`, fusion non finalisée. Aucun changement de grammaire, de plafond ou de règle métier ajouté par cette revue. Conserver les critères, scénarios et étapes de réalisation ci-dessus. [Table de suivi](README.md#statut-des-specs).
 
 Snapshot de revue avant modification : `/tmp/arla-spec-lastchanges-20261029.json`. Node.js absent : capture/contrôle prescrits non exécutables ; empreintes indépendantes capturées via Python et fiches laissées intactes. Contrôles documentaires de cette revue consignés dans le journal ; lint/types/build et tests non exécutés. Aucun ajout IMPLEMENTATION applicatif ni manifeste CI fictif. Avant réalisation, actualiser le SHA et capturer à nouveau les fiches avec l’outil Node du dépôt.

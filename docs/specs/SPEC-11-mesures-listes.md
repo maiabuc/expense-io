@@ -1,5 +1,7 @@
 # SPEC-11 — Performance des listes : décision conditionnée aux mesures
 
+> État courant au 29 octobre 2026 : campagne comparative conditionnelle, aucune optimisation livrée revendiquée. Voir le [statut des specs](README.md#statut-des-specs).
+
 ## Identification
 
 - Responsable : personne B. Branche : `feat/spec-11`.

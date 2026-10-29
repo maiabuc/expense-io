@@ -2,6 +2,21 @@
 
 La suite protège les parcours légitimes et vérifie les corrections décidées dans l'audit. Chaque cas porte son issue et un identifiant unique : `[AUD-007][DEC-001][correction] …`. Une issue peut nécessiter plusieurs tests et plusieurs suites. Un sous-ensemble vert ne certifie pas que toute la solution est réalisée.
 
+## Résultats de référence au 29 octobre 2026
+
+| Suite interne obligatoire | Exécutés | Réussis | Échoués / ignorés |
+| --- | ---: | ---: | --- |
+| Unitaires | 81 | 81 | 0 / 0 |
+| API avec PostgreSQL/S3 | 199 | 199 | 0 / 0 |
+| Navigateur | 67 | 67 | 0 / 0 |
+| Total | 347 | 347 | 0 / 0 |
+
+[Run 40945194492](https://github.com/maiabuc/expense-io/actions/runs/40945194492), révision `ec82bc8af02ba0f8f4aaa32b635265afb06e5575`, intégrée à main par `2e76fe1` : les 26 jobs internes réussissent, dont lint/types/build/documentation et 16 contrôles de spec. Le résultat est daté et lié à cette révision.
+
+Les 89 scénarios de [NathanPrats/expense-io#4](https://github.com/NathanPrats/expense-io/pull/4) sont exécutables séparément avec `npm run test:upstream`. [Run externe](https://github.com/maiabuc/expense-io/actions/runs/40944955422) : **86 réussis, 3 échoués, aucun ignoré**, sur le même code applicatif et les mêmes tests. Les fixtures JPEG/WebP/PDF utilisent de vrais octets dans ces formats ; les assertions ne sont pas affaiblies.
+
+Les trois différences acceptées sont ORG-07 (texte d’erreur de manager, statut 409 conservé), OCR-03 et OCR-07 (PDF refusé 400 par l’analyse, là où la référence attend un succès vide puis une invitation de saisie). Le dépôt de PDF reste accepté. Le workflow externe tourne sur main et à la demande ; ses échecs restent visibles et ne sont pas convertis en succès. Il est distinct du résultat CI interne obligatoire. Cette suite fournie n’est pas une garantie de connaître tous les tests de correction du professeur.
+
 ## Exécuter
 
 Prérequis : Node 24, npm, Docker avec Compose ; `npm ci`. Les commandes README et build existantes sont conservées.
@@ -47,11 +62,11 @@ Le workflow distingue installation, lint/types/documentation/unitaires, build, A
 
 Pour une future protection de branche, le contrôle global s'appelle `Résultat CI requis`. Cette configuration de protection n'est pas modifiée ici. Les images Docker sont fixées sur leur version majeure/mineure documentée, pas sur un digest immuable ; les dépendances npm et la version Node CI sont verrouillées.
 
-La suite actuelle peut être rouge avant les corrections applicatives. Ne pas affaiblir une assertion pour obtenir du vert. À chaque correction : garder le cas existant, compléter les scénarios propres au nouveau mécanisme, exécuter les suites concernées et ajouter IMPLEMENTATION dans la fiche AUD sans modifier son texte préexistant.
+Les premières campagnes étaient rouges avant les corrections applicatives ; le résultat courant est celui de la table datée en tête de ce guide. Ne pas affaiblir une assertion pour obtenir du vert. À chaque correction : garder le cas existant, compléter les scénarios propres au nouveau mécanisme, exécuter les suites concernées et ajouter IMPLEMENTATION dans la fiche AUD sans modifier son texte préexistant.
 
 ## Contrôles visibles par spec
 
-La CI affiche désormais dix jobs distincts : `SPEC-01 — tests du lot` à `SPEC-10 — tests du lot`. Ils réutilisent les vrais résultats unitaires/API/navigateur du même run et du même SHA : aucune suite supplémentaire factice. Un job peut passer quand les cas de sa spec réussissent, même si une autre spec fait échouer la suite globale. Lint, types, documentation, unitaires et build restent des prérequis communs ; le résultat global exige tous les jobs fonctionnels et les suites complètes.
+La CI affiche seize jobs de lot : SPEC-01 à SPEC-10 et SPEC-13 à SPEC-18. SPEC-11 et SPEC-12 restent en revue humaine. Ils réutilisent les vrais résultats unitaires/API/navigateur du même run et du même SHA : aucune suite supplémentaire factice. Un job peut passer quand les cas de sa spec réussissent, même si une autre spec fait échouer la suite globale. Lint, types, documentation, unitaires et build restent des prérequis communs ; le résultat global exige tous les jobs fonctionnels et les suites complètes.
 
 Le manifeste `tests/specifications.json` relie les specs aux AUD et aux IDs de cas. Les tests nouveaux liés à ces AUD rejoignent la sélection automatiquement. Des exceptions explicites répartissent AUD-006 entre SPEC-06 (consultation/droits actuels) et SPEC-07 (affectation). Les tests d’outillage AUD-011 restent dans le contrôle unitaire commun.
 
@@ -64,6 +79,9 @@ npm run test:spec:report -- SPEC-01
 Cette commande **lit les résultats**, elle ne lance pas les tests. Elle produit `reports/SPEC-01.json` et `.md`. La synthèse complète ajoute `reports/specifications.json` et `.md` et la table GitHub. Absence, doublon, ancien SHA, suite tronquée, erreur globale, exécution filtrée par issue ou prérequis échoués ne donnent pas de vert. Une simple relance d’un ancien workflow ne récupère pas ce nouveau code : actualiser la branchePR avec le main contenant le dispositif.
 
 La couverture obligatoire empêche de valider une spec uniquement avec un sous-ensemble ancien. Un cas attendu absent est signalé comme couverture incomplète, sans faux test ignoré. Les IDs sont des conventions opérationnelles des critères existants ; pour les renommer, adapter le manifeste avec une justification et conserver une preuve équivalente.
+
+Les listes de couverture future ci-dessous sont historiques (préparation des premiers lots). Pour les cas réellement présents aujourd’hui, utiliser le [catalogue](../../scripts/ci/catalog.mjs), le [manifeste des specs](../../tests/specifications.json) et les [limites encore déclarées](../../tests/deferred-coverage.json). Leurs IDs anciens ne sont pas tous des manques actuels.
+
 
 | Cas supplémentaires | Critère existant protégé |
 | --- | --- |

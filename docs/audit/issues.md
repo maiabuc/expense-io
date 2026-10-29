@@ -55,7 +55,7 @@ Sources, sévérité à investiguer, commentaires relus, résultats et limites :
 - AUD-021 : auto-affectation bloquée, boucles entre managers non contrôlées ; [interdiction des boucles retenue](solutions-to-audit/AUD-021-boucles-managers.md), affectations valides conservées ; non implémenté, concurrence à vérifier.
 - AUD-022 : listes de notes sans borne de volume ; [optimisation acceptée si simple](solutions-to-audit/AUD-022-optimisation-simple-listes.md), piste des index à vérifier, aucune pagination sélectionnée ni gain mesuré.
 
-Fichiers, lignes, explications, questions et validation : [nouveaux points](next-issues.md). Identifiants enregistrés, non réutilisés ; neuf points AX de contrat/preuve distincts des risques applicatifs. Architecture hexagonale simple désormais validée, non implémentée.
+Fichiers, lignes, explications, questions et validation : [nouveaux points](archive/next-issues-20261014.md). Identifiants enregistrés, non réutilisés ; neuf points AX de contrat/preuve distincts des risques applicatifs. Architecture hexagonale simple désormais validée, non implémentée.
 
 ## Autres périmètres examinés
 
