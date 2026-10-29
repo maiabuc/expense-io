@@ -79,6 +79,12 @@ export function parseStrictExpenseDate(raw: string, today = todayInParis()): str
   const year = Number(match[1])
   const month = Number(match[2])
   const day = Number(match[3])
+  // Refus de l'année zéro avant tout assemblage ou écriture (AUD-015) :
+  // `0000-01-01` passe le format et les contrôles de mois/jour/futur mais
+  // n'est pas une date réelle. `new Date(Date.UTC(0, ...))` interprète 0
+  // comme 1900, donc daysInMonth ne l'écarte pas. L'année 0001 reste admise.
+  // Borne technique, pas de seuil d'ancienneté métier.
+  if (year < 1) return null
   if (month < 1 || month > 12) return null
   if (day < 1 || day > daysInMonth(year, month)) return null
 
