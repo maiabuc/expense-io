@@ -21,7 +21,8 @@
     "test:audit": "node docs/audit/tools/check-append-only.mjs check",
     "ci:docs": "node scripts/ci/documentation.mjs && node scripts/ci/catalog.mjs",
     "test": "npm run test:unit",
-    "test:spec:report": "node scripts/ci/spec-check.mjs"
+    "test:spec:report": "node scripts/ci/spec-check.mjs",
+    "test:upstream": "node scripts/ci/run.mjs upstream"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1131.0",

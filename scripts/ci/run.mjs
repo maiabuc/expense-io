@@ -6,7 +6,7 @@ import { resolve } from 'node:path'
 import { sanitize } from '../../tests/reporters/metadata.mjs'
 
 const suite = process.argv[2]
-if (!['api', 'e2e'].includes(suite)) throw new Error('Suite api ou e2e requise.')
+if (!['api', 'e2e', 'upstream'].includes(suite)) throw new Error('Suite api, e2e ou upstream requise.')
 const project = `expense-io-ci-${suite}-${process.pid}`
 const env = { ...process.env, CI_SUITE: suite, ARLA_TEST_RUN: '1', CI_RUN_ID: randomUUID(),
   DATABASE_URL: `postgres://expense:expense-ci-only@127.0.0.1:${process.env.CI_DB_PORT ?? '15434'}/expense_io_ci_${suite}`,
@@ -57,10 +57,14 @@ try {
     await new Promise(resolve => setTimeout(resolve, 200))
   }
   if (!ready) throw new Error('Serveur de production CI indisponible.')
-  const args = ['--no-install', 'playwright', 'test', `--project=${suite}`]
+  env.E2E_BASE_URL = env.TEST_BASE_URL
+  env.E2E_DATABASE_URL = env.DATABASE_URL
+  const args = suite === 'upstream'
+    ? ['--no-install', 'playwright', 'test', '--config=playwright.upstream.config.ts']
+    : ['--no-install', 'playwright', 'test', `--project=${suite}`]
   if (process.env.TEST_ISSUE) args.push('--grep', `\\[${process.env.TEST_ISSUE}(?:,|\\])|,${process.env.TEST_ISSUE}(?:,|\\])`)
   const tests = await execute('npx', args)
-  const report = await execute('node', ['scripts/ci/report.mjs', `--suite=${suite}`])
+  const report = suite === 'upstream' ? 0 : await execute('node', ['scripts/ci/report.mjs', `--suite=${suite}`])
   process.exitCode = tests || report ? 1 : 0
 } catch (error) { console.error(sanitize(error.message)); process.exitCode = 1 }
 finally {
