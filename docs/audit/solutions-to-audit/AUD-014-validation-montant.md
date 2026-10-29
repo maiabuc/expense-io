@@ -96,3 +96,20 @@ Motif complet vérifié (inchangé) → normalisation → au moins un chiffre no
 #### Écarts et limites
 
 Un montant positif inférieur à un demi-centime est accepté puis stocké à 0,00 : c'est le comportement demandé par le contrat (C3) et vérifié par ENTREE-001, pas une nouvelle règle métier.
+
+
+### 29 octobre 2026 — Corrections immédiates de faible risque
+
+Statut : implémentée, validation distante en cours. Autorisation : demande de Maia de rendre la CI interne fusionnable puis de préserver les parcours externes critiques. Base : `08a4e12aa697d6e880f6a9305399a5c5dc2c775b` ; réalisation : diff isolé du 29 octobre 2026. Spec : [SPEC-04, complément](../../specs/SPEC-04-entrees-et-affichage.md).
+
+#### Ce qui a été implémenté et où
+
+Le message public du refus de montant incorrect retrouve Champs invalides, HTTP 400. Le parseur strict, ses bornes et l’absence d’écriture restent identiques. NOTE-006 vérifie maintenant le message en plus du statut et de l’absence de création. Fichiers : src/utils/validators.ts et tests/api/expenses.spec.ts pour le tri ; src/app/api/expense-notes/route.ts et NOTE-006 pour le message de montant.
+
+#### Nouveau fonctionnement
+
+Entrée → validation serveur existante → option fixe ou refus avant SQL → réponse publique compatible. Aucun droit, transaction ou effet persistant supplémentaire.
+
+#### Validation et limites
+
+Les 81 unitaires du code combiné réussissent localement. Lint/types et les suites HTTP/E2E complètes sont relancés sur le diff courant. Les résultats distants seront consignés au SHA exécuté ; aucune assertion de référence n’est retirée.

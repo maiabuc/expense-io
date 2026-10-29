@@ -87,3 +87,12 @@ Tests sur services CI isolés, deux entreprises et plusieurs rôles. Les cas CI 
 - Mettre à jour cette spec et le [journal](../audit/DECISION_LOG.md) avec les vrais résultats et le commit livré.
 - Entrées IMPLEMENTATION : [AUD-004](../audit/solutions-to-audit/AUD-004-sort-input.md#implementation), [AUD-014](../audit/solutions-to-audit/AUD-014-validation-montant.md#implementation), [AUD-015](../audit/solutions-to-audit/AUD-015-validation-date.md#implementation), [AUD-017](../audit/solutions-to-audit/AUD-017-affichage-date.md#implementation), [G14](../audit/solutions-to-audit/G14-controle-recus.md#implementation), ajoutées le 2026-10-18 (SHA de départ `7377486`, réalisation `c445659`). Entrées de correction ajoutées le 2026-10-19 dans AUD-004 et AUD-014 après la revue.
 - Statut de fin : implémentée et vérifiée sur le périmètre décrit. Le 18 octobre, C3 (positivité contrôlée après arrondi, `0.001` refusé) et C1 (propriétés héritées acceptées comme tri) n'étaient pas satisfaits, relevé par la revue du 19 octobre ; corrigés le 19 octobre. Contrôle `SPEC-04 — tests du lot` vert en local (44/44). Aucun plan de migration/retour arrière demandé.
+
+
+## Complément ciblé — 29 octobre 2026
+
+Demande de Maia : corrections immédiates à faible risque pour rendre la CI interne fusionnable et préserver les parcours externes critiques. Base de validation : `08a4e12aa697d6e880f6a9305399a5c5dc2c775b` ; travail isolé, aucun service utilisateur modifié.
+
+Les chaînes historiques exactes `amount ASC` et `amount DESC` deviennent deux alias fixes de la Map de tris existante ; toute autre expression SQL demeure refusée. Le refus de montant incorrect reste HTTP 400 sans écriture et retrouve le message public historique `Champs invalides`. Le parseur strict et ses bornes restent inchangés. Les tests LIST-003/004 couvrent les deux conventions ; NOTE-006 vérifie aussi le message. Les fixtures externes JPEG/WebP/PDF utilisent de vrais octets, sans modifier les assertions de statut, de type ni de restitution. La validation MIME applicative est conservée.
+
+La CI interne garde les suites complètes et les contrôles par spec obligatoires. La suite externe utilise un workflow séparé sur main et à la demande ; ses échecs restent visibles et ne sont pas convertis en succès. Rapport de compatibilité supprimé à la demande de Maia. Vérifications attendues : lint/types/catalogue, 347 tests internes, suite externe sur services jetables. Résultats à consigner après exécution réelle.

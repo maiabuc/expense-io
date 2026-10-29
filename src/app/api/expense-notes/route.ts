@@ -125,7 +125,7 @@ export async function POST(request: NextRequest) {
     // est transmise à PostgreSQL pour préserver l'arrondi numeric(10,2).
     const amount = parseStrictAmount(amountRaw)
     if (amount === null) {
-      return Response.json({ error: 'Montant invalide' }, { status: 400 })
+      return Response.json({ error: 'Champs invalides' }, { status: 400 })
     }
     const expenseDate = parseStrictExpenseDate(expenseDateRaw)
     if (expenseDate === null) {

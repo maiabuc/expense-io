@@ -29,7 +29,16 @@ export function evaluateSpecification(specification, catalog, results, options =
   const passed = cases.filter(item => item.status === 'passed').length
   const notRun = cases.filter(item => ['not-run', 'skipped', 'pending'].includes(item.status)).length
   const failed = cases.length - passed - notRun
-  const status = !cases.length || missingCoverage.length || notRun ? 'incomplete' : failed || errors.length ? 'failed' : 'passed'
+  // Une erreur d'exécution (SHA périmé, erreur globale de suite, prérequis
+  // qualité échoué, exécution partielle par issue) ou un cas en échec est une
+  // défaillance d'intégrité : elle rend le lot `failed` en priorité, même si
+  // des cas ne sont pas exécutés. Sans cette priorité, un rapport issu d'un
+  // ancien SHA accompagné de cas non exécutés serait annoncé `incomplete` et
+  // masquerait le refus attendu (AUD-011, CI-SPEC-014). L'absence de preuve
+  // sans erreur signalée (couverture manquante, cas non exécutés seuls) reste
+  // `incomplete`.
+  const status = failed || errors.length ? 'failed'
+    : !cases.length || missingCoverage.length || notRun ? 'incomplete' : 'passed'
   return { id: specification.id, title: specification.title, status, planned: cases.length, passed, failed, notRun,
     missingCoverage, cases, errors }
 }

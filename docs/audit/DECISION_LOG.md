@@ -474,3 +474,28 @@ Snapshot indépendant avant travail : `/tmp/arla-spec-lastchanges-20261029.json`
 | AUD-027/030, AUD-028, AUD-029, compléments AUD-005/008/015 | Tests ajoutés d’abord sur feat/ci ; publication main directement demandée par Maia, avant branches de réalisation | Matérialiser les critères avant corrections, aucune assertion de référence affaiblie | [Campagne et limites](evidence/ci-lastchanges-20261029/README.md), baseline unitaire avant correction | 45 nouveaux cas catalogués ; types et docs exit 0 ; 39 unitaires exécutés : 24 verts, 15 rouges attendus ; API/E2E locaux bloqués par absence Docker |
 
 Aucun correctif applicatif dans ce lot. Alias Vitest, manifeste et matrice CI adaptés ; binding Linux Rolldown à version inchangée restauré dans le lockfile pour rendre les tests exécutables. Les six futures branches gardent les tests des autres lots en échec tant que leurs corrections ne sont pas intégrées ; ce rouge n’est pas masqué et n’autorise pas à annoncer la CI globale verte.
+
+
+## 29 octobre 2026 — Revue SPEC-13 et intégration séquentielle
+
+| Issue | Décision | Pourquoi | Preuve | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-027/AUD-030 | Remplacer la regex bornée de Kiro par le parcours déterministe demandé par C7 | Le plafond borne l’entrée mais n’élimine pas les retours arrière | [Spec](../specs/SPEC-13-validation-email-bornee-LastChanges.md), [mesure brute](evidence/spec13-review-20261029/email-comparison.json) | 9/9 tests ciblés, lint/types exit 0 ; build réseau et E2E distants en attente |
+| CI | Compléter le lockfile partagé sans modifier les versions verrouillées | npm ci échouait avant les tests | PR #13, 26 entrées ajoutées et aucune version existante modifiée | npm ci, lint, types, docs et build réussis en Actions |
+| Référence E2E | Importer NathanPrats/expense-io#4 au SHA dfcd4a1 avant les autres fusions de specs | Demande explicite de Maia ; vérifier les assertions externes sur notre application | PR #14 ; 89 tests inchangés | Découverte 89/89 ; exécution réelle en Actions avant fusion des specs |
+
+
+## 29 octobre 2026 — Revue SPEC-14
+
+AUD-028 : parcours authorization déterministe retenu pour C5 ; le plafond seul ne supprimait pas les recherches répétées. [Spec](../specs/SPEC-14-diagnostic-borne-LastChanges.md) et [mesures](evidence/spec14-review-20261029/after.json). 6/6 DIAG, 20/20 contrôles de compatibilité, lint/types exit 0 ; PANNE et build distants en attente. Les fiches antérieures restent immuables.
+
+
+## 29 octobre 2026 — Corrections immédiates, priorité CI interne
+
+| Issue | Décision | Pourquoi | Preuve | Validation |
+| --- | --- | --- | --- | --- |
+| AUD-004 | Ajouter deux alias historiques fixes | Rendre le tri historique compatible sans SQL libre | SPEC-04 complément ; LIST-003/004/006 | À relancer en CI sur le SHA publié |
+| AUD-014 | Restaurer Champs invalides pour les montants refusés | Même statut, même validation stricte, contrat externe historique | NOTE-006 et NDF-08 | À relancer en CI sur le SHA publié |
+| Tests externes | Utiliser de vrais octets JPEG/WebP/PDF pour six scénarios | Tester les formats légitimes sans désactiver la validation MIME | receiptForType ; assertions conservées | Suite des 89 scénarios à relancer |
+| CI | Séparer référence externe et CI interne obligatoire | Priorité P1 explicite de Maia ; tous les contrôles internes restent requis | ci.yml et upstream-e2e.yml | Pas de continue-on-error ni de skip d’assertion |
+| Documentation | Supprimer le rapport de compatibilité | Demande explicite de Maia | Suppression du fichier de rapport et des liens actifs | Diff revu |

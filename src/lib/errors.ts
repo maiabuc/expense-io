@@ -10,13 +10,71 @@ function errorCode(error: unknown): string {
 }
 
 const REDACTED = '[expurgé]'
+export const MAX_DIAGNOSTIC_LENGTH = 16384
+const OMITTED_DIAGNOSTIC = '[diagnostic trop volumineux, omis]'
+
+// Chaque caractère du champ borné est parcouru sans réessayer différentes
+// répartitions d'espaces. Les valeurs citées incluent leurs échappements.
+function redactAuthorization(text: string): string {
+  // Conversion ASCII seulement : certaines lettres Unicode changent de longueur
+  // en minuscules, ce qui décalerait les indices du texte original.
+  const lowercase = text.replace(/[A-Z]/g, (character) => character.toLowerCase())
+  const chunks: string[] = []
+  let search = 0
+  let copied = 0
+  while (search < text.length) {
+    const start = lowercase.indexOf('authorization', search)
+    if (start === -1) break
+    let cursor = start + 'authorization'.length
+    if (text[cursor] === '"' || text[cursor] === "'") cursor++
+    while (cursor < text.length && /\s/.test(text[cursor])) cursor++
+    if (text[cursor] !== ':' && text[cursor] !== '=') {
+      search = cursor
+      continue
+    }
+    cursor++
+    while (cursor < text.length && /\s/.test(text[cursor])) cursor++
+    const valueStart = cursor
+    const quote = text[cursor]
+    if (quote === '"' || quote === "'") {
+      cursor++
+      while (cursor < text.length) {
+        const character = text[cursor++]
+        if (character === '\\') {
+          if (cursor < text.length) cursor++
+        } else if (character === quote) break
+      }
+      // Une valeur citée non terminée est masquée jusqu'à la fin : ne pas
+      // rechercher à nouveau des clés à l'intérieur du secret mal formé.
+    } else {
+      const scheme = lowercase.startsWith('bearer', cursor) ? 6
+        : lowercase.startsWith('basic', cursor) ? 5 : 0
+      if (scheme) {
+        cursor += scheme
+        while (cursor < text.length && /\s/.test(text[cursor])) cursor++
+      }
+      const tokenStart = cursor
+      while (cursor < text.length && !/[\s"',;]/.test(text[cursor])) cursor++
+      // Comme le filtre historique, un schéma seul reste une valeur à masquer.
+      if (cursor === tokenStart && scheme) cursor = valueStart + scheme
+      if (cursor === valueStart) {
+        search = cursor < text.length ? cursor + 1 : cursor
+        continue
+      }
+    }
+    chunks.push(text.slice(copied, start), REDACTED)
+    copied = cursor
+    search = cursor
+  }
+  chunks.push(text.slice(copied))
+  return chunks.join('')
+}
 
 // Motifs de données sensibles pouvant apparaître dans le texte d'une
 // exception (message pg levé par un trigger, erreur SDK reprenant une URL,
 // etc.). Le motif entier est remplacé, nom de clé compris.
 const SENSITIVE_PATTERNS: RegExp[] = [
   // En-tête d'autorisation et jeton porteur.
-  /authorization["']?\s*[:=]\s*(?:"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|(?:bearer|basic)?\s*[^\s"',;]+)/gi,
   /bearer\s+[^\s"',;]+/gi,
   // Cookies et en-têtes de session.
   /(?:set-)?cookie["']?\s*[:=][^\r\n]*/gi,
@@ -35,7 +93,10 @@ const SENSITIVE_PATTERNS: RegExp[] = [
 const URL_QUERY_PATTERN = /(\bhttps?:\/\/[^\s?#"']+)\?[^\s"'#]*/gi
 
 export function redactDiagnostic(text: string): string {
-  let result = text.replace(URL_QUERY_PATTERN, `$1?${REDACTED}`)
+  // Omettre le champ entier avant tout filtre : une troncature brute pourrait
+  // couper un secret et rendre son contexte méconnaissable aux filtres.
+  if (text.length > MAX_DIAGNOSTIC_LENGTH) return OMITTED_DIAGNOSTIC
+  let result = redactAuthorization(text.replace(URL_QUERY_PATTERN, `$1?${REDACTED}`))
   for (const pattern of SENSITIVE_PATTERNS) {
     result = result.replace(pattern, REDACTED)
   }

@@ -137,3 +137,37 @@ Limites :
 - Si la création d'un moteur échoue après le démarrage de son thread, tesseract.js ne rend aucun accès à ce thread : son arrêt n'est pas vérifiable et la place est rendue.
 - Le `.catch(() => {})` restant porte sur la promesse d'un job abandonné après un délai, pas sur l'arrêt du moteur.
 - Capacité maintenue à 1 moteur : une augmentation exigerait une nouvelle mesure.
+
+### 29 octobre 2026 — SPEC-17, centimes des montants OCR non groupés
+
+Statut : implémentée et vérifiée sur le périmètre unitaire décrit ; suite API OCR (reconnaissance réelle) à confirmer par la CI, Docker absent localement.
+Spec : [SPEC-17](../../specs/SPEC-17-montants-ocr-sans-groupement.md). Révision de départ : `2e9e30cf9f21a240c1213da6baec7f4c61618175`. Réalisation : branche `feat/spec-17`, diff local du 29 octobre 2026.
+
+#### Ce qui a été implémenté
+
+`DECIMAL_AMOUNT_PATTERN` limitait la partie entière à `\d{1,3}` suivie de groupes de milliers optionnels : un montant décimal non groupé de quatre chiffres ou plus (`TOTAL 1234,56 EUR`) ne correspondait pas, et le repli entier de `parseAmount` suggérait 1234 en perdant les centimes. Le motif devient deux alternatives : groupé (`\d{1,3}(?:[ .]\d{3})+[.,]\d{2}`) et non groupé (`\d+[.,]\d{2}`). Le séparateur décimal reste exactement deux chiffres pour ne pas capturer de suffixe. La normalisation (`replace(/[ .](?=\d{3})/g, '')` puis virgule→point), le choix de la ligne mot-clé, la priorité décimale, le repli entier et la détection de date sont inchangés.
+
+#### Où
+
+| Fichier et repère du nouveau code | Modification | Rôle dans le parcours |
+| --- | --- | --- |
+| src/lib/ocr.ts : DECIMAL_AMOUNT_PATTERN | Alternative groupé / non groupé, décimale à 2 chiffres | Reconnaître le montant complet avant classement des candidats |
+
+#### Nouveau fonctionnement
+
+Reçu → route authentifiée et validation du fichier → pool OCR → texte → `parseAmount` : la ligne mot-clé (`total`, `montant`, …) est privilégiée → les montants décimaux sont extraits par le nouveau motif (groupé ou non groupé) → `Math.max` des candidats décimaux positifs → sinon repli entier sur lignes avec mot-clé/devise. `TOTAL 1234,56 EUR` et `TOTAL 1234.56 EUR` suggèrent 1234.56 ; `1 234,56` et `1.234,56` restent 1234.56. La suggestion n'enregistre aucune note ; la validation de soumission reste distincte. Une analyse sans nombre reste `{}`, les pannes/délais/saturation du pool conservent leurs erreurs.
+
+#### Validation et preuves
+
+| Commande ou scénario | Attendu | Résultat réel et compte | Preuve |
+| --- | --- | --- | --- |
+| `npx vitest run tests/unit/ocr-amount.test.ts` | OCR-AMOUNT-001…006 verts | exit 0, 6/6 réussis (3 correction + 3 référence) | Sortie locale 2026-10-29, Node 24.6.0 |
+| `npm run typecheck` | exit 0 | exit 0 | Sortie locale 2026-10-29 |
+| `npm run lint` | exit 0 | exit 0 (1 avertissement préexistant hors périmètre) | Sortie locale 2026-10-29 |
+| `npm run build` | exit 0 | exit 0 | Sortie locale 2026-10-29 |
+| `npm run test:unit` (suite complète) | Aucune régression ; défauts LastChanges restants + spec-report préexistant rouges | 68/81 réussis ; 13 échecs restants (branche partie de feat/ci) | `reports/unit.json` |
+| `tests/api/ocr.spec.ts` (reconnaissance réelle, `amount: 42.5`) | Contrat public conservé | Non exécuté localement : Docker/Compose absents | À vérifier sur GitHub Actions à l'ouverture de la PR |
+
+#### Écarts et limites
+
+Aucun écart avec SPEC-17 : seule une alternative a été ajoutée au motif décimal, sans bibliothèque monétaire ni nouveau contrat HTTP. La reconnaissance réelle d'un reçu image dépend du moteur et reste variable ; les cas déterministes couvrent le parseur, pas la précision OCR du moteur. La suite API/E2E OCR reste à exécuter en CI.

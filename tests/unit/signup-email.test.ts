@@ -29,7 +29,8 @@ test('[AUD-027,AUD-030][EMAIL-005][reference] grammaire courte historique conser
     'a..b@c..d', 'a@..b', 'a@b..', 'é@dömäin.fr', '用戶@例子.測試',
     '.@a.b', 'a@.b', 'a@b.', 'a@@b.co', ' a@b.co', 'a@b.co ',
     'a\tb@c.co', 'a@b\nc.co', 'a\r@b.co', 'a@b.\u00a0co',
-    'a\u200bb@c.co', 'a+b@b.co', 'a@b.c.d',
+    'a\u200bb@c.co', 'a+b@b.co', 'a@b.c.d', 'a@...', 'a@..',
+    ...Array.from(' \t\n\r\v\f\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff').flatMap(c => [c + 'a@b.co', 'a@b' + c + '.co', 'a@b.co' + c]),
   ]
   for (const email of corpus) expect(isValidEmail(email), JSON.stringify(email)).toBe(original.test(email))
 })

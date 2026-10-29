@@ -101,3 +101,8 @@ Tri : newest, amount_asc, amount_desc, insensibles à la casse ; absence conserv
 ## Portée de cette spécification
 
 Le catalogue et les compléments techniques sont la référence de réalisation proposée dans la délégation de rédaction actuelle. Ils ne constituent ni une preuve de fonctionnement ni une validation des tests du professeur. Les seules réserves externes sont explicitées dans le [fichier 5](05-lots-et-acceptation.md) ; elles ne justifient pas de recommencer un entretien général. Aucun plan de migration ou retour arrière demandé ou produit.
+
+
+## Complément autorisé — 29 octobre 2026
+
+Maia demande de privilégier immédiatement la CI interne et les parcours de référence avec le minimum de risque. Le tri accepte aussi les deux alias historiques exacts `amount ASC` et `amount DESC` via la table fixe, sans SQL libre. Le refus d’un montant incorrect conserve le parseur strict et HTTP 400, avec le message historique `Champs invalides`. Ces deux compléments remplacent les choix de noms/messages ci-dessus sur ce périmètre uniquement.

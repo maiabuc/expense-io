@@ -1,0 +1,167 @@
+{
+  "sourceBase": "0f7edf376237bdbee2d9ac845b329da4bc2a7232",
+  "realization": "local diff 2026-10-29",
+  "node": "v24.6.0",
+  "platform": "linux",
+  "sourceSha256": "d736920cd31235eb0c96f5e85be00f4abbc9f6fc245db6f33276df45ba115bec",
+  "command": "timeout 15s node docs/audit/evidence/spec13-review-20261029/email-comparison.mjs",
+  "samples": [
+    {
+      "length": 1003,
+      "results": [
+        {
+          "name": "before",
+          "durationsMs": [
+            0.3681289999999535,
+            0.348212999999987,
+            0.36203199999999924,
+            0.4452720000000454,
+            0.39571600000010676
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "name": "after",
+          "durationsMs": [
+            0.11889500000006592,
+            0.13830400000006193,
+            0.0970590000000584,
+            0.07370900000000802,
+            0.03409599999997681
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "length": 2003,
+      "results": [
+        {
+          "name": "before",
+          "durationsMs": [
+            1.4250180000000228,
+            1.3788459999999532,
+            1.4257929999999988,
+            1.3865620000000263,
+            1.3799370000000408
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "name": "after",
+          "durationsMs": [
+            0.03319799999997031,
+            0.033536000000026434,
+            0.033469999999965694,
+            0.03253600000005008,
+            0.03274199999998473
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "length": 4003,
+      "results": [
+        {
+          "name": "before",
+          "durationsMs": [
+            7.437701999999945,
+            7.705488000000059,
+            7.0653369999999995,
+            6.96885599999996,
+            6.539752000000021
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "name": "after",
+          "durationsMs": [
+            0.06609500000001844,
+            0.07926799999995637,
+            0.12971399999992173,
+            0.3356969999999819,
+            0.11710000000005039
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    },
+    {
+      "length": 8003,
+      "results": [
+        {
+          "name": "before",
+          "durationsMs": [
+            30.51990099999989,
+            28.028928000000064,
+            29.849913000000015,
+            25.579441999999972,
+            25.182777999999985
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        },
+        {
+          "name": "after",
+          "durationsMs": [
+            0.00041900000007899507,
+            0.0002590000000282089,
+            0.00021400000002813613,
+            0.00022200000000793807,
+            0.00022100000001046283
+          ],
+          "accepted": [
+            false,
+            false,
+            false,
+            false,
+            false
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": "Microbenchmark synthétique isolé ; aucun débit HTTP ni capacité serveur déduits. Au-delà de 4096, le nouveau validateur refuse avant analyse."
+}

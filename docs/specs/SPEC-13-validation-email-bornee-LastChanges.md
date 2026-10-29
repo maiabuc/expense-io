@@ -4,7 +4,7 @@
 
 - Objet : partager une validation d'email corrigée et bornée entre le validateur existant et l'inscription.
 - Lot et ID : SPEC-13, AUD-027 et AUD-030 ; responsable non attribué.
-- Statut : préparée, non implémentée.
+- Statut : correction implémentée ; validation unitaire et mesure C7 vérifiées le 29 octobre 2026, validation E2E distante en attente.
 - Autorisation : Maia demande une fiche AUD et une spec avec suffixe `-LastChanges`. Cette intervention produit la documentation, pas la correction.
 - Fiches : [AUD-027](../audit/solutions-to-audit/AUD-027-validation-email-bornee-LastChanges.md) et [AUD-030](../audit/solutions-to-audit/AUD-030-validation-email-partagee-LastChanges.md).
 - Source historique du projet : `265924bc7274047989e708ab635c2854d376230f` ; constat et révision de départ : `2e9e30cf9f21a240c1213da6baec7f4c61618175`.
@@ -113,3 +113,10 @@ Périmètre confirmé par la demande de Maia : spécifier les corrections sélec
 Révision locale : `f637381f0e144fda04c0166b650279b4d9b0726a` ; documents récupérés depuis `13ffcb0c6bd4c6050557e3cc14248d90fdc8b5da`, fusion non finalisée. Aucun changement de grammaire, de plafond ou de règle métier ajouté par cette revue. Conserver les critères, scénarios et étapes de réalisation ci-dessus. [Table de suivi](CHANGEMENTS_A_SPECIFIER.md).
 
 Snapshot de revue avant modification : `/tmp/arla-spec-lastchanges-20261029.json`. Node.js absent : capture/contrôle prescrits non exécutables ; empreintes indépendantes capturées via Python et fiches laissées intactes. Contrôles documentaires de cette revue consignés dans le journal ; lint/types/build et tests non exécutés. Aucun ajout IMPLEMENTATION applicatif ni manifeste CI fictif. Avant réalisation, actualiser le SHA et capturer à nouveau les fiches avec l’outil Node du dépôt.
+
+
+## Correction de revue — 29 octobre 2026
+
+La réalisation Kiro `0f7edf376237bdbee2d9ac845b329da4bc2a7232` borne l’entrée mais conserve la regex à retours arrière : elle ne satisfait donc pas C7. Cette revue remplace le motif par un parcours déterministe unique, avec un test `\s` sur chaque unité UTF-16 et mémorisation de l’unique @ et d’un point intérieur au domaine. La borne 4096 reste préalable. Aucun changement de grammaire ni normalisation ajouté.
+
+Validation du diff local daté : EMAIL-001…007/009/010, 9/9 ; corpus de compatibilité étendu aux caractères blancs ECMAScript et aux points aux frontières ; lint et types exit 0. [Mesure brute](../audit/evidence/spec13-review-20261029/email-comparison.json) et [script](../audit/evidence/spec13-review-20261029/email-comparison.mjs) : quatre tailles, cinq répétitions par version, refus identiques ; preuve limitée au helper, aucun débit HTTP déduit. Build local bloqué par le téléchargement Google Fonts indisponible ; build, EMAIL-008 et parcours INS attendent la CI sur services jetables. Cette entrée ne revendique pas ces validations en attente.
