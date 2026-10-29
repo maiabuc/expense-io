@@ -1,4 +1,5 @@
 name: Référence E2E externe
+run-name: Validation externe des correctifs
 on:
   push:
     branches: [main]
