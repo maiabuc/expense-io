@@ -3,7 +3,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  pull_request:
 permissions:
   contents: read
 concurrency:
@@ -12,7 +11,6 @@ concurrency:
 jobs:
   upstream:
     name: Scénarios de NathanPrats PR 4
-    if: github.event_name != 'pull_request' || github.head_ref == 'test/reference-quickfix-validation'
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     env:
